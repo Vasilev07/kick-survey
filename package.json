@@ -1,0 +1,34 @@
+{
+  "name": "kick-survey",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freeride8/kick-survey.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/freeride8/kick-survey/issues"
+  },
+  "homepage": "https://github.com/freeride8/kick-survey#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mysql2": "^1.5.2",
+    "passport": "^0.4.0",
+    "pug": "^2.0.1",
+    "sequelize": "^4.37.1",
+    "sequelize-auto-migrations": "^1.0.2",
+    "sequelize-cli": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.19.0",
+    "eslint-config-google": "^0.9.1"
+  }
+}
