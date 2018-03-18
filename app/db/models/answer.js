@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
   const Answer = sequelize.define('Answer', {
     q_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     answer_name: {
       type: DataTypes.STRING,
@@ -11,7 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   Answer.associate = (models) => {
-    // associations can be defined here
+    const {
+      Question,
+    } = models;
+    Answer.belongsTo(Question, {
+      foreignKey: 'q_id',
+      onDelete: 'CASCADE',
+    });
   };
   return Answer;
 };
