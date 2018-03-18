@@ -189,6 +189,7 @@
                 },
                 "username": {
                     "allowNull": false,
+                    "unique": true,
                     "seqType": "Sequelize.STRING"
                 },
                 "password": {
@@ -205,6 +206,7 @@
                 },
                 "email": {
                     "allowNull": false,
+                    "unique": true,
                     "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
@@ -219,5 +221,5 @@
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 4
 }
