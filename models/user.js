@@ -23,13 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   User.associate = (models) => {
-    const {
-      Survey,
-    } = models;
-    Survey.belongsTo(User, {
-      foreignKey: 'user_id',
-      onDelete: 'CASCADE',
-    });
   };
   return User;
 };

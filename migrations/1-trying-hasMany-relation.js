@@ -8,7 +8,7 @@ var Sequelize = require('sequelize');
  * createTable "Categories", deps: []
  * createTable "Types", deps: []
  * createTable "Users", deps: []
- * createTable "Surveys", deps: [Categories, Users]
+ * createTable "Surveys", deps: [Users, Categories]
  * createTable "Questions", deps: [Surveys, Types]
  * createTable "Answers", deps: [Questions]
  *
@@ -16,8 +16,8 @@ var Sequelize = require('sequelize');
 
 var info = {
     "revision": 1,
-    "name": "add-all-relations",
-    "created": "2018-03-17T16:23:43.135Z",
+    "name": "trying-hasMany-relation",
+    "created": "2018-03-18T09:22:14.848Z",
     "comment": ""
 };
 
@@ -133,10 +133,6 @@ var migrationCommands = [{
                     "type": Sequelize.STRING,
                     "allowNull": false
                 },
-                "category_id": {
-                    "type": Sequelize.INTEGER,
-                    "allowNull": false
-                },
                 "createdAt": {
                     "type": Sequelize.DATE,
                     "allowNull": false
@@ -145,22 +141,22 @@ var migrationCommands = [{
                     "type": Sequelize.DATE,
                     "allowNull": false
                 },
-                "cat_id": {
-                    "type": Sequelize.INTEGER,
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "references": {
-                        "model": "Categories",
-                        "key": "id"
-                    },
-                    "allowNull": true
-                },
                 "user_id": {
                     "type": Sequelize.INTEGER,
                     "onUpdate": "CASCADE",
                     "onDelete": "CASCADE",
                     "references": {
                         "model": "Users",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                },
+                "cat_id": {
+                    "type": Sequelize.INTEGER,
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "Categories",
                         "key": "id"
                     },
                     "allowNull": true
@@ -188,10 +184,6 @@ var migrationCommands = [{
                         "model": "Surveys",
                         "key": "id"
                     },
-                    "allowNull": false
-                },
-                "q_type": {
-                    "type": Sequelize.INTEGER,
                     "allowNull": false
                 },
                 "order": {

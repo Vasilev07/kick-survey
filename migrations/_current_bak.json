@@ -68,7 +68,7 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "survey_id": {
-                    "allowNull": false,
+                    "allowNull": true,
                     "references": {
                         "model": "Surveys",
                         "key": "id"
@@ -123,10 +123,6 @@
                     "allowNull": false,
                     "seqType": "Sequelize.STRING"
                 },
-                "category_id": {
-                    "allowNull": false,
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "createdAt": {
                     "allowNull": false,
                     "seqType": "Sequelize.DATE"
@@ -135,20 +131,20 @@
                     "allowNull": false,
                     "seqType": "Sequelize.DATE"
                 },
-                "cat_id": {
+                "user_id": {
                     "allowNull": true,
                     "references": {
-                        "model": "Categories",
+                        "model": "Users",
                         "key": "id"
                     },
                     "onDelete": "CASCADE",
                     "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "user_id": {
+                "cat_id": {
                     "allowNull": true,
                     "references": {
-                        "model": "Users",
+                        "model": "Categories",
                         "key": "id"
                     },
                     "onDelete": "CASCADE",

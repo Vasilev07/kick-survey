@@ -8,10 +8,15 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Survey.associate = (models) => {
     const {
-      Question,
+      User,
+      Category,
     } = models;
-    Question.belongsTo(Survey, {
-      foreignKey: 'survey_id',
+    Survey.belongsTo(User, {
+      foreignKey: 'user_id',
+      onDelete: 'CASCADE',
+    });
+    Survey.belongsTo(Category, {
+      foreignKey: 'cat_id',
       onDelete: 'CASCADE',
     });
   };

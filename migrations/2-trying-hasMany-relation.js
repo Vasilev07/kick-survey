@@ -5,20 +5,33 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * removeColumn "category_id" from table "Surveys"
+ * changeColumn "survey_id" on table "Questions"
  *
  **/
 
 var info = {
-    "revision": 3,
-    "name": "removed-category-id",
-    "created": "2018-03-17T16:28:17.157Z",
+    "revision": 2,
+    "name": "trying-hasMany-relation",
+    "created": "2018-03-18T09:49:14.442Z",
     "comment": ""
 };
 
 var migrationCommands = [{
-    fn: "removeColumn",
-    params: ["Surveys", "category_id"]
+    fn: "changeColumn",
+    params: [
+        "Questions",
+        "survey_id",
+        {
+            "type": Sequelize.INTEGER,
+            "onUpdate": "CASCADE",
+            "onDelete": "CASCADE",
+            "references": {
+                "model": "Surveys",
+                "key": "id"
+            },
+            "allowNull": true
+        }
+    ]
 }];
 
 module.exports = {
