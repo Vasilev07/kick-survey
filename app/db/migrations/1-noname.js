@@ -16,8 +16,8 @@ var Sequelize = require('sequelize');
 
 var info = {
     "revision": 1,
-    "name": "trying-hasMany-relation",
-    "created": "2018-03-18T09:22:14.848Z",
+    "name": "noname",
+    "created": "2018-03-19T09:07:51.302Z",
     "comment": ""
 };
 
@@ -88,6 +88,7 @@ var migrationCommands = [{
                 },
                 "username": {
                     "type": Sequelize.STRING,
+                    "unique": true,
                     "allowNull": false
                 },
                 "password": {
@@ -104,6 +105,7 @@ var migrationCommands = [{
                 },
                 "email": {
                     "type": Sequelize.STRING,
+                    "unique": true,
                     "allowNull": false
                 },
                 "createdAt": {
@@ -184,7 +186,7 @@ var migrationCommands = [{
                         "model": "Surveys",
                         "key": "id"
                     },
-                    "allowNull": false
+                    "allowNull": true
                 },
                 "order": {
                     "type": Sequelize.INTEGER,
@@ -239,7 +241,7 @@ var migrationCommands = [{
                         "model": "Questions",
                         "key": "id"
                     },
-                    "allowNull": false
+                    "allowNull": true
                 },
                 "answer_name": {
                     "type": Sequelize.STRING,
