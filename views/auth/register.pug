@@ -1,0 +1,27 @@
+form(action='/register', method='POST')
+        h1 Register
+        label(for='username')
+            b Username
+        input(type='text', placeholder='Enter Username', name='username', required='')
+        
+        label(for='new-pass')
+            b Password
+        input(type='new-password', placeholder='Enter Password', name='new-password', required='')
+
+        label(for='new-pass')
+            b Re-eneter Password
+        input(type='re-password', placeholder='Enter Password', name='re-password', required='')
+
+        label(for='f_name')
+            b First Name
+        input(type='first_name', placeholder='Enter First Name', name='first_name', required='')
+
+        label(for='l_name')
+            b Last Name
+        input(type='last_name', placeholder='Enter Last Name', name='last_name', required='')
+
+        label(for='f_name')
+            b E-mail
+        input(type='e-mail', placeholder='Enter E-mail', name='e-mail', required='')
+        div
+            input(type='submit', value='Register')
