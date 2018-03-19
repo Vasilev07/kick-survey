@@ -2,7 +2,6 @@ class Data {
     constructor(Model) {
         this.Model = Model;
     }
-
     getAll() {
         this.Model.findAll();
     }
