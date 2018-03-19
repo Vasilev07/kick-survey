@@ -1,0 +1,12 @@
+form(action='/login', method='POST')
+    .container
+        h1 Sign In
+        hr
+        label(for='username')
+            b Username
+        input(type='text', placeholder='Enter username', name='username', required='')
+        label(for='psw')
+            b Password
+        input(type='password', placeholder='Enter Password', name='password', required='')
+        div
+            input(type='submit', value='Log In')
