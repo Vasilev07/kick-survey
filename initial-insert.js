@@ -5,7 +5,7 @@ const {
     Question,
     Answer,
     Survey,
-} = require('./models');
+} = require('./app/db/models');
 
 const {
     data,

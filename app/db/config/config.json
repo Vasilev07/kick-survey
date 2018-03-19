@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "root",
+    "username": "targov",
     "password": null,
     "database": "kick_survey_db",
     "host": "127.0.0.1",

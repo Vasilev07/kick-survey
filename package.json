@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "migrate": "cd app/db && ../../node_modules/.bin/sequelize db:migrate && cd ../.. ",
-    "add-migration": "cd app/db && ../../node_modules/sequelize-auto-migrations/makemigration.js && cd ../.. "
+    "add-migration": "cd app/db && node ../../node_modules/sequelize-auto-migrations/bin/makemigration.js && cd ../.. "
   },
   "repository": {
     "type": "git",
