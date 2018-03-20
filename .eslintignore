@@ -1,2 +1,2 @@
-models
-migrations
+./app/db/models
+./app/db/migrations

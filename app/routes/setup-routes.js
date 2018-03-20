@@ -4,10 +4,6 @@ const fs = require('fs');
 const path = require('path');
 
 const init = (app, data) => {
-    app.get('/', async (req, res) => {
-        res.redirect('/');
-    });
-
     fs.readdirSync(__dirname)
         .filter((filename) => filename !== path.basename(__filename))
         .filter((filename) => filename !== 'index.js')
@@ -17,6 +13,7 @@ const init = (app, data) => {
             route.init(app, data);
         });
 };
+
 module.exports = {
     init,
 };

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "cd app && node server.js",
     "migrate": "cd app/db && ../../node_modules/.bin/sequelize db:migrate && cd ../.. ",
     "add-migration": "cd app/db && node ../../node_modules/sequelize-auto-migrations/bin/makemigration.js && cd ../.. "
   },
@@ -19,10 +20,13 @@
   },
   "homepage": "https://github.com/freeride8/kick-survey#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "morgan": "^1.9.0",
     "mysql2": "^1.5.2",
     "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "pug": "^2.0.1",
     "sequelize": "^4.37.1",
     "sequelize-auto-migrations": "^1.0.2",

@@ -5,7 +5,7 @@ const {
     Question,
     Answer,
     Survey,
-} = require('./app/db/models');
+} = require('../db/models');
 
 const {
     data,
@@ -102,49 +102,51 @@ const populateData = async () => {
     surveyA22Model.setQuestion(surveyQ2Model);
 };
 
-populateData();
+populateData().then(() => {
+    const getAll = async () => {
+        return await Survey.findAll({
+            include: [{
+                model: User,
+                where: {
+                    id: 1,
+                },
+            }],
+        });
+    };
+    
+    getAll().then((res) => {
+        res.map(async (survey) => {
+            const surId = survey.id;
+    
+            const q = await Question.findAll({
+                include: [{
+                    model: Survey,
+                    where: {
+                        id: surId,
+                    },
+                }],
+            });
+    
+            q.map(async (question) => {
+                const qId = question.id;
+                const a = await Answer.findAll({
+                    where: {
+                        q_id: qId,
+                    },
+                    include: [{
+                        model: Question,
+                    }],
+                });
+                console.log('-'.repeat(15));
+                console.log('Survey name: ' + survey.name);
+                console.log('-'.repeat(15));
+                console.log('\tQuestion: ' + question.name);
+                a.map((answer) => {
+                    console.log('\t\tAnswer: ' + answer.answer_name);
+                });
+            });
+        });
+    });
+});
 
-// const getAll = async () => {
-//     return await Survey.findAll({
-//         include: [{
-//             model: User,
-//             where: {
-//                 id: 1,
-//             },
-//         }],
-//     });
-// };
 
-// getAll().then((res) => {
-//     res.map(async (survey) => {
-//         const surId = survey.id;
-
-//         const q = await Question.findAll({
-//             include: [{
-//                 model: Survey,
-//                 where: {
-//                     id: surId,
-//                 },
-//             }],
-//         });
-
-//         q.map(async (question) => {
-//             const qId = question.id;
-//             const a = await Answer.findAll({
-//                 where: {
-//                     q_id: qId,
-//                 },
-//                 include: [{
-//                     model: Question,
-//                 }],
-//             });
-//             console.log('-'.repeat(15));
-//             console.log('Survey name: ' + survey.name);
-//             console.log('-'.repeat(15));
-//             console.log('\tQuestion: ' + question.name);
-//             a.map((answer) => {
-//                 console.log('\t\tAnswer: ' + answer.answer_name);
-//             });
-//         });
-//     });
-// });
