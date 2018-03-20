@@ -113,11 +113,11 @@ populateData().then(() => {
             }],
         });
     };
-    
+
     getAll().then((res) => {
         res.map(async (survey) => {
             const surId = survey.id;
-    
+
             const q = await Question.findAll({
                 include: [{
                     model: Survey,
@@ -126,7 +126,7 @@ populateData().then(() => {
                     },
                 }],
             });
-    
+
             q.map(async (question) => {
                 const qId = question.id;
                 const a = await Answer.findAll({

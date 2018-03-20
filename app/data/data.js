@@ -19,5 +19,4 @@ module.exports = {
     types: new Data(Type),
     categories: new Data(Category),
     answers: new Data(Answer),
-    
 };
