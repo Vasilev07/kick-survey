@@ -1,4 +1,7 @@
 form(action='/register', method='POST')
+        if existUserError && existUserError.status
+            h2
+                | User with username #{existUserError.username} exists
         h1 Register
         label(for='username')
             b Username
