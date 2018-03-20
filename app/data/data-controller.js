@@ -3,44 +3,55 @@ class DataController {
         this.data = data;
     }
 
-    getByUser(user) {
-        const output = [];
-        this.data.surveys.getUserSurveys(user.id).then((surveys) => {
-            surveys.map(async (survey) => {
-                const surveyData = {
-                    survey: {
-                        id: survey.id,
-                        name: survey.name,
-                        category: survey.Category.name,
-                        createdAt: survey.createdAt,
+    async getSurveysData(user) {
+        const surveys = await this.data.surveys.getUserSurveys(user.id);
+
+        const surveysResults = surveys.map(async (survey) => {
+            const surveyData = {
+                surveyData: {
+                    id: survey.id,
+                    name: survey.name,
+                    category: survey.Category.name,
+                    createdAt: survey.createdAt,
+                },
+                surveyContentData: [],
+            };
+
+            const questions =
+                await this.data.questions.getSurveyQuestions(survey.id);
+
+            const questionsResults = questions.map(async (question) => {
+                const questionDataObj = {
+                    questionData: {
+                        question: question.name,
+                        order: question.order,
+                        isRequired: question.is_required,
+                        type: question.Type.q_type,
                     },
-                    questionsAnswers: [],
+                    answersData: [],
                 };
-                const questions = await this.data.questions.getSurveyQuestions(survey.id);
-                questions.map(async (question) => {
-                    const questionsAnswersObj = {
-                        question: {
-                            id: question.id,
-                            order: question.order,
-                            name: question.name,
-                            isRequired: question.is_Required,
-                            type: question.Type.q_type,
-                        },
-                        answers: [],
+
+                const answers =
+                    await this.data.answers.getQuestionAnswers(question.id);
+
+                const answersResults = answers.map((answer) => {
+                    return {
+                        answer: answer.answer_name,
                     };
-                    const answers = await this.data.answers.getQuestionAnswers(question.id);
-                    answers.map(async (answer) => {
-                        questionsAnswersObj.answers.push({
-                            id: answer.id,
-                            name: answer.answer_name,
-                        });
-                    });
-                    surveyData.questionsAnswers.push(questionsAnswersObj);
                 });
-                output.push(surveyData);
+
+                questionDataObj.answersData.push(...answersResults);
+                return questionDataObj;
             });
+
+            const resultQ = await Promise.all(questionsResults);
+            surveyData.surveyContentData.push(...resultQ);
+            return surveyData;
         });
-        return output;
+
+        const surveysData = await Promise.all(surveysResults);
+
+        return surveysData;
     }
 }
 

@@ -22,25 +22,14 @@ const init = (app, data) => {
                 return res.redirect('/login');
             }
 
-            console.log('-'.repeat(10));
-            console.log(await controller.getByUser(req.user));
-            console.log('-'.repeat(10));
-
-            const userSurveys = await data.surveys.getUserSurveys(req.user.id);
-
-            const model = {
+            const model = await controller.getSurveysData(req.user);
+            // return res.send(model);
+            return res.render('index', {
                 username: req.user.username,
-                firstname: req.user.first_name,
-                lastname: req.user.last_name,
                 email: req.user.email,
-                userSurveys,
-            };
-
-            model.userSurveys.map((sur) => {
-                console.log(sur.Category);
+                name: req.user.first_name + ' ' + req.user.last_name,
+                model,
             });
-
-            return res.render('index', model);
         });
 
     app.use('/', router);
