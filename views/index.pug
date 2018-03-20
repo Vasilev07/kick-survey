@@ -4,6 +4,11 @@ h2
     | Email: #{email}
 h2
     | Name: #{firstname} #{lastname}    
+ol
+    each survey in userSurveys
+        li
+            p
+                | survey name: #{survey.name}
 a(href="/logout")
     h2
         | Logout

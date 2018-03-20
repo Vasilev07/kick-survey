@@ -1,24 +1,22 @@
 const Data = require('./data-generic');
 const {
-    Survey,
-    Category,
+    Answer,
 } = require('../db/models');
 
-class SurveyData extends Data {
+class AnswerData extends Data {
     constructor() {
-        super(Survey);
+        super(Answer);
     }
 
-    async getUserSurveys(userId) {
+    async getQuestionAnswers(questionId) {
         return await this.Model.findAll({
             where: {
-                user_id: userId,
+                q_id: questionId,
             },
-            include: [Category],
         });
     }
 }
 
 module.exports = {
-    SurveyData,
+    AnswerData,
 };
