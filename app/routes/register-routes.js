@@ -4,7 +4,15 @@ const {
 
 const init = (app, data) => {
     app.get('/register', (req, res) => {
-        res.render('auth/register');
+        const model = {};
+        if (app.locals.existUserError) {
+            model.existUserError = app.locals.existUserError;
+        } else {
+            app.locals.existUserError = null;
+        }
+
+        res.render('auth/register', model);
+        app.locals.existUserError = null;
     });
 
     app.post('/register', async (req, res) => {
@@ -20,9 +28,21 @@ const init = (app, data) => {
             last_name: userModel.last_name,
             email: userModel['e-mail'],
         };
-        
-        await User.create(user);
-        res.redirect('/');
+        try {
+            await User.create(user);
+            app.locals.existUserError = {
+                status: false,
+                username: null,
+            };
+            res.redirect('/');
+        } catch (error) {
+            console.log(error);
+            app.locals.existUserError = {
+                status: true,
+                username: user.username,
+            };
+            res.redirect('/register');
+        }
     });
 };
 
