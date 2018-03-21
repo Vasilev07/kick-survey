@@ -1,0 +1,13 @@
+.navbar {
+    background-color: #90D481;
+}
+
+.navbar a {
+    color: #1A4C63;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.nav>li>a:focus, .nav>li>a:hover{
+    background-color: #c5ff9b;
+}
