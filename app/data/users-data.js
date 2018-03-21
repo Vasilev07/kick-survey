@@ -20,6 +20,11 @@ class UsersData extends Data {
             attributes: ['username'],
         });
     }
+    getAllEmails() {
+        return this.Model.findAll({
+            attributes: ['email'],
+        });
+    }
 }
 
 module.exports = {
