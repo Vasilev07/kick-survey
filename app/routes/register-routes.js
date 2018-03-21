@@ -19,7 +19,12 @@ const init = (app, data) => {
     });
 
     app.post('/validate', async (req, res) => {
-        userController.validatePasswords(req.user.pass);
+        try {
+            await userController.createUser(req.body);
+        } catch (err) {
+            return;
+        }
+
         const userModel = req.body;
         const users = [];
         await data.users.getAllUsernames().map(async (user) => {
