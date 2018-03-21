@@ -4,7 +4,7 @@ const {
     Router,
 } = require('express');
 const path = require('path');
-const DataController = require('../data/data-controller');
+const DataController = require('../controllers/data-controller');
 const init = (app, data) => {
     const router = new Router();
 

@@ -53,6 +53,10 @@ class DataController {
 
         return surveysData;
     }
+
+    async createUser(user) {
+
+    }
 }
 
 module.exports = DataController;

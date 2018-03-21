@@ -10,7 +10,7 @@ class SurveyData extends Data {
     }
 
     async getUserSurveys(userId) {
-        return await this.Model.findAll({
+        return this.Model.findAll({
             where: {
                 user_id: userId,
             },
