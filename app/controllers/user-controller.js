@@ -3,7 +3,13 @@ class UserController {
         this.data = data;
     }
 
-    validateUserEmail(usersEmailArray, currentUserEmail) {
+    async validateUserEmail(currentUserEmail) {
+        const usersEmailArray = [];
+
+        await this.data.users.getAllEmails().map(async (userData) => {
+            await usersEmailArray.push(userData.email);
+        });
+
         const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
         const validateEmail = pattern.test(currentUserEmail);
 
@@ -17,7 +23,14 @@ class UserController {
             return currentUserEmail;
         }
     }
-    validateUsername(usernameArray, currentUsername) {
+
+    async validateUsername(currentUsername) {
+        const usernameArray = [];
+
+        await this.data.users.getAllUsernames().map(async (userData) => {
+            await usernameArray.push(userData.username);
+        });
+
         if (usernameArray.includes(currentUsername)) {
             throw new Error('This username already exists');
         } else if (usernameArray === '') {
@@ -26,6 +39,7 @@ class UserController {
             return currentUsername;
         }
     }
+
     validatePasswords(password, repassword) {
         if (password !== repassword) {
             throw new Error('Password do not match');

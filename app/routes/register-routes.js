@@ -25,18 +25,9 @@ const init = (app, data) => {
         const currentUserPassword = userModel.password;
         const currentUserRePassword = userModel.rePassword;
 
-        const users = [];
-        const emails = [];
-
-        await data.users.getAllUsernames().map(async (userData) => {
-            await users.push(userData.username);
-        });
-        await data.users.getAllEmails().map(async (userData) => {
-            await emails.push(userData.email);
-        });
         try {
-            await userController.validateUsername(users, currentUsername);
-            await userController.validateUserEmail(emails, currentUserMail);
+            await userController.validateUsername(currentUsername);
+            await userController.validateUserEmail(currentUserMail);
             await userController.validatePasswords(currentUserPassword, currentUserRePassword);
         } catch (error) {
             console.log('--------------- INFO ----------------');
