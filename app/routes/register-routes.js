@@ -31,7 +31,6 @@ const init = (app, data) => {
             await userController.createUser(userObject);
             res.status(200).json(userObject);
         } catch (err) {
-            console.log(err);
             res.status(400).json(err);
         }
     });

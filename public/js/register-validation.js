@@ -11,7 +11,6 @@ $(function () {
             lastName: $('#last_name').val(),
             email: $('#email').val(),
         }
-        console.log('Before ajax')
         $.ajax({
             method: 'POST',
             async: true,
@@ -26,7 +25,6 @@ $(function () {
                 console.log(error.responseJSON);
             },
         });
-        console.log('After ajax')
         // var userName = $('#user-name').val();
         // // $(userName).css('font-weight', 'bold');
         // // get value from input field
