@@ -19,46 +19,30 @@ const init = (app, data) => {
     });
 
     app.post('/validate', async (req, res) => {
-        userController.validatePasswords(req.user.pass);
         const userModel = req.body;
+        const currentUserMail = userModel.email;
+        const currentUsername = userModel.username;
+        const currentUserPassword = userModel.password;
+        const currentUserRePassword = userModel.rePassword;
+
         const users = [];
-        await data.users.getAllUsernames().map(async (user) => {
-            await users.push(user.username);
+        const emails = [];
+
+        await data.users.getAllUsernames().map(async (userData) => {
+            await users.push(userData.username);
         });
-        console.log(users);
-        res.status(200).json(userModel).end();
-    });
-
-    app.post('/', async (req, res) => {
-        const userModel = req.body;
-        console.log('/ route');
-        console.log(req.body);
-        if (userModel['new-password'] !== userModel['re-password']) {
-            return new Error('passwords does not match');
-        }
-
-        const user = {
-            username: userModel.username,
-            password: userModel['new-password'],
-            first_name: userModel.first_name,
-            last_name: userModel.last_name,
-            email: userModel['e-mail'],
-        };
+        await data.users.getAllEmails().map(async (userData) => {
+            await emails.push(userData.email);
+        });
         try {
-            // await User.create(user);
-            app.locals.existUserError = {
-                status: false,
-                username: null,
-            };
-            // res.redirect('/');
+            await userController.validateUsername(users, currentUsername);
+            await userController.validateUserEmail(emails, currentUserMail);
+            await userController.validatePasswords(currentUserPassword, currentUserRePassword);
         } catch (error) {
+            console.log('--------------- INFO ----------------');
             console.log(error);
-            app.locals.existUserError = {
-                status: true,
-                username: user.username,
-            };
-            // res.redirect('/');
         }
+        res.status(200).json(userModel).end();
     });
 };
 
