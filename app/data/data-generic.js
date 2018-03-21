@@ -3,10 +3,10 @@ class Data {
         this.Model = Model;
     }
     getAll() {
-        this.Model.findAll();
+        return this.Model.findAll();
     }
     getById(id) {
-        this.Model.findById(id);
+       return this.Model.findById(id);
     }
     create(obj) {
         if (this._isObjectValid && !this._isObjectValid(obj)) {
