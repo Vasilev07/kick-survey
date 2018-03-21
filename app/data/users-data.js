@@ -15,6 +15,11 @@ class UsersData extends Data {
             },
         });
     }
+    getAllUsernames() {
+        return this.Model.findAll({
+            attributes: ['username'],
+        });
+    }
 }
 
 module.exports = {

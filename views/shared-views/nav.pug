@@ -1,0 +1,37 @@
+include ../auth/register
+include ../auth/login
+
+mixin nav()
+    nav.navbar
+        .container-fluid
+            .navbar-header
+                a.navbar-brand(href="#")
+            ul.nav.navbar-nav
+                li.active
+                    a(href="#")
+                li.dropdown
+                    a.dropdown-toggle(data-toggle="dropdown", href="#")
+                        span.caret
+                    ul.dropdown-menu
+                        li
+                            a(href="#")
+                        li
+                            a(href="#")
+                        li
+                            a(href="#")
+                li
+                    a(href="#")
+            ul.nav.navbar-nav.navbar-right
+                li
+                    a(href="#", data-toggle="modal", data-target="#myModal")
+                        span.glyphicon.glyphicon-user
+                        | Sign up
+                +register()
+                li
+                    a(href="#", data-toggle="modal", data-target="#myModal2")
+                        span.glyphicon.glyphicon-lig-in
+                        | Login
+                +login()
+
+
+                

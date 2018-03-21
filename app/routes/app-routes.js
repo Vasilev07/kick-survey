@@ -15,7 +15,7 @@ const init = (app, data) => {
 
     router
         .get('/', (req, res) => {
-            res.render('home', {});
+            res.render('shared-views/master', {});
         })
         .get('/index', async (req, res) => {
             if (!req.isAuthenticated()) {

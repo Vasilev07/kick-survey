@@ -15,8 +15,20 @@ const init = (app, data) => {
         app.locals.existUserError = null;
     });
 
-    app.post('/register', async (req, res) => {
+    app.post('/validate', async (req, res) => {
         const userModel = req.body;
+        const users = [];
+        await data.users.getAllUsernames().map(async (user) => {
+            await users.push(user.username);
+        });
+        console.log(users);
+        res.status(200).json(userModel).end();
+    });
+
+    app.post('/', async (req, res) => {
+        const userModel = req.body;
+        console.log('/ route');
+        console.log(req.body);
         if (userModel['new-password'] !== userModel['re-password']) {
             return new Error('passwords does not match');
         }
@@ -29,19 +41,19 @@ const init = (app, data) => {
             email: userModel['e-mail'],
         };
         try {
-            await User.create(user);
+            // await User.create(user);
             app.locals.existUserError = {
                 status: false,
                 username: null,
             };
-            res.redirect('/');
+            // res.redirect('/');
         } catch (error) {
             console.log(error);
             app.locals.existUserError = {
                 status: true,
                 username: user.username,
             };
-            res.redirect('/register');
+            // res.redirect('/');
         }
     });
 };
