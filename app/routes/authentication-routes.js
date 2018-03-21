@@ -8,7 +8,7 @@ const init = (app, data) => {
     app.post('/login',
         passport.authenticate('local', {
             successRedirect: '/index',
-            failureRedirect: '/login',
+            failureRedirect: '/',
             failureFlash: false,
         }));
 
