@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 $(function () {
-    $('#myform').submit(function (e) {
+    $('#registerForm').submit(function (e) {
         e.preventDefault();
         var registerData = {
             username: $('#username').val(),
@@ -22,7 +22,14 @@ $(function () {
             },
             error: function (error) {
                 console.log('error ajax')
-                console.log(error.responseJSON);
+                const errorResponse = error.responseJSON;
+                $('#registerErrorMsg')
+                    .text(errorResponse.message)
+                    .css('color', '#F00')
+                    .css('float', 'right');
+                if (errorResponse.errorCode === 10) {
+
+                }
             },
         });
         // var userName = $('#user-name').val();

@@ -2,7 +2,7 @@ const UserError = require('./user-error');
 
 class NotMatchingPasswords extends UserError {
     constructor() {
-        super('Password do not match', 20);
+        super('Passwords do not match', 20);
     }
 }
 
