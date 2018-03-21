@@ -1,8 +1,11 @@
 const {
     User,
 } = require('../db/models');
+const UserController = require('../controllers/user-controller');
 
 const init = (app, data) => {
+    const userController = new UserController(data);
+
     app.get('/register', (req, res) => {
         const model = {};
         if (app.locals.existUserError) {
@@ -16,6 +19,7 @@ const init = (app, data) => {
     });
 
     app.post('/validate', async (req, res) => {
+        userController.validatePasswords(req.user.pass);
         const userModel = req.body;
         const users = [];
         await data.users.getAllUsernames().map(async (user) => {
