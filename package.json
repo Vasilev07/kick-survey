@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cd app && node server.js",
     "migrate": "cd app/db && ../../node_modules/.bin/sequelize db:migrate && cd ../.. ",
-    "add-migration": "cd app/db && node ../../node_modules/sequelize-auto-migrations/bin/makemigration.js && cd ../.. "
+    "add-migration": "cd app/db && node ../../node_modules/sequelize-auto-migrations/bin/makemigration.js && cd ../.. ",
+    "test": "./node_modules/.bin/nyc --all ./node_modules/.bin/mocha ./test/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -35,7 +36,11 @@
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "debug": "^3.1.0",
+    "babel-plugin-istanbul": "^4.1.5",
+    "chai": "^4.1.2",
     "eslint": "^4.19.0",
-    "eslint-config-google": "^0.9.1"
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^5.0.4",
+    "nyc": "^11.6.0"
   }
 }
