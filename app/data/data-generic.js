@@ -1,12 +1,15 @@
 class Data {
-    constructor(Model) {
+    constructor(Model, includes = []) {
         this.Model = Model;
+        this.includes = includes;
     }
     getAll() {
         return this.Model.findAll();
     }
     getById(id) {
-       return this.Model.findById(id);
+        return this.Model.findById(id, {
+            include: this.includes,
+        });
     }
     create(obj) {
         if (this._isObjectValid && !this._isObjectValid(obj)) {
