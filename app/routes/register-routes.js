@@ -1,6 +1,3 @@
-const {
-    User,
-} = require('../db/models');
 const UserController = require('../controllers/user-controller');
 
 const init = (app, data) => {
@@ -19,27 +16,24 @@ const init = (app, data) => {
     });
 
     app.post('/validate', async (req, res) => {
-        try {
-            await userController.createUser(req.body);
-        } catch (err) {
-            return;
-        }
-
         const userModel = req.body;
-        const currentUserMail = userModel.email;
-        const currentUsername = userModel.username;
-        const currentUserPassword = userModel.password;
-        const currentUserRePassword = userModel.rePassword;
+
+        const userObject = {
+            username: userModel.username,
+            email: userModel.email,
+            firstName: userModel.firstName,
+            lastName: userModel.lastName,
+            password: userModel.password,
+            rePassword: userModel.rePassword,
+        };
 
         try {
-            await userController.validateUsername(currentUsername);
-            await userController.validateUserEmail(currentUserMail);
-            await userController.validatePasswords(currentUserPassword, currentUserRePassword);
-        } catch (error) {
-            console.log('--------------- INFO ----------------');
-            console.log(error);
+            await userController.createUser(userObject);
+            res.status(200).json(userObject);
+        } catch (err) {
+            console.log(err);
+            res.status(400).json(err);
         }
-        res.status(200).json(userModel).end();
     });
 };
 

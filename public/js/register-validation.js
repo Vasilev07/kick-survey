@@ -11,7 +11,7 @@ $(function () {
             lastName: $('#last_name').val(),
             email: $('#email').val(),
         }
-        
+        console.log('Before ajax')
         $.ajax({
             method: 'POST',
             async: true,
@@ -19,12 +19,14 @@ $(function () {
             data: registerData,
             success: function (response) {
                 console.log('client');
-                console.log(response);
+                console.log(response.responseJSON);
             },
-            error: function () {
-    
+            error: function (error) {
+                console.log('error ajax')
+                console.log(error.responseJSON);
             },
         });
+        console.log('After ajax')
         // var userName = $('#user-name').val();
         // // $(userName).css('font-weight', 'bold');
         // // get value from input field
