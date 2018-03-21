@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const UserError = require('./userError');
+const UserError = require('./exceptions');
 
 class UserController {
     constructor(data) {
@@ -14,34 +14,35 @@ class UserController {
     comparePasswords(password, hash) {
         return bcrypt.compare(password, hash);
     }
+
     async createUser(user) {
-        let password;
-        let hashedPassword;
-        let username;
-        let email;
+        let password = null;
+        let hashedPassword = null;
+        let username = null;
+        let email = null;
 
         try {
-            password = this.validatePasswords(user.password);
+            password = this.validatePasswords(user.password, user.rePassword);
         } catch (err) {
-            throw new Error(err);
+            throw err;
         }
 
         try {
             hashedPassword = this.hashPassword(password);
         } catch (err) {
-            throw new Error(err);
+            throw err;
         }
 
         try {
             username = this.validateUsername(user.username);
         } catch (err) {
-            throw new Error(err);
+            throw err;
         }
 
         try {
             email = this.validateUserEmail(user.email);
         } catch (err) {
-            throw new Error(err);
+            throw err;
         }
 
         const firstName = user.firstName;
@@ -54,8 +55,10 @@ class UserController {
             lastName,
             email,
         };
+        // console.log(userObject);
+        this.data.users.create(userObject);
     }
-        // this.data.users.create(userObject);
+
     async validateUserEmail(currentUserEmail) {
         const usersEmailArray = [];
 
@@ -67,11 +70,11 @@ class UserController {
         const validateEmail = pattern.test(currentUserEmail);
 
         if (usersEmailArray.includes(currentUserEmail)) {
-            throw new Error('This email already exists');
+            throw new UserError.ExistingEmail();
         } else if (validateEmail === false) {
-            throw new Error('This is not valid email');
+            throw new UserError.InvalidEmail();
         } else if (currentUserEmail === '') {
-            throw new Error('Email must not be empty');
+            throw new UserError.EmptyEmail();
         } else {
             return currentUserEmail;
         }
@@ -85,9 +88,9 @@ class UserController {
         });
 
         if (usernameArray.includes(currentUsername)) {
-            throw new Error('This username already exists');
+            throw new UserError.ExistingUsername();
         } else if (usernameArray === '') {
-            throw new Error('Username must not be empty');
+            throw new UserError.EmptyUsername();
         } else {
             return currentUsername;
         }
@@ -95,15 +98,13 @@ class UserController {
 
     validatePasswords(password, repassword) {
         if (password !== repassword) {
-            throw new Error('Password do not match');
+            throw new UserError.NotMatchingPasswords();
         } else if (password.length < 4) {
-            throw new Error('Password must be atleast 5 symbols');
+            throw new UserError.ShortPassword();
         } else {
             return password;
         }
     }
-
-    createUser(user) {}
 }
 
 module.exports = UserController;
