@@ -5,9 +5,13 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const Strategy = require('passport-local').Strategy;
 
+const UserController = require('../controllers/user-controller');
+
 const init = (app, data) => {
     passport.use(new Strategy(async (username, password, done) => {
         const user = await data.users.findByUsername(username);
+
+        const comparePasswords = new UserController(data).comparePasswords;
 
         if (!user) {
             return done(null, false, {
@@ -15,7 +19,9 @@ const init = (app, data) => {
             });
         }
 
-        if (user.password !== password) {
+        const checkPasswords = await comparePasswords(password, user.password);
+
+        if (!checkPasswords) {
             return done(null, false, {
                 message: 'Incorrect password',
             });
