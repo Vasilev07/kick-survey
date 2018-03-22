@@ -29,13 +29,18 @@ class UserController {
      * @async
      * @throws Throws errors from the validations
      * @param {Object} user User object with properties from the register form
+     * @return {Object} Created user
      */
     async createUser(user) {
         let password = null;
         let hashedPassword = null;
         let username = null;
         let email = null;
-
+        try {
+            username = await this.validateUsername(user.username);
+        } catch (err) {
+            throw err;
+        }
         try {
             password = this.validatePasswords(user.password, user.rePassword);
         } catch (err) {
@@ -44,12 +49,6 @@ class UserController {
 
         try {
             hashedPassword = this.hashPassword(password);
-        } catch (err) {
-            throw err;
-        }
-
-        try {
-            username = await this.validateUsername(user.username);
         } catch (err) {
             throw err;
         }
@@ -70,8 +69,10 @@ class UserController {
             lastName,
             email,
         };
+
         // console.log(userObject);
-        this.data.users.create(userObject);
+
+        return this.data.users.create(userObject);
     }
     /**
      * @description Checks whether the email is valid
@@ -82,20 +83,23 @@ class UserController {
      */
     async validateUserEmail(email) {
         const usersEmailArray = [];
-
-        await this.data.users.getAllEmails().map(async (userData) => {
-            usersEmailArray.push(userData.email);
-        });
+        try {
+            await this.data.users.getAllEmails().map(async (userData) => {
+                usersEmailArray.push(userData.email);
+            });
+        } catch (err) {
+            throw err;
+        }
 
         const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
         const validateEmail = pattern.test(email);
 
         if (usersEmailArray.includes(email)) {
             throw new UserError.ExistingEmail();
-        } else if (validateEmail === false) {
-            throw new UserError.InvalidEmail();
         } else if (email === '') {
             throw new UserError.EmptyEmail();
+        } else if (validateEmail === false) {
+            throw new UserError.InvalidEmail();
         } else {
             return email;
         }
@@ -116,7 +120,7 @@ class UserController {
 
         if (usernameArray.includes(username)) {
             throw new UserError.ExistingUsername();
-        } else if (usernameArray === '') {
+        } else if (username === '') {
             throw new UserError.EmptyUsername();
         } else {
             return username;

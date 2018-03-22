@@ -1,0 +1,40 @@
+mixin indexContent()
+    h1
+        | Hello, #{username}
+    h2
+       | Email: #{email}
+    h2
+        | Name: #{name}    
+    ul
+        each survey in model
+            li
+                p
+                    | survey id: #{survey.surveyData.id}
+            li
+                p
+                    | survey name: #{survey.surveyData.name}
+            li
+                p
+                    | survey category: #{survey.surveyData.category}
+            li
+                p
+                    | survey createdAt: #{survey.surveyData.createdAt}
+                ul
+                    each surveyContent in survey.surveyContentData
+                        li
+                            p
+                                | №: #{surveyContent.questionData.order}
+                        li
+                            p
+                                | question: #{surveyContent.questionData.question}
+                        li
+                            p
+                                | isRequired: #{surveyContent.questionData.isRequired}
+                        li
+                            p
+                                | type: #{surveyContent.questionData.type}
+                            ul
+                                each answer in surveyContent.answersData
+                                    li  
+                                        p
+                                            | answer: #{answer.answer}

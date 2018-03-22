@@ -1,43 +1,17 @@
-h1
-    | Hello, #{username}
-h2
-    | Email: #{email}
-h2
-    | Name: #{name}    
-ul
-    each survey in model
-        li
-            p
-                | survey id: #{survey.surveyData.id}
-        li
-            p
-                | survey name: #{survey.surveyData.name}
-        li
-            p
-                | survey category: #{survey.surveyData.category}
-        li
-            p
-                | survey createdAt: #{survey.surveyData.createdAt}
-            ul
-                each surveyContent in survey.surveyContentData
-                    li
-                        p
-                            | №: #{surveyContent.questionData.order}
-                    li
-                        p
-                            | question: #{surveyContent.questionData.question}
-                    li
-                        p
-                            | isRequired: #{surveyContent.questionData.isRequired}
-                    li
-                        p
-                            | type: #{surveyContent.questionData.type}
-                        ul
-                            each answer in surveyContent.answersData
-                                li  
-                                    p
-                                        | answer: #{answer.answer}
-
-a(href="/logout")
-    h2
-        | Logout
+include ./shared-views/nav
+include ./shared-views/index-content
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+        link(rel="stylesheet", href="static/styles/main.css")
+        script(src="/static/js/register-validation.js")
+        title Kick Survey
+    body
+    +nav()
+    +indexContent()
