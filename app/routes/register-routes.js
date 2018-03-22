@@ -27,9 +27,11 @@ const init = (app, data) => {
             rePassword: userModel.rePassword,
         };
 
+        console.log(userObject);
+
         try {
             await userController.createUser(userObject);
-            res.status(200).json(userObject);
+            res.redirect('/index');
         } catch (err) {
             res.status(400).json(err);
         }

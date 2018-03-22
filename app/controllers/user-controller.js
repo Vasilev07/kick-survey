@@ -65,12 +65,10 @@ class UserController {
         const userObject = {
             username,
             password: await hashedPassword,
-            firstName,
-            lastName,
+            first_name: firstName,
+            last_name: lastName,
             email,
         };
-
-        // console.log(userObject);
 
         return this.data.users.create(userObject);
     }
