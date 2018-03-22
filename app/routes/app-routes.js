@@ -22,7 +22,7 @@ const init = (app, data) => {
         })
         .get('/index', async (req, res) => {
             if (!req.isAuthenticated()) {
-                return res.redirect('/login');
+                return res.redirect('/');
             }
 
             const model = await controller.getSurveysData(req.user);
