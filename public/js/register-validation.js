@@ -16,20 +16,12 @@ $(function () {
             async: true,
             url: '/validate',
             data: registerData,
-            success: function (response) {
-                console.log('client');
-                console.log(response.responseJSON);
-            },
             error: function (error) {
-                console.log('error ajax')
                 const errorResponse = error.responseJSON;
                 $('#registerErrorMsg')
                     .text(errorResponse.message)
                     .css('color', '#F00')
                     .css('float', 'right');
-                if (errorResponse.errorCode === 10) {
-
-                }
             },
         });
         // var userName = $('#user-name').val();
@@ -43,6 +35,5 @@ $(function () {
         // return false;
     });
 });
-
 
 /* eslint-enable */
