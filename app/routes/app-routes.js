@@ -15,7 +15,10 @@ const init = (app, data) => {
 
     router
         .get('/', (req, res) => {
-            res.render('shared-views/master', {});
+            const context = {
+                isAuthenticated: req.isAuthenticated(),
+            };
+            res.render('shared-views/master', context);
         })
         .get('/index', async (req, res) => {
             if (!req.isAuthenticated()) {

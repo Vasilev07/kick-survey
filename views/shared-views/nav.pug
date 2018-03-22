@@ -22,16 +22,21 @@ mixin nav()
                 li
                     a(href="#")
             ul.nav.navbar-nav.navbar-right
-                li
-                    a(href="#", data-toggle="modal", data-target="#myModal")
-                        span.glyphicon.glyphicon-user
-                        | Sign up
-                +register()
-                li
-                    a(href="#", data-toggle="modal", data-target="#myModal2")
-                        span.glyphicon.glyphicon-lig-in
-                        | Login
-                +login()
-
+                if !isAuthenticated
+                    li
+                        a(href="#", data-toggle="modal", data-target="#myModal")
+                            span.glyphicon.glyphicon-user
+                            | Sign up
+                    +register()
+                    li
+                        a(href="#", data-toggle="modal", data-target="#myModal2")
+                            span.glyphicon.glyphicon-lig-in
+                            | Login
+                    +login()
+                else
+                    li
+                        a(href="/logout")
+                            span.glyphicon.glyphicon-lig-in
+                            | Logout
 
                 
