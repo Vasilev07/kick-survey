@@ -37,6 +37,12 @@ class UserController {
         let email = null;
 
         try {
+            username = await this.validateUsername(user.username);
+        } catch (err) {
+            throw err;
+        }
+
+        try {
             password = this.validatePasswords(user.password, user.rePassword);
         } catch (err) {
             throw err;
@@ -44,12 +50,6 @@ class UserController {
 
         try {
             hashedPassword = this.hashPassword(password);
-        } catch (err) {
-            throw err;
-        }
-
-        try {
-            username = await this.validateUsername(user.username);
         } catch (err) {
             throw err;
         }
@@ -116,7 +116,7 @@ class UserController {
 
         if (usernameArray.includes(username)) {
             throw new UserError.ExistingUsername();
-        } else if (usernameArray === '') {
+        } else if (username === '') {
             throw new UserError.EmptyUsername();
         } else {
             return username;

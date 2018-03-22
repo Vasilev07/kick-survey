@@ -13,4 +13,3 @@ const categoryArray = [];
 const typeArray = [];
 const answerArray = [];
 
-const fake
