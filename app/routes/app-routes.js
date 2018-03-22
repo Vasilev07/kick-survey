@@ -4,7 +4,7 @@ const {
     Router,
 } = require('express');
 const path = require('path');
-const DataController = require('../data/data-controller');
+const DataController = require('../controllers/data-controller');
 const init = (app, data) => {
     const router = new Router();
 
@@ -15,11 +15,11 @@ const init = (app, data) => {
 
     router
         .get('/', (req, res) => {
-            res.render('home', {});
+            res.render('shared-views/master', {});
         })
         .get('/index', async (req, res) => {
             if (!req.isAuthenticated()) {
-                return res.redirect('/login');
+                return res.redirect('/');
             }
 
             const model = await controller.getSurveysData(req.user);

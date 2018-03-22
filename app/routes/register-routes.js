@@ -1,8 +1,8 @@
-const {
-    User,
-} = require('../db/models');
+const UserController = require('../controllers/user-controller');
 
 const init = (app, data) => {
+    const userController = new UserController(data);
+
     app.get('/register', (req, res) => {
         const model = {};
         if (app.locals.existUserError) {
@@ -15,33 +15,23 @@ const init = (app, data) => {
         app.locals.existUserError = null;
     });
 
-    app.post('/register', async (req, res) => {
+    app.post('/validate', async (req, res) => {
         const userModel = req.body;
-        if (userModel['new-password'] !== userModel['re-password']) {
-            return new Error('passwords does not match');
-        }
 
-        const user = {
+        const userObject = {
             username: userModel.username,
-            password: userModel['new-password'],
-            first_name: userModel.first_name,
-            last_name: userModel.last_name,
-            email: userModel['e-mail'],
+            email: userModel.email,
+            firstName: userModel.firstName,
+            lastName: userModel.lastName,
+            password: userModel.password,
+            rePassword: userModel.rePassword,
         };
+
         try {
-            await User.create(user);
-            app.locals.existUserError = {
-                status: false,
-                username: null,
-            };
-            res.redirect('/');
-        } catch (error) {
-            console.log(error);
-            app.locals.existUserError = {
-                status: true,
-                username: user.username,
-            };
-            res.redirect('/register');
+            await userController.createUser(userObject);
+            res.status(200).json(userObject);
+        } catch (err) {
+            res.status(400).json(err);
         }
     });
 };

@@ -9,7 +9,7 @@ class AnswerData extends Data {
     }
 
     async getQuestionAnswers(questionId) {
-        return await this.Model.findAll({
+        return this.Model.findAll({
             where: {
                 q_id: questionId,
             },
