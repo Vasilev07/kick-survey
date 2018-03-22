@@ -2,13 +2,13 @@ class DataController {
     constructor(data) {
         this.data = data;
     }
-/**
- * @description Iterates through the user's object and
- * retrieves his surveys, the surveys' questions and answers
- * @param {Object} user
- * @async
- * @return {Promise<Object>} The collected data
- */
+    /**
+     * @description Iterates through the user's object and
+     * retrieves his surveys, the surveys' questions and answers
+     * @param {Object} user
+     * @async
+     * @return {Promise<Object>} The collected data
+     */
     async getSurveysData(user) {
         const surveys = await this.data.surveys.getUserSurveys(user.id);
 
@@ -59,7 +59,6 @@ class DataController {
 
         return surveysData;
     }
-
 }
 
 module.exports = DataController;
