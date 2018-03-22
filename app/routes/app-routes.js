@@ -28,6 +28,7 @@ const init = (app, data) => {
             const model = await controller.getSurveysData(req.user);
             // return res.send(model);
             return res.render('index', {
+                isAuthenticated: req.isAuthenticated(),
                 username: req.user.username,
                 email: req.user.email,
                 name: req.user.first_name + ' ' + req.user.last_name,
