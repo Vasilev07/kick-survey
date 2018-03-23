@@ -59,6 +59,14 @@ class DataController {
 
         return surveysData;
     }
+
+    getAllCategories() {
+        return this.data.categories.getAll();
+    }
+
+    getAllQuestionTypes() {
+        return this.data.types.getAll();
+    }
 }
 
 module.exports = DataController;

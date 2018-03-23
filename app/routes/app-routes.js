@@ -34,6 +34,21 @@ const init = (app, data) => {
                 name: req.user.first_name + ' ' + req.user.last_name,
                 model,
             });
+        })
+        .get('/create', async (req, res) => {
+            if (!req.isAuthenticated()) {
+                return res.redirect('/');
+            }
+
+            const categories = await controller.getAllCategories();
+            const questionTypes = await controller.getAllQuestionTypes();
+
+            const model = {
+                categories,
+                questionTypes,
+            };
+
+            return res.render('create-survey/page', model);
         });
 
     app.use('/', router);

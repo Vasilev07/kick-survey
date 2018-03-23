@@ -1,6 +1,8 @@
-const {
-    expect,
-} = require('chai');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+
+chai.use(chaiAsPromised);
+const expect = chai.expect;
 
 const UserController = require('../../app/controllers/user-controller');
 const UserError = require('../../app/controllers/exceptions');
@@ -29,6 +31,12 @@ const fakeData = {
     },
 };
 
+const asyncFunc = async () => {
+    return setTimeout(() => {
+        throw new Error();
+    }, 500);
+};
+
 describe('UserController', () => {
     describe('validateUserEmail', () => {
         describe('when data is valid', () => {
@@ -37,7 +45,8 @@ describe('UserController', () => {
 
                 const controller = new UserController(fakeData);
 
-                const validatedEmail = await controller.validateUserEmail(email);
+                const validatedEmail =
+                    await controller.validateUserEmail(email);
 
                 expect(validatedEmail).to.eq(email);
             });
@@ -76,7 +85,6 @@ describe('UserController', () => {
                 }
             });
             it('expect to throw EmptyEmail exception', async () => {
-
                 const existingEmail = '';
 
                 const controller = new UserController(fakeData);
@@ -87,6 +95,20 @@ describe('UserController', () => {
                     expect(err.message)
                         .to
                         .eq(new UserError.EmptyEmail().message);
+                }
+            });
+            it('expect to throw NullEmail exception', async () => {
+                userArray = null;
+                const email = 'user@domain.com';
+
+                const controller = new UserController(fakeData);
+
+                try {
+                    await controller.validateUserEmail(email);
+                } catch (err) {
+                    expect(err.message)
+                        .to
+                        .eq(new UserError.NullEmail().message);
                 }
             });
         });
@@ -139,7 +161,6 @@ describe('UserController', () => {
     describe('createUser', () => {
         describe('when data is valid', () => {
             it('expects to return the user we just created', async () => {
-                const controller = new UserController(fakeData);
                 userArray = [{
                     username: 'user1',
                     email: 'user1@domain.com',
@@ -157,16 +178,88 @@ describe('UserController', () => {
                     email: 'users@domain.com',
                 };
 
+                const controller = new UserController(fakeData);
+
                 try {
                     const result = await controller.createUser(object);
 
-                    delete object.rePassword;
+                    // changing the properties cuz createUser returns object
+                    // with properties names as the table columns
                     object.password = result.password;
+                    object.first_name = object.firstName;
+                    object.last_name = object.lastName;
 
-                    expect(result).to.deep.equal(object);
+                    delete object.rePassword;
+                    delete object.firstName;
+                    delete object.lastName;
+
+                    expect(result).to.deep.eq(object);
                 } catch (err) {
                     console.log(err);
                 }
+            });
+        });
+        describe('when data is invalid', () => {
+            describe('when validateUsername() throws exception', () => {
+                it('expect to throw any exception', async () => {
+                    userArray = [{
+                        username: 'name',
+                    }];
+                    const object = {
+                        username: '',
+                    };
+
+                    const controller = new UserController(fakeData);
+
+                    try {
+                        await controller.createUser(object);
+                    } catch (err) {
+                        expect(err.message)
+                            .to
+                            .eq(new UserError.EmptyUsername().message);
+                    }
+                });
+            });
+            describe('when validatePassword() throws exception', () => {
+                it('expect to throw any exception', async () => {
+                    userArray = [{
+                        username: 'name',
+                    }];
+                    const object = {
+                        username: 'user',
+                        password: '123456',
+                        rePassword: '123',
+                    };
+
+                    const controller = new UserController(fakeData);
+
+                    try {
+                        await controller.createUser(object);
+                    } catch (err) {
+                        expect(err.message)
+                            .to
+                            .eq(new UserError.NotMatchingPasswords().message);
+                    }
+                });
+            });
+            describe('when validateUserEmail() throws exception', () => {
+                it('expect to throw any exception', async () => {
+                    const object = {
+                        username: 'user',
+                        password: '123456',
+                        rePassword: '123456',
+                        email: 'domain', // the wrong data
+                    };
+
+                    const controller = new UserController(fakeData);
+
+                    const func = () => {
+                        return controller.createUser(object);
+                    };
+
+                    return expect(func())
+                        .to.be.rejectedWith(UserError.InvalidEmail);
+                });
             });
         });
     });
