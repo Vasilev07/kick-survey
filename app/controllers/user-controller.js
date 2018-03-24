@@ -37,40 +37,45 @@ class UserController {
         let username = null;
         let email = null;
         try {
-            username = await this.validateUsername(user.username);
+            try {
+                username = await this.validateUsername(user.username);
+            } catch (err) {
+                throw err;
+            }
+            try {
+                password =
+                    this.validatePasswords(user.password, user.rePassword);
+            } catch (err) {
+                throw err;
+            }
+
+            try {
+                hashedPassword = this.hashPassword(password);
+            } catch (err) {
+                throw err;
+            }
+
+            try {
+                email = await this.validateUserEmail(user.email);
+            } catch (err) {
+                throw err;
+            }
+
+            const firstName = user.firstName;
+            const lastName = user.lastName;
+
+            const userObject = {
+                username,
+                password: await hashedPassword,
+                first_name: firstName,
+                last_name: lastName,
+                email,
+            };
+
+            return this.data.users.create(userObject);
         } catch (err) {
             throw err;
         }
-        try {
-            password = this.validatePasswords(user.password, user.rePassword);
-        } catch (err) {
-            throw err;
-        }
-
-        try {
-            hashedPassword = this.hashPassword(password);
-        } catch (err) {
-            throw err;
-        }
-
-        try {
-            email = await this.validateUserEmail(user.email);
-        } catch (err) {
-            throw err;
-        }
-
-        const firstName = user.firstName;
-        const lastName = user.lastName;
-
-        const userObject = {
-            username,
-            password: await hashedPassword,
-            first_name: firstName,
-            last_name: lastName,
-            email,
-        };
-
-        return this.data.users.create(userObject);
     }
     /**
      * @description Checks whether the email is valid
@@ -86,7 +91,7 @@ class UserController {
                 usersEmailArray.push(userData.email);
             });
         } catch (err) {
-            throw err;
+            throw new UserError.NullEmail;
         }
 
         const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
@@ -111,10 +116,14 @@ class UserController {
      */
     async validateUsername(username) {
         const usernameArray = [];
+        try {
+            await this.data.users.getAllUsernames().map(async (userData) => {
+                usernameArray.push(userData.username);
+            });
+        } catch (err) {
+            throw new UserError.NullUsername();
+        }
 
-        await this.data.users.getAllUsernames().map(async (userData) => {
-            usernameArray.push(userData.username);
-        });
 
         if (usernameArray.includes(username)) {
             throw new UserError.ExistingUsername();

@@ -1,6 +1,6 @@
-class UserError {
+class UserError extends Error {
     constructor(message, errorCode) {
-        // super();
+        super();
         this.message = message;
         this.errorCode = errorCode;
     }

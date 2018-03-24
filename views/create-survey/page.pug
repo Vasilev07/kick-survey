@@ -1,0 +1,43 @@
+include ../shared-views/nav 
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+        link(rel="stylesheet", href="static/styles/main.css")
+        script(src="static/js/create-survey.js")
+        title Kick Survey
+    body
+        +nav()
+        h1.display-4.m-b-2 Create Survey
+        
+        div#initial-create
+          div.form-group
+            label(for='survey-name') Survey name:
+            input#survey-name.form-control(type='text', name='survey-name')
+          div.form-group
+            label(for='categories') Category:
+            select#categories.form-control
+              each category in categories
+                option(value=category.name)
+                  | #{category.name}
+          button#continue-btn.btn.btn-primary(type='button') Continue
+
+        div#create-
+          p.survey-name
+          p.category
+          form#create-survey-form.create-survey-form(method='POST' action='/create')
+            div.form-group
+              label(for="question") Question:
+              input.question.form-control(type="text" name="question")
+            div.form-group
+              label(for="question-type") Question:
+              select.question-types.form-control
+                each questionType in questionTypes
+                  option(value=questionType.q_type)
+                    | #{questionType.q_type}
+
