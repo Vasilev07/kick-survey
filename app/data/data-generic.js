@@ -12,7 +12,7 @@ class Data {
         });
     }
     create(obj) {
-        if (this._isObjectValid && !this._isObjectValid(obj)) {
+        if (obj === null || typeof obj === 'undefined') {
             throw new Error('Invalid object');
         }
         return this.Model.create(obj);
