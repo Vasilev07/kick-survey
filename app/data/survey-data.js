@@ -19,6 +19,4 @@ class SurveyData extends Data {
     }
 }
 
-module.exports = {
-    SurveyData,
-};
+module.exports = SurveyData;

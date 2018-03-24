@@ -1,10 +1,7 @@
 const Data = require('./data-generic');
-const {
-    Answer,
-} = require('../db/models');
 
 class AnswerData extends Data {
-    constructor() {
+    constructor(Answer) {
         super(Answer);
     }
 
@@ -17,6 +14,4 @@ class AnswerData extends Data {
     }
 }
 
-module.exports = {
-    AnswerData,
-};
+module.exports = AnswerData;
