@@ -1,5 +1,6 @@
 const {
     expect,
+    should,
 } = require('chai');
 
 const GenericData = require('../../app/data/data-generic');
@@ -28,34 +29,59 @@ describe('Testing class GenericData', () => {
     });
 
     describe('getById()', () => {
-        it('with valid data', async () => {
-            const obj = {
-                id: 1,
-            };
-            const Model = {
-                findById: () => obj,
-            };
-            const data = new GenericData(Model);
-            const returnedData = await data.getById(1);
-            const expected = {
-                id: 1,
-            };
+        describe('with valid', () => {
+            it('data to return desired object', async () => {
+                const obj = {
+                    id: 1,
+                };
+                const Model = {
+                    findById: () => obj,
+                };
+                const data = new GenericData(Model);
+                const returnedData = await data.getById(1);
+                const expected = {
+                    id: 1,
+                };
 
-            expect(returnedData).to.deep.equal(expected);
+                expect(returnedData).to.deep.equal(expected);
+            });
         });
-        it('without id', async () => {
-            const Model = {
-                findById: () => null,
-            };
-            const data = new GenericData(Model);
-            const returnedData = await data.getById();
+        describe('with invalid data', () => {
+            it('without id to return null', async () => {
+                const Model = {
+                    findById: () => null,
+                };
+                const data = new GenericData(Model);
+                const returnedData = await data.getById();
 
-            expect(returnedData).to.equal(null);
+                expect(returnedData).to.deep.equal(null);
+            });
         });
     });
     describe('create()', () => {
-        
+        describe('when valid', () => {
+            it('obj is passed expect to return an object', () => {
+                const obj = {};
+                const Model = {
+                    create: () => obj,
+                };
+                const data = new GenericData(Model);
+                const res = data.create(obj);
+                expect(typeof res).to.be.equal('object');
+            });
+        });
+        describe('when not valid', () => {
+            it('without pass an object expect to throw Error - Invalid object', () => {
+                const Model = {
+                    findById: () => null,
+                    findAll: () => {},
+                };
+                const data = new GenericData(Model);
+                const createErr = () => {
+                    data.create();
+                };
+                expect(createErr).to.throw('Invalid object');
+            });
+        });
     });
 });
-
-
