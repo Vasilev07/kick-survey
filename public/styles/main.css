@@ -8,17 +8,27 @@
     font-size: 1.2em;
 }
 
-.nav>li>a:focus, .nav>li>a:hover{
+.nav>li>a:focus,
+.nav>li>a:hover {
     background-color: #c5ff9b;
 }
 
 .modal .container {
     width: 100%;
 }
-.glyphicon{
-    margin-right:5px;
+
+.glyphicon {
+    margin-right: 5px;
 }
 
 .create-survey-form {
     display: none;
+}
+
+.ui-slider-range {
+    background: #90D481 !important;
+}
+
+.ui-slider-handle {
+    border-color: #90D481 !important;
 }

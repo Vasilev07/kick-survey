@@ -1,0 +1,32 @@
+include ../shared-views/nav 
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
+        link(rel="stylesheet", href="../static/styles/main.css")
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+        script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+        script(src="../static/js/preview.js")
+        
+        title Kick Survey
+    body
+        +nav()
+
+        .container
+            .row#initial
+                .col-md-4.survey-name
+                    p Survey: 
+                        span
+                .col-md-4.survey-category
+                    p Category: 
+                        span
+                .col-md-4.created-date
+                    p Created at: 
+                        span
+            .row
+                form#submit-survey(action="/submit", method="post")

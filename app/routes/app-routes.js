@@ -25,7 +25,7 @@ const init = (app, data) => {
                 return res.redirect('/');
             }
 
-            const model = await controller.getSurveysData(req.user);
+            const model = await controller.getUserSurveysData(req.user);
             // return res.send(model);
             return res.render('index', {
                 isAuthenticated: req.isAuthenticated(),
@@ -49,6 +49,21 @@ const init = (app, data) => {
             };
 
             return res.render('create-survey/page', model);
+        })
+        .get('/api/:url', async (req, res) => {
+            const param = req.params.url;
+            const surveyData = await controller.getUserSurveyData(param);
+            res.send(surveyData);
+        })
+        .get('/preview/:url', async (req, res, next) => {
+            const param = req.params.url;
+            console.log(param);
+
+            res.render('preview-survey/preview', {});
+        })
+        .post('/submit', async (req, res) => {
+            const body = req.body;
+            res.send(body);
         });
 
     app.use('/', router);

@@ -50,14 +50,27 @@ const populateData = async () => {
         order: 1,
         name: 'Shte vali li dnes',
         is_required: 1,
-        type_id: 2,
+        type_id: 3,
     };
     const question2 = {
         order: 2,
         name: 'A utre shte vali li?',
         is_required: 1,
+        type_id: 4,
+    };
+    const question3 = {
+        order: 3,
+        name: 'Kak si dnes',
+        is_required: 1,
+        type_id: 1,
+    };
+    const question4 = {
+        order: 4,
+        name: 'Kak si dnes be, mladej?',
+        is_required: 1,
         type_id: 2,
     };
+
     const answer11 = {
         answer_name: 'Da, shte vali dnes',
     };
@@ -69,6 +82,12 @@ const populateData = async () => {
     };
     const answer22 = {
         answer_name: 'Ne, nqma da vali utre',
+    };
+    const answer31 = {
+        answer_name: '20',
+    };
+    const answer41 = {
+        answer_name: '',
     };
 
     data.types.map(async (type) => {
@@ -87,19 +106,29 @@ const populateData = async () => {
 
     const surveyQ1Model = await Question.create(question1);
     const surveyQ2Model = await Question.create(question2);
+    const surveyQ3Model = await Question.create(question3);
+    const surveyQ4Model = await Question.create(question4);
+
 
     surveyQ1Model.setSurvey(userSurvey1Model);
     surveyQ2Model.setSurvey(userSurvey1Model);
+    surveyQ3Model.setSurvey(userSurvey1Model);
+    surveyQ4Model.setSurvey(userSurvey1Model);
 
     const surveyA11Model = await Answer.create(answer11);
     const surveyA12Model = await Answer.create(answer12);
     const surveyA21Model = await Answer.create(answer21);
     const surveyA22Model = await Answer.create(answer22);
+    const surveyA31Model = await Answer.create(answer31);
+    const surveyA41Model = await Answer.create(answer41);
+
 
     surveyA11Model.setQuestion(surveyQ1Model);
     surveyA12Model.setQuestion(surveyQ1Model);
     surveyA21Model.setQuestion(surveyQ2Model);
     surveyA22Model.setQuestion(surveyQ2Model);
+    surveyA31Model.setQuestion(surveyQ3Model);
+    surveyA41Model.setQuestion(surveyQ4Model);
 };
 
 populateData().then(() => {
@@ -113,11 +142,11 @@ populateData().then(() => {
             }],
         });
     };
-    
+
     getAll().then((res) => {
         res.map(async (survey) => {
             const surId = survey.id;
-    
+
             const q = await Question.findAll({
                 include: [{
                     model: Survey,
@@ -126,7 +155,7 @@ populateData().then(() => {
                     },
                 }],
             });
-    
+
             q.map(async (question) => {
                 const qId = question.id;
                 const a = await Answer.findAll({
@@ -148,5 +177,3 @@ populateData().then(() => {
         });
     });
 });
-
-

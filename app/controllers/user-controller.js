@@ -1,28 +1,9 @@
-const bcrypt = require('bcrypt');
 const UserError = require('./exceptions');
+const Crypto = require('./cryptography-controller');
 
 class UserController {
     constructor(data) {
         this.data = data;
-    }
-    /**
-     * @description Takes a password in plain text and hashes it
-     * @param {string} password
-     * @return {string} Hashed password
-     */
-    hashPassword(password) {
-        const saltRounds = 10;
-        return bcrypt.hash(password, saltRounds);
-    }
-    /**
-     * @description Compares the plain text password with a hashed one
-     * @param {string} password Password in plain text
-     * @param {string} hash Hashed password
-     * @return {boolean} True if the passwords are the same.
-     * False if the passwords are different
-     */
-    comparePasswords(password, hash) {
-        return bcrypt.compare(password, hash);
     }
     /**
      * @description Creates a user entry in the database
@@ -36,6 +17,7 @@ class UserController {
         let hashedPassword = null;
         let username = null;
         let email = null;
+        const cryptography = new Crypto();
         try {
             try {
                 username = await this.validateUsername(user.username);
@@ -50,7 +32,7 @@ class UserController {
             }
 
             try {
-                hashedPassword = this.hashPassword(password);
+                hashedPassword = cryptography.hashPassword(password);
             } catch (err) {
                 throw err;
             }

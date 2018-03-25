@@ -17,6 +17,16 @@ class SurveyData extends Data {
             include: [Category],
         });
     }
+
+    getSurvey(userId, surveyName) {
+        return this.Model.findOne({
+            where: {
+                user_id: userId,
+                name: surveyName,
+            },
+            include: [Category],
+        });
+    }
 }
 
 module.exports = {
