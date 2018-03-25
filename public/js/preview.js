@@ -172,6 +172,7 @@ $(function () {
             $('.survey-category p span').text(survey.Category.name);
             $('.created-date p span').text(survey.createdAt);
             var form = document.getElementById("submit-survey")
+
             survey.surveyContentData.forEach(function (element, index) {
                 var row = document.createElement("div");
                 var formGroup = document.createElement("div");
@@ -193,7 +194,7 @@ $(function () {
                 } else if (element.questionData.type === 'single-textbox') {
                     newElement = previews.singleTextboxPreview(element, index + 1);
                     formGroup.appendChild(newElement);
-                }
+                } 
 
                 form.appendChild(row);
 

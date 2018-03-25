@@ -110,6 +110,64 @@
             },
             "indexes": []
         },
+        "SubmittedAnswers": {
+            "tableName": "SubmittedAnswers",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "submit_identifier": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.STRING"
+                },
+                "survey_id": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "Surveys",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "question_id": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "Questions",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "answer_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "Answers",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "answer": {
+                    "allowNull": true,
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "Surveys": {
             "tableName": "Surveys",
             "schema": {

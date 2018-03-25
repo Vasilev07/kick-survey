@@ -10,8 +10,13 @@ class Cryptography {
     constructor() {
     }
 
-    encrypt(user, survey) {
-        const text = user + '&&' + survey;
+    encrypt(user, survey, date = null) {
+        let text;
+        if (date) {
+            text = user + '&&' + survey + '&&' + date;
+        } else {
+            text = user + '&&' + survey;
+        }
         const cipher = crypto.createCipheriv(algorithm, key, iv);
         let crypted = cipher.update(text, 'utf8', 'hex');
         crypted += cipher.final('hex');

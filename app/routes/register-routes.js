@@ -1,4 +1,5 @@
 const UserController = require('../controllers/user-controller');
+const passport = require('passport');
 
 const init = (app, data) => {
     const userController = new UserController(data);
@@ -15,7 +16,7 @@ const init = (app, data) => {
         app.locals.existUserError = null;
     });
 
-    app.post('/validate', async (req, res) => {
+    app.post('/validate', async (req, res, next) => {
         const userModel = req.body;
 
         const userObject = {
@@ -28,12 +29,28 @@ const init = (app, data) => {
         };
 
         try {
-            await userController.createUser(userObject);
-            res.redirect('/index');
+            const user = await userController.createUser(userObject);
+            passport.authenticate('local', (err, user, info) => {
+                if (err) {
+                    return next(err);
+                }
+                if (!user) {
+                    return res.redirect('/');
+                }
+                req.logIn(user, (err) => {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.status(200).redirect('/index');
+                });
+            })(req, res, next);
         } catch (err) {
+            console.log(err);
             res.status(400).json(err);
         }
-    });
+    }, passport.authenticate('local', {
+        successRedirect: '/index', // redirect to the secure profile section
+    }));
 };
 
 module.exports = {

@@ -11,13 +11,14 @@ var Sequelize = require('sequelize');
  * createTable "Surveys", deps: [Users, Categories]
  * createTable "Questions", deps: [Surveys, Types]
  * createTable "Answers", deps: [Questions]
+ * createTable "SubmittedAnswers", deps: [Surveys, Questions, Answers]
  *
  **/
 
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2018-03-19T07:04:54.633Z",
+    "created": "2018-03-25T15:20:04.569Z",
     "comment": ""
 };
 
@@ -246,6 +247,67 @@ var migrationCommands = [{
                 "answer_name": {
                     "type": Sequelize.STRING,
                     "allowNull": false
+                },
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "allowNull": false
+                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "allowNull": false
+                }
+            },
+            {}
+        ]
+    },
+    {
+        fn: "createTable",
+        params: [
+            "SubmittedAnswers",
+            {
+                "id": {
+                    "type": Sequelize.INTEGER,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "allowNull": false
+                },
+                "submit_identifier": {
+                    "type": Sequelize.STRING,
+                    "allowNull": false
+                },
+                "survey_id": {
+                    "type": Sequelize.INTEGER,
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "Surveys",
+                        "key": "id"
+                    },
+                    "allowNull": false
+                },
+                "question_id": {
+                    "type": Sequelize.INTEGER,
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "Questions",
+                        "key": "id"
+                    },
+                    "allowNull": false
+                },
+                "answer_id": {
+                    "type": Sequelize.INTEGER,
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "Answers",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                },
+                "answer": {
+                    "type": Sequelize.STRING,
+                    "allowNull": true
                 },
                 "createdAt": {
                     "type": Sequelize.DATE,

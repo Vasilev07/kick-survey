@@ -33,7 +33,7 @@ const populateData = async () => {
 
     const user = {
         username: 'koteto99',
-        password: '123456',
+        password: '$2a$10$NAVe/n5c/drosjvnaIZf4.hhrJoekM.Nwbh8/3cXldvH/cxt4GcMa',
         first_name: 'Malkoto',
         last_name: 'Kote',
         email: 'koteto99@hotmail.com',

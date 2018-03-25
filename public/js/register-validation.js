@@ -2,7 +2,6 @@
 
 $(function () {
     $('#registerForm').submit(function (e) {
-        e.preventDefault();
         var registerData = {
             username: $('#username').val(),
             password: $('#password').val(),
@@ -23,7 +22,11 @@ $(function () {
                     .css('color', '#F00')
                     .css('float', 'right');
             },
+            success: function () {
+                window.location.href = '/index';
+            }
         });
+        return false;
         // var userName = $('#user-name').val();
         // // $(userName).css('font-weight', 'bold');
         // // get value from input field
