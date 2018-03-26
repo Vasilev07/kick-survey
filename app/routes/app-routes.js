@@ -15,10 +15,14 @@ const init = (app, data) => {
     const controller = new DataController(data);
 
     router
-        .get('/', (req, res) => {
+        .get('/', async (req, res) => {
+            const statistickData = await controller.getAllUsersCategories();
             const context = {
                 isAuthenticated: req.isAuthenticated(),
+                label: statistickData.label,
+                data: statistickData.data,
             };
+
             res.render('shared-views/master', context);
         })
         .get('/index', async (req, res) => {
@@ -61,6 +65,22 @@ const init = (app, data) => {
             console.log(param);
 
             res.render('preview-survey/preview', {});
+        })
+        .post('/api/statistics', async (req, res) => {
+            try {
+                const statistickData = await controller.getAllUsersCategories();
+                const statisticDataSecond = await controller.getAllUsersTypes();
+                const context = {
+                    labelPie: statistickData.label,
+                    dataPie: statistickData.data,
+                    labelDonut: statisticDataSecond.label,
+                    dataDonut: statisticDataSecond.data,
+                };
+                res.status(200).send(context);
+            } catch (error) {
+                res.status(500).end();
+            }
+            console.log(await controller.getAllUsersTypes());
         })
         .post('/submit', async (req, res) => {
             const body = req.body;

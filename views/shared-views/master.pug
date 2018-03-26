@@ -10,6 +10,7 @@ html(lang="en")
         script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
         script(src='https://d3js.org/d3.v4.min.js')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js')
+        script(src="/static/js/statistic-pie.js")
         link(rel="stylesheet", href="static/styles/main.css")
         script(src="/static/js/login-validation.js")
         script(src="/static/js/register-validation.js")
@@ -21,42 +22,6 @@ html(lang="en")
                 .container.col-sm-6
                     .chart-container
                         canvas#pie-chart
-                    script.
-                        new Chart(document.getElementById("pie-chart"), {
-                            type: 'pie',
-                            data: {
-                              labels: ["Education", "Feedback", "Work Atmosphere", "Quiz", "Health care", "Demographics"],
-                              datasets: [{
-                                label: "Population (millions)",
-                                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#c70850"],
-                                data: [2478,5267,734,784,433,2413]
-                              }]
-                            },
-                            options: {
-                              title: {
-                                display: true,
-                                text: 'MOST USED CATEGORIES FOR SURVEYS'
-                              }
-                            }
-                        });
                 .container.col-sm-6
                     .chart-container2
                         canvas#chart2
-                    script.
-                        new Chart(document.getElementById("chart2"), {
-                            type: 'doughnut',
-                            data: {
-                              labels: ["Slider", "Single-textbox", "Matrix", "Multiple-choice", "Single-choice", "Emojis"],
-                              datasets: [{
-                                label: "Population (millions)",
-                                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#c70850"],
-                                data: [2478,5267,734,784,433,2413]
-                              }]
-                            },
-                            options: {
-                              title: {
-                                display: true,
-                                text: 'MOST USED TYPES OF SURVEYS'
-                              }
-                            }
-                        });
