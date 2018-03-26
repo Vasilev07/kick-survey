@@ -37,9 +37,9 @@ const init = (app, data) => {
                 if (!user) {
                     return res.redirect('/');
                 }
-                req.logIn(user, (err) => {
-                    if (err) {
-                        return next(err);
+                req.logIn(user, (error) => {
+                    if (error) {
+                        return next(error);
                     }
                     return res.status(200).redirect('/index');
                 });
