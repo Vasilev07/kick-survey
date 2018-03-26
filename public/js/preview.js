@@ -1,18 +1,18 @@
-/* eslint-disable */
-var previews = (function () {
-    var _slidersIds = [];
-    var sliderPreview = function (data, index) {
-        var questionWrapper = document.createElement("div");
-        var order = document.createElement("span");
-        var label = document.createElement("label");
-        var slider = document.createElement("div");
-        var input = document.createElement("input");
+const previews = (function () {
+    const _slidersIds = [];
+    const sliderPreview = function (data, index) {
+        const questionWrapper = document.createElement("div");
+        const order = document.createElement("span");
+        const label = document.createElement("label");
+        const slider = document.createElement("div");
+        const input = document.createElement("input");
 
-        input.setAttribute('type', 'number');
+        input.setAttribute("type", "number");
         input.setAttribute("min", "0");
         input.setAttribute("max", "100");
-        input.setAttribute("name", data.questionData.question)
-        label.setAttribute('for', "input-" + index);
+        input.setAttribute("name", "question-" +
+            data.questionData.questionId + "-" + data.questionData.type);
+        label.setAttribute("for", "input-" + index);
 
         input.id = "input-" + index;
         slider.id = "slider-" + index;
@@ -32,16 +32,16 @@ var previews = (function () {
 
         _slidersIds.push({
             input: "#input-" + index,
-            slide: "#slider-" + index,
+            slide: "#slider-" + index
         });
 
         return questionWrapper;
-    }
+    };
 
-    var multipleChoicePreview = function (data, index) {
-        var questionWrapper = document.createElement("div");
-        var order = document.createElement("span");
-        var questionLabel = document.createElement("label");
+    const multipleChoicePreview = function (data, index) {
+        const questionWrapper = document.createElement("div");
+        const order = document.createElement("span");
+        const questionLabel = document.createElement("label");
 
         questionLabel.innerHTML = data.questionData.question;
         order.innerHTML = index + ". ";
@@ -49,18 +49,15 @@ var previews = (function () {
         questionWrapper.appendChild(questionLabel);
 
         data.answersData.forEach(function (answer) {
-            var divCheckBox = document.createElement("div");
-            var label = document.createElement("label");
-            var input = document.createElement("input");
-
-            if(data.questionData.isRequired) {
-                input.setAttribute("required", "required");
-            }
+            const divCheckBox = document.createElement("div");
+            const label = document.createElement("label");
+            const input = document.createElement("input");
 
             divCheckBox.className = "checkbox";
             input.setAttribute("type", "checkbox");
-            input.setAttribute("value", answer.answer);
-            input.setAttribute("name", data.questionData.question)
+            input.setAttribute("value", answer.answerId);
+            input.setAttribute("name", "question-" +
+                data.questionData.questionId + "-" + data.questionData.type);
 
             label.innerText = answer.answer;
 
@@ -69,13 +66,17 @@ var previews = (function () {
             questionWrapper.appendChild(divCheckBox);
         });
 
-        return questionWrapper;
-    }
+        if (data.questionData.isRequired) {
+            questionWrapper.className += "required";
+        }
 
-    var singleChoicePreview = function (data, index) {
-        var questionWrapper = document.createElement("div");
-        var order = document.createElement("span");
-        var questionLabel = document.createElement("label");
+        return questionWrapper;
+    };
+
+    const singleChoicePreview = function (data, index) {
+        const questionWrapper = document.createElement("div");
+        const order = document.createElement("span");
+        const questionLabel = document.createElement("label");
 
         questionLabel.innerHTML = data.questionData.question;
         order.innerHTML = index + ". ";
@@ -83,15 +84,16 @@ var previews = (function () {
         questionWrapper.appendChild(questionLabel);
 
         data.answersData.forEach(function (answer) {
-            var divCheckBox = document.createElement("div");
-            var label = document.createElement("label");
-            var input = document.createElement("input");
+            const divCheckBox = document.createElement("div");
+            const label = document.createElement("label");
+            const input = document.createElement("input");
 
             divCheckBox.className = "radio";
             input.setAttribute("type", "radio");
-            input.setAttribute("value", answer.answer);
-            input.setAttribute("name", data.questionData.question);
-            
+            input.setAttribute("value", answer.answerId);
+            input.setAttribute("name", "question-" +
+                data.questionData.questionId + "-" + data.questionData.type);
+
             input.setAttribute("required", "required");
 
             label.innerText = answer.answer;
@@ -104,19 +106,20 @@ var previews = (function () {
         return questionWrapper;
     };
 
-    var singleTextboxPreview = function (data, index) {
-        var questionWrapper = document.createElement("div");
-        var order = document.createElement("span");
-        var questionLabel = document.createElement("label");
-        var input = document.createElement("input");
+    const singleTextboxPreview = function (data, index) {
+        const questionWrapper = document.createElement("div");
+        const order = document.createElement("span");
+        const questionLabel = document.createElement("label");
+        const input = document.createElement("input");
 
         questionLabel.innerHTML = data.questionData.question;
         order.innerHTML = index + ". ";
 
         input.setAttribute("type", "text");
-        input.setAttribute("name", data.questionData.question);
+        input.setAttribute("name", "question-" +
+            data.questionData.questionId + "-" + data.questionData.type);
 
-        if(data.questionData.isRequired) {
+        if (data.questionData.isRequired) {
             input.setAttribute("required", "required");
         }
 
@@ -125,9 +128,9 @@ var previews = (function () {
         questionWrapper.appendChild(input);
 
         return questionWrapper;
-    }
+    };
 
-    var injectSliders = function (sliders) {
+    const injectSliders = function (sliders) {
         sliders.forEach((slider) => {
             $(slider.slide).slider({
                 range: "min",
@@ -142,8 +145,7 @@ var previews = (function () {
             $(slider.input).change(function () {
                 $(slider.slide).slider("value", $(this).val());
             });
-
-        })
+        });
     };
 
     return {
@@ -152,57 +154,58 @@ var previews = (function () {
         singleTextboxPreview,
         singleChoicePreview,
         multipleChoicePreview,
-        sliderPreview,
-    }
+        sliderPreview
+    };
 })();
 
 $(function () {
-    var url = window.location.href.match(/[0-9a-zA-Z]+$/);
-    
+    const url = window.location.href.match(/[0-9a-zA-Z]+$/);
+    let surveyData;
     $.ajax({
-        method: 'GET',
+        method: "GET",
         async: true,
-        url: '/api/' + url,
+        url: "/api/" + url,
         error: function (error) {
             console.log(error);
         },
         success: function (survey) {
-            console.log(survey)
-            $('.survey-name p span').text(survey.name);
-            $('.survey-category p span').text(survey.Category.name);
-            $('.created-date p span').text(survey.createdAt);
-            var form = document.getElementById("submit-survey")
+            surveyData = survey;
+            console.log(survey);
+            $(".survey-name p span").text(survey.name);
+            $(".survey-category p span").text(survey.Category.name);
+            $(".created-date p span").text(survey.createdAt);
+            const form = document.getElementById("submit-survey");
 
             survey.surveyContentData.forEach(function (element, index) {
-                var row = document.createElement("div");
-                var formGroup = document.createElement("div");
+                const row = document.createElement("div");
+                const formGroup = document.createElement("div");
 
                 row.className = "row";
-                formGroup.className = "form-group"
+                formGroup.className = "form-group";
 
-                var newElement;
+                let newElement;
                 row.appendChild(formGroup);
-                if (element.questionData.type === 'slider') {
+                if (element.questionData.type === "slider") {
                     newElement = previews.sliderPreview(element, index + 1);
                     formGroup.appendChild(newElement);
-                } else if (element.questionData.type === 'multiple-choice') {
+                } else if (element.questionData.type === "multiple-choice") {
                     newElement = previews.multipleChoicePreview(element, index + 1);
+                    formGroup.className += " checkbox-group";
                     formGroup.appendChild(newElement);
-                } else if (element.questionData.type === 'single-choice') {
+                } else if (element.questionData.type === "single-choice") {
                     newElement = previews.singleChoicePreview(element, index + 1);
                     formGroup.appendChild(newElement);
-                } else if (element.questionData.type === 'single-textbox') {
+                } else if (element.questionData.type === "single-textbox") {
                     newElement = previews.singleTextboxPreview(element, index + 1);
                     formGroup.appendChild(newElement);
-                } 
+                }
 
                 form.appendChild(row);
-
             });
 
             previews.injectSliders(previews._slidersIds);
 
-            var submitBtn = document.createElement("button");
+            const submitBtn = document.createElement("button");
             submitBtn.id = "submit-survey-btn";
             submitBtn.className = "btn btn-success";
             submitBtn.setAttribute("type", "submit");
@@ -212,9 +215,47 @@ $(function () {
         }
     });
 
-    $("#submit-survey-btn").click(function (e) {
+    const validateCheckbox = function (requiredCheckbox) {
+        let flag = true;
+        requiredCheckbox.each(function (index, checkbox) {
+            const selected = $(checkbox).children(".checkbox").find("input:checked");
+            if (selected.length === 0) {
+                flag = false;
+            }
+        });
+        return flag;
+    };
 
-    })
+    $("#submit-survey").submit(function (e) {
+        e.preventDefault();
+        const requiredCheckbox = $(".checkbox-group .required");
+        const validate = validateCheckbox(requiredCheckbox);
+        if (!validate) {
+            console.log("error!");
+            return false;
+        }
+
+        const serialize = $("#submit-survey").serializeArray();
+
+        const surveyDataObj = {
+            surveyId: surveyData.id,
+            name: surveyData.name,
+            userId: surveyData.user_id
+        };
+
+        $.ajax({
+            method: "POST",
+            async: true,
+            url: "/submit",
+            data: { serialize, surveyDataObj },
+            error: function (error) {
+                console.log(error);
+            },
+            success: function (resolve) {
+                console.log(resolve);
+            }
+        });
+
+        return false;
+    });
 });
-
-/* eslint-enable */

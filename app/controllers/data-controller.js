@@ -78,6 +78,7 @@ class DataController {
         const questionData = questions.map(async (question) => {
             const questionDataObj = {
                 questionData: {
+                    questionId: question.id,
                     question: question.name,
                     order: question.order,
                     isRequired: question.is_required,
@@ -108,6 +109,7 @@ class DataController {
 
         const answersResults = answers.map((answer) => {
             return {
+                answerId: answer.id,
                 answer: answer.answer_name,
             };
         });

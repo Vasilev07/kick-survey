@@ -5,6 +5,7 @@ const {
 } = require('express');
 const path = require('path');
 const DataController = require('../controllers/data-controller');
+const SubmitController = require('../controllers/submit-controller');
 const init = (app, data) => {
     const router = new Router();
 
@@ -83,6 +84,10 @@ const init = (app, data) => {
         })
         .post('/submit', async (req, res) => {
             const body = req.body;
+
+            const submitController = new SubmitController(data);
+            submitController.createSubmit(body);
+
             res.send(body);
         });
 
