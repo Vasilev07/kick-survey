@@ -73,7 +73,7 @@ class UserController {
                 usersEmailArray.push(userData.email);
             });
         } catch (err) {
-            throw new UserError.NullEmail;
+            throw new UserError.NullEmail();
         }
 
         const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;

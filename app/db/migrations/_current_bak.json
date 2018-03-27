@@ -123,16 +123,6 @@
                     "allowNull": false,
                     "seqType": "Sequelize.STRING"
                 },
-                "user_id": {
-                    "allowNull": false,
-                    "references": {
-                        "model": "Users",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "survey_id": {
                     "allowNull": false,
                     "references": {
@@ -289,5 +279,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 1
 }
