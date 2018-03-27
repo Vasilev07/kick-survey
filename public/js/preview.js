@@ -146,6 +146,73 @@ const previews = (function () {
                 $(slider.slide).slider("value", $(this).val());
             });
         });
+    }
+
+
+    const emojisChoicePreview = function (data, index) {
+        const questionWrapper = document.createElement("div");
+        // questionWrapper.className = "container";
+
+        const question = document.createElement("h4"); 
+        question.innerHTML = index +'. ' +  data.questionData.question;
+        questionWrapper.appendChild(question);
+
+        const label1 = document.createElement("label");
+        label1.className = "form-check form-check-inline";
+        const input1 = document.createElement("input");
+        input1.className = "form-check-input";
+        input1.setAttribute("type", "radio");
+        input1.setAttribute("name", "inlineRadioOptions");
+        input1.setAttribute("value", "option1");
+        input1.setAttribute("id", "inlineRadio1");
+        input1.setAttribute("value", "option1");
+
+        const emojSmile = document.createElement("i");
+        emojSmile.setAttribute("class", "far fa-smile");
+        label1.appendChild(input1);
+        label1.appendChild(emojSmile);
+
+        questionWrapper.appendChild(label1);
+
+        const label2 = document.createElement("label");
+        label2.className = "form-check form-check-inline";
+        const input2 = document.createElement("input");
+        input2.className = "form-check-input";
+        input2.setAttribute("type", "radio");
+        input2.setAttribute("name", "inlineRadioOptions");
+        input2.setAttribute("value", "option2");
+        input2.setAttribute("id", "inlineRadio2");
+        input2.setAttribute("value", "option2");
+       
+        const emojMeh = document.createElement("i");
+        emojMeh.setAttribute("class","far fa-meh");
+       
+        label2.appendChild(input2);
+        label2.appendChild(emojMeh);
+
+        questionWrapper.appendChild(label2);
+
+        const label3 = document.createElement("label");
+        label3.className = "form-check form-check-inline";
+        const input3 = document.createElement("input");
+        input3.className = "form-check-input";
+        input3.setAttribute("type", "radio");
+        input3.setAttribute("name", "inlineRadioOptions");
+        input3.setAttribute("value", "option3");
+        input3.setAttribute("id", "inlineRadio3");
+        input3.setAttribute("value", "option3");
+
+        const emojFrown = document.createElement("i");
+        emojFrown.setAttribute("class", "far fa-frown");
+       
+        label3.appendChild(input3);
+        label3.appendChild(emojFrown);
+
+        questionWrapper.appendChild(label3);
+
+        
+
+        return questionWrapper;
     };
 
     return {
@@ -154,7 +221,8 @@ const previews = (function () {
         singleTextboxPreview,
         singleChoicePreview,
         multipleChoicePreview,
-        sliderPreview
+        sliderPreview,
+        emojisChoicePreview,
     };
 })();
 
@@ -198,8 +266,10 @@ $(function () {
                 } else if (element.questionData.type === "single-textbox") {
                     newElement = previews.singleTextboxPreview(element, index + 1);
                     formGroup.appendChild(newElement);
+                } else if (element.questionData.type === "emojis") {
+                    newElement = previews.emojisChoicePreview(element, index + 1);
+                    formGroup.appendChild(newElement);                    
                 }
-
                 form.appendChild(row);
             });
 
@@ -247,7 +317,10 @@ $(function () {
             method: "POST",
             async: true,
             url: "/submit",
-            data: { serialize, surveyDataObj },
+            data: {
+                serialize,
+                surveyDataObj
+            },
             error: function (error) {
                 console.log(error);
             },
