@@ -1,6 +1,5 @@
 /* eslint-global previews */
 $(function () {
-    console.log(window.previews)
     const url = window.location.href.match(/[0-9a-zA-Z]+$/);
     let surveyData;
     $.ajax({
@@ -99,7 +98,7 @@ $(function () {
                 console.log(error);
             },
             success: function (resolve) {
-                alert("Successful submission");
+                console.log("Success");
             }
         });
 
