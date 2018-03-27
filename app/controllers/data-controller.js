@@ -141,10 +141,10 @@ class DataController {
                 const allSurveyCatId = [];
                 allSurveyCatId.push(survey.cat_id);
                 allSurveyCatId.sort();
-                const allSurveyIdResult =
-                    allSurveyCatId.map(async (survCat) => {
-                        const categoryObj =
-                            await this.data.categories.getById(survCat);
+                const allSurveyIdResult = allSurveyCatId
+                    .map(async (survCat) => {
+                        const categoryObj = await this.data.categories
+                            .getById(survCat);
                         const categoryName = categoryObj.name;
                         return categoryName;
                     });
@@ -155,16 +155,20 @@ class DataController {
             return allSurvRes;
         });
         let finalData = await Promise.all(allUsersRes);
+
         finalData = lodash.flattenDeep(finalData);
+
         const mapOfCategories = new Map([...new Set(finalData)]
             .map((x) => [x, finalData.filter((y) => y === x).length]));
 
         const label = [];
         const data = [];
+
         mapOfCategories.forEach((value, key, map) => {
             label.push(key);
             data.push(value);
         });
+
         return {
             label,
             data,

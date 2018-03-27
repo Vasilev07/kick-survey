@@ -80,7 +80,6 @@ const init = (app, data) => {
             } catch (error) {
                 res.status(500).end();
             }
-            console.log(await controller.getAllUsersTypes());
         })
         .post('/submit', async (req, res) => {
             const body = req.body;
