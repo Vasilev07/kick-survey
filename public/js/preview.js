@@ -1,163 +1,4 @@
-const previews = (function () {
-    const _slidersIds = [];
-    const sliderPreview = function (data, index) {
-        const questionWrapper = document.createElement("div");
-        const order = document.createElement("span");
-        const label = document.createElement("label");
-        const slider = document.createElement("div");
-        const input = document.createElement("input");
-
-        input.setAttribute("type", "number");
-        input.setAttribute("min", "0");
-        input.setAttribute("max", "100");
-        input.setAttribute("name", "question-" +
-            data.questionData.questionId + "-" + data.questionData.type);
-        label.setAttribute("for", "input-" + index);
-
-        input.id = "input-" + index;
-        slider.id = "slider-" + index;
-        questionWrapper.className = "question-wrapper";
-
-        order.innerHTML = index + ". ";
-        label.innerHTML = data.questionData.question;
-
-        if (data.questionData.isRequired) {
-            input.setAttribute("required", "required");
-        }
-
-        questionWrapper.appendChild(order);
-        questionWrapper.appendChild(label);
-        questionWrapper.appendChild(slider);
-        questionWrapper.appendChild(input);
-
-        _slidersIds.push({
-            input: "#input-" + index,
-            slide: "#slider-" + index
-        });
-
-        return questionWrapper;
-    };
-
-    const multipleChoicePreview = function (data, index) {
-        const questionWrapper = document.createElement("div");
-        const order = document.createElement("span");
-        const questionLabel = document.createElement("label");
-
-        questionLabel.innerHTML = data.questionData.question;
-        order.innerHTML = index + ". ";
-        questionWrapper.appendChild(order);
-        questionWrapper.appendChild(questionLabel);
-
-        data.answersData.forEach(function (answer) {
-            const divCheckBox = document.createElement("div");
-            const label = document.createElement("label");
-            const input = document.createElement("input");
-
-            divCheckBox.className = "checkbox";
-            input.setAttribute("type", "checkbox");
-            input.setAttribute("value", answer.answerId);
-            input.setAttribute("name", "question-" +
-                data.questionData.questionId + "-" + data.questionData.type);
-
-            label.innerText = answer.answer;
-
-            divCheckBox.appendChild(label);
-            label.prepend(input);
-            questionWrapper.appendChild(divCheckBox);
-        });
-
-        if (data.questionData.isRequired) {
-            questionWrapper.className += "required";
-        }
-
-        return questionWrapper;
-    };
-
-    const singleChoicePreview = function (data, index) {
-        const questionWrapper = document.createElement("div");
-        const order = document.createElement("span");
-        const questionLabel = document.createElement("label");
-
-        questionLabel.innerHTML = data.questionData.question;
-        order.innerHTML = index + ". ";
-        questionWrapper.appendChild(order);
-        questionWrapper.appendChild(questionLabel);
-
-        data.answersData.forEach(function (answer) {
-            const divCheckBox = document.createElement("div");
-            const label = document.createElement("label");
-            const input = document.createElement("input");
-
-            divCheckBox.className = "radio";
-            input.setAttribute("type", "radio");
-            input.setAttribute("value", answer.answerId);
-            input.setAttribute("name", "question-" +
-                data.questionData.questionId + "-" + data.questionData.type);
-
-            input.setAttribute("required", "required");
-
-            label.innerText = answer.answer;
-
-            divCheckBox.appendChild(label);
-            label.prepend(input);
-            questionWrapper.appendChild(divCheckBox);
-        });
-
-        return questionWrapper;
-    };
-
-    const singleTextboxPreview = function (data, index) {
-        const questionWrapper = document.createElement("div");
-        const order = document.createElement("span");
-        const questionLabel = document.createElement("label");
-        const input = document.createElement("input");
-
-        questionLabel.innerHTML = data.questionData.question;
-        order.innerHTML = index + ". ";
-
-        input.setAttribute("type", "text");
-        input.setAttribute("name", "question-" +
-            data.questionData.questionId + "-" + data.questionData.type);
-
-        if (data.questionData.isRequired) {
-            input.setAttribute("required", "required");
-        }
-
-        questionWrapper.appendChild(order);
-        questionWrapper.appendChild(questionLabel);
-        questionWrapper.appendChild(input);
-
-        return questionWrapper;
-    };
-
-    const injectSliders = function (sliders) {
-        sliders.forEach((slider) => {
-            $(slider.slide).slider({
-                range: "min",
-                animate: "slow",
-                slide: function (event, ui) {
-                    $(slider.input).val(ui.value);
-                },
-                change: function (event, ui) {
-                    $(slider.input).val(ui.value);
-                }
-            });
-            $(slider.input).change(function () {
-                $(slider.slide).slider("value", $(this).val());
-            });
-        });
-    };
-
-    return {
-        injectSliders,
-        _slidersIds,
-        singleTextboxPreview,
-        singleChoicePreview,
-        multipleChoicePreview,
-        sliderPreview
-    };
-})();
-
+/* eslint-global previews */
 $(function () {
     const url = window.location.href.match(/[0-9a-zA-Z]+$/);
     let surveyData;
@@ -186,24 +27,26 @@ $(function () {
                 let newElement;
                 row.appendChild(formGroup);
                 if (element.questionData.type === "slider") {
-                    newElement = previews.sliderPreview(element, index + 1);
+                    newElement = window.previews.sliderPreview(element, index + 1);
                     formGroup.appendChild(newElement);
                 } else if (element.questionData.type === "multiple-choice") {
-                    newElement = previews.multipleChoicePreview(element, index + 1);
+                    newElement = window.previews.multipleChoicePreview(element, index + 1);
                     formGroup.className += " checkbox-group";
                     formGroup.appendChild(newElement);
                 } else if (element.questionData.type === "single-choice") {
-                    newElement = previews.singleChoicePreview(element, index + 1);
+                    newElement = window.previews.singleChoicePreview(element, index + 1);
                     formGroup.appendChild(newElement);
                 } else if (element.questionData.type === "single-textbox") {
-                    newElement = previews.singleTextboxPreview(element, index + 1);
+                    newElement = window.previews.singleTextboxPreview(element, index + 1);
+                    formGroup.appendChild(newElement);
+                } else if (element.questionData.type === "emojis") {
+                    newElement = window.previews.emojisChoicePreview(element, index + 1);
                     formGroup.appendChild(newElement);
                 }
-
                 form.appendChild(row);
             });
 
-            previews.injectSliders(previews._slidersIds);
+            window.previews.injectSliders(window.previews._slidersIds);
 
             const submitBtn = document.createElement("button");
             submitBtn.id = "submit-survey-btn";
@@ -247,12 +90,15 @@ $(function () {
             method: "POST",
             async: true,
             url: "/submit",
-            data: { serialize, surveyDataObj },
+            data: {
+                serialize,
+                surveyDataObj
+            },
             error: function (error) {
                 console.log(error);
             },
             success: function (resolve) {
-                console.log(resolve);
+                console.log("Success");
             }
         });
 

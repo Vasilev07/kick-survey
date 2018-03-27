@@ -1,6 +1,5 @@
 const {
     expect,
-    should,
 } = require('chai');
 
 const GenericData = require('../../app/data/data-generic');

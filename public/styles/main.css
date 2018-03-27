@@ -32,3 +32,20 @@
 .ui-slider-handle {
     border-color: #90D481 !important;
 }
+
+/* Emojies */
+.far{
+    font-size: 4rem;
+    padding: 30px;
+}
+.form-check-input{
+    visibility: hidden;
+    position: absolute;
+}
+.form-check-input + i{
+    cursor: pointer;
+    color: green;
+}
+.form-check-input:checked + i{
+    color: rgb(132, 173, 132);
+}

@@ -61,55 +61,57 @@ describe('UserController', () => {
                     email: 'user@domain.com',
                 }];
 
-                controller.validateUserEmail(existingEmail).catch((rej) => {
-                    expect(rej.message)
-                        .to
-                        .eq(new UserError.ExistingEmail().message);
-                });
+                const func = async () => {
+                    return await controller.validateUserEmail(existingEmail);
+                };
 
-                // const func = () => {
-                //     expect(func).to.throw(UserError.ExistingEmail);
-                // };
+                expect(func())
+                        .to.eventually
+                        .be.rejectedWith('This email already exists')
+                        .and.be.an.instanceOf(UserError.ExistingEmail);
             });
             it('expect to throw InvalidEmail exception', async () => {
                 const existingEmail = 'userdomain.com';
 
                 const controller = new UserController(fakeData);
 
-                try {
-                    await controller.validateUserEmail(existingEmail);
-                } catch (err) {
-                    expect(err.message)
-                        .to
-                        .eq(new UserError.InvalidEmail().message);
-                }
+                const func = async () => {
+                    return await controller.validateUserEmail(existingEmail);
+                };
+
+                expect(func())
+                        .to.eventually
+                        .be.rejectedWith('This is not valid email')
+                        .and.be.an.instanceOf(UserError.InvalidEmail);
             });
             it('expect to throw EmptyEmail exception', async () => {
                 const existingEmail = '';
 
                 const controller = new UserController(fakeData);
 
-                try {
-                    await controller.validateUserEmail(existingEmail);
-                } catch (err) {
-                    expect(err.message)
-                        .to
-                        .eq(new UserError.EmptyEmail().message);
-                }
+                const func = async () => {
+                    return await controller.validateUserEmail(existingEmail);
+                };
+
+                expect(func())
+                        .to.eventually
+                        .be.rejectedWith('Email cannot be empty')
+                        .and.be.an.instanceOf(UserError.EmptyEmail);
             });
             it('expect to throw NullEmail exception', async () => {
                 userArray = null;
-                const email = 'user@domain.com';
+                const email = null;
 
                 const controller = new UserController(fakeData);
 
-                try {
-                    await controller.validateUserEmail(email);
-                } catch (err) {
-                    expect(err.message)
-                        .to
-                        .eq(new UserError.NullEmail().message);
-                }
+                const func = async () => {
+                    return await controller.validateUserEmail(email);
+                };
+
+                expect(func())
+                        .to.eventually
+                        .be.rejectedWith('getAllEmails returns null')
+                        .and.be.an.instanceOf(UserError.NullEmail);
             });
         });
     });
@@ -134,13 +136,15 @@ describe('UserController', () => {
 
                 const controller = new UserController(fakeData);
 
-                try {
-                    controller.validatePasswords(pass, confirmationPass);
-                } catch (err) {
-                    expect(err.message)
-                        .to
-                        .eq(new UserError.NotMatchingPasswords().message);
-                }
+                const func = async () => {
+                    return await controller
+                        .validatePasswords(pass, confirmationPass);
+                };
+
+                expect(func())
+                        .to.eventually
+                        .be.rejectedWith('Passwords do not match')
+                        .and.be.an.instanceOf(UserError.NotMatchingPasswords);
             });
             it('expect to throw ShortPassword exception', () => {
                 const pass = '123';
@@ -148,13 +152,15 @@ describe('UserController', () => {
 
                 const controller = new UserController(fakeData);
 
-                try {
-                    controller.validatePasswords(pass, confirmationPass);
-                } catch (err) {
-                    expect(err.message)
-                        .to
-                        .eq(new UserError.ShortPassword().message);
-                }
+                const func = async () => {
+                    return await controller
+                        .validatePasswords(pass, confirmationPass);
+                };
+
+                expect(func())
+                        .to.eventually
+                        .be.rejectedWith('Password must be at least 5 symbols')
+                        .and.be.an.instanceOf(UserError.ShortPassword);
             });
         });
     });
@@ -211,13 +217,14 @@ describe('UserController', () => {
 
                     const controller = new UserController(fakeData);
 
-                    try {
-                        await controller.createUser(object);
-                    } catch (err) {
-                        expect(err.message)
-                            .to
-                            .eq(new UserError.EmptyUsername().message);
-                    }
+                    const func = async () => {
+                        return await controller.createUser(object);
+                    };
+
+                    expect(func())
+                        .to.eventually
+                        .be.rejectedWith('Username cannot be empty')
+                        .and.be.an.instanceOf(UserError.EmptyUsername);
                 });
             });
             describe('when validatePassword() throws exception', () => {
@@ -233,13 +240,14 @@ describe('UserController', () => {
 
                     const controller = new UserController(fakeData);
 
-                    try {
-                        await controller.createUser(object);
-                    } catch (err) {
-                        expect(err.message)
-                            .to
-                            .eq(new UserError.NotMatchingPasswords().message);
-                    }
+                    const func = async () => {
+                        return await controller.createUser(object);
+                    };
+
+                    expect(func())
+                        .to.eventually
+                        .be.rejectedWith('Passwords do not match')
+                        .and.be.an.instanceOf(UserError.NotMatchingPasswords);
                 });
             });
             describe('when validateUserEmail() throws exception', () => {
@@ -257,8 +265,10 @@ describe('UserController', () => {
                         return controller.createUser(object);
                     };
 
-                    return expect(func())
-                        .to.be.rejectedWith(UserError.InvalidEmail);
+                    expect(func())
+                        .to.eventually
+                        .be.rejectedWith('This is not valid email')
+                        .and.be.an.instanceOf(UserError.InvalidEmail);
                 });
             });
         });
