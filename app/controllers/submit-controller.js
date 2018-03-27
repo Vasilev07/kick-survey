@@ -18,7 +18,7 @@ class SubmitController {
         }
 
         const data = this._beautifyData(submit);
-        const currentDate = this._currentDate();
+        const currentDate = this._currentDate(new Date());
 
         const identifier = data.user_id + '&&' +
             data.survey_id + '&&' + currentDate;
@@ -33,11 +33,7 @@ class SubmitController {
                 answer_id: questionInfo.answer_id,
             };
 
-            try {
-                return await this.data.submittedAnswer.create(createObj);
-            } catch (err) {
-                return false;
-            }
+            await this.data.submittedAnswer.create(createObj);
         });
         return true;
     }
@@ -95,8 +91,7 @@ class SubmitController {
         return object;
     }
 
-    _currentDate() {
-        const today = new Date();
+    _currentDate(today) {
         const dd = (today.getDay() < 10 ? '0' : '') + today.getMonth();
         const mm = (today.getMonth() + 1 < 10 ? '0' : '') +
             (today.getMonth() + 1);

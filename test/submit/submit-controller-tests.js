@@ -196,7 +196,7 @@ describe('SubmitController', () => {
             });
         });
     });
-    describe('getUserSurveySubmits', () => {
+    describe('getUserSurveySubmits()', () => {
         describe('when data is valid', () => {
             it('expect to return the found objects', async () => {
                 submittedAnswerArray = [{

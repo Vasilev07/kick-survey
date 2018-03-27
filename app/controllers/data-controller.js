@@ -32,13 +32,8 @@ class DataController {
                 surveyContentData: [],
             };
 
-            let questions;
-            try {
-                questions =
-                    await this.data.questions.getSurveyQuestions(survey.id);
-            } catch (err) {
-                questions = [];
-            }
+            const questions =
+                await this.data.questions.getSurveyQuestions(survey.id);
 
             let questionResult;
             try {
@@ -71,6 +66,7 @@ class DataController {
         const name = decrypt.slice(userId.length + 2);
 
         const survey = await this.data.surveys.getSurvey(userId, name);
+
         const questions =
             await this.data.questions.getSurveyQuestions(survey.id);
 
