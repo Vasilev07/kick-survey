@@ -15,7 +15,7 @@ const init = (app, data) => {
         const comparePasswords = new Crypto().comparePasswords;
 
         if (!user) {
-            return done(null, false, {
+            done(null, false, {
                 message: 'Incorrect username',
             });
         }
@@ -23,7 +23,7 @@ const init = (app, data) => {
         const checkPasswords = await comparePasswords(password, user.password);
 
         if (!checkPasswords) {
-            return done(null, false, {
+            done(null, false, {
                 message: 'Incorrect password',
             });
         }

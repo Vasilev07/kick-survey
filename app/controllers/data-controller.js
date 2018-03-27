@@ -14,7 +14,12 @@ class DataController {
      * @return {Promise<Object>} The collected data
      */
     async getUserSurveysData(user) {
-        const surveys = await this.data.surveys.getUserSurveys(user.id);
+        let surveys;
+        try {
+            surveys = await this.data.surveys.getUserSurveys(user.id);
+        } catch (err) {
+            surveys = [];
+        }
 
         const surveysResults = surveys.map(async (survey) => {
             const surveyData = {
@@ -27,9 +32,20 @@ class DataController {
                 surveyContentData: [],
             };
 
-            const questions =
-                await this.data.questions.getSurveyQuestions(survey.id);
-            const questionResult = await this._extractQuestions(questions);
+            let questions;
+            try {
+                questions =
+                    await this.data.questions.getSurveyQuestions(survey.id);
+            } catch (err) {
+                questions = [];
+            }
+
+            let questionResult;
+            try {
+                questionResult = await this._extractQuestions(questions);
+            } catch (err) {
+                questionResult = [];
+            }
 
             surveyData.surveyContentData.push(...questionResult);
 

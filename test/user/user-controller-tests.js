@@ -31,12 +31,6 @@ const fakeData = {
     },
 };
 
-const asyncFunc = async () => {
-    return setTimeout(() => {
-        throw new Error();
-    }, 500);
-};
-
 describe('UserController', () => {
     describe('validateUserEmail', () => {
         describe('when data is valid', () => {

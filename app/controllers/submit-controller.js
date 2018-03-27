@@ -5,13 +5,18 @@ class SubmitController {
     /**
      * @description Creates entries in submittedAnswer table for each question
      * in a survey.
-     * @description The survey identifier is formed as following:
+     * @description The submit identifier is formed as following:
      * user_id + '&&' + survey_id + '&&' + dd + '/' + mm + '/' + yyyy +
      * ' ' + hour + ':' + minutes + ':' + seconds + ':' + milliseconds;
      * E.g.: 1&&1&&02/03/2018 12:43:05:957
      * @param {Object} submit Object with the data from a submit form
+     * @return {Boolean} True or False
      */
     createSubmit(submit) {
+        if (submit === null || submit === 'undefined') {
+            throw new Error('Invalid object');
+        }
+
         const data = this._beautifyData(submit);
         const currentDate = this._currentDate();
 
@@ -29,20 +34,16 @@ class SubmitController {
             };
 
             try {
-                await this.data.submittedAnswer.create(createObj);
+                return await this.data.submittedAnswer.create(createObj);
             } catch (err) {
-                console.log('ERROR CREATING SUBMIT IN DB');
-                console.log(err);
+                return false;
             }
         });
+        return true;
     }
 
-    getUserSurveySubmits(id) {
-        return this.data.submittedAnswer.getAll({
-            where: {
-                user_id: id,
-            },
-        });
+    async getUserSurveySubmits(id) {
+        return await this.data.submittedAnswer.getUserSurveys(id);
     }
 
     _beautifyData(data) {
