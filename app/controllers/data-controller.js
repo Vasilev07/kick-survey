@@ -1,5 +1,7 @@
-const Crypto = require('./cryptography-controller');
+/* globals Map, Set */
 
+const Crypto = require('./cryptography-controller');
+const lodash = require('lodash');
 class DataController {
     constructor(data) {
         this.data = data;
@@ -115,10 +117,74 @@ class DataController {
         return answersResults;
     }
 
+    async getAllUsersCategories() {
+        const users = await this.data.users.getAll();
+        const allUsersRes = users.map(async (user) => {
+            const surveys = await this.data.surveys.getUserSurveys(user.id);
+            const allUsersSurv = surveys.map(async (survey) => {
+                const allSurveyCatId = [];
+                allSurveyCatId.push(survey.cat_id);
+                allSurveyCatId.sort();
+                const allSurveyIdResult = allSurveyCatId.map(async (survCat) => {
+                    const categoryObj = await this.data.categories.getById(survCat);
+                    const categoryName = categoryObj.name;
+                    return categoryName;
+                });
+                const allSurveyIdData = await Promise.all(allSurveyIdResult);
+                return allSurveyIdData;
+            });
+            const allSurvRes = await Promise.all(allUsersSurv);
+            return allSurvRes;
+        });
+        let finalData = await Promise.all(allUsersRes);
+        finalData = lodash.flattenDeep(finalData);
+        const mapOfCategories = new Map([...new Set(finalData)]
+            .map((x) => [x, finalData.filter((y) => y === x).length]));
+
+        const label = [];
+        const data = [];
+        mapOfCategories.forEach((value, key, map) => {
+            label.push(key);
+            data.push(value);
+        });
+        return {
+            label,
+            data,
+        };
+    }
+
+    async getAllUsersTypes() {
+        const questionInfo = await this.data.questions.getAll();
+        const questionTypeIdArray = [];
+        questionInfo.map((questionTypeId) => {
+            questionTypeIdArray.push(questionTypeId.type_id);
+        });
+        const res = questionTypeIdArray.map(async (id) => {
+            const questionType = [];
+            const typeId = await this.data.types.getById(id);
+            await questionType.push(typeId.q_type);
+            return questionType;
+        });
+        let result = await Promise.all(res);
+        result = lodash.flattenDeep(result);
+        const mapOfCategories = new Map([...new Set(result)]
+            .map((x) => [x, result.filter((y) => y === x).length]));
+
+        const label = [];
+        const data = [];
+        mapOfCategories.forEach((value, key, map) => {
+            label.push(key);
+            data.push(value);
+        });
+        return {
+            label,
+            data,
+        };
+    }
+
     getAllCategories() {
         return this.data.categories.getAll();
     }
-
     getAllQuestionTypes() {
         return this.data.types.getAll();
     }

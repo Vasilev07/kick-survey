@@ -62,13 +62,19 @@ const populateData = async () => {
         order: 3,
         name: 'Kak si dnes',
         is_required: 1,
-        type_id: 1,
+        type_id: 3,
     };
     const question4 = {
         order: 4,
         name: 'Kak si dnes be, mladej?',
         is_required: 1,
         type_id: 2,
+    };
+    const question5 = {
+        order: 5,
+        name: 'Are you happy with our services?',
+        is_required: 0,
+        type_id: 6,
     };
 
     const answer11 = {
@@ -87,6 +93,9 @@ const populateData = async () => {
         answer_name: '20',
     };
     const answer41 = {
+        answer_name: '',
+    };
+    const  answer51 = {
         answer_name: '',
     };
 
@@ -108,12 +117,15 @@ const populateData = async () => {
     const surveyQ2Model = await Question.create(question2);
     const surveyQ3Model = await Question.create(question3);
     const surveyQ4Model = await Question.create(question4);
+    const surveyQ5Model = await Question.create(question5);
+
 
 
     surveyQ1Model.setSurvey(userSurvey1Model);
     surveyQ2Model.setSurvey(userSurvey1Model);
     surveyQ3Model.setSurvey(userSurvey1Model);
     surveyQ4Model.setSurvey(userSurvey1Model);
+    surveyQ5Model.setSurvey(userSurvey1Model);
 
     const surveyA11Model = await Answer.create(answer11);
     const surveyA12Model = await Answer.create(answer12);
@@ -121,6 +133,7 @@ const populateData = async () => {
     const surveyA22Model = await Answer.create(answer22);
     const surveyA31Model = await Answer.create(answer31);
     const surveyA41Model = await Answer.create(answer41);
+    const surveyA51Model = await Answer.create(answer51);
 
 
     surveyA11Model.setQuestion(surveyQ1Model);
