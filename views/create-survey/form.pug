@@ -1,0 +1,18 @@
+mixin questionAdd()
+    div#container
+        p.survey-name
+        p.category
+        div#create-
+            div#wrapper
+                form#create-survey-form.create-survey-form(method='POST' action='/create')
+                  div.form-group
+                    label(for="question") Question:
+                    input.question.form-control(type="text" name="question")
+                  div.form-group
+                    label(for="question-type") Question:
+                    select.question-types.form-control
+                      each questionType in questionTypes
+                        option(value=questionType.q_type)
+                          | #{questionType.q_type}
+            button#add-question-btn.btn.btn-primary(type='button') Add new Question
+                    

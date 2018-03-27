@@ -11,14 +11,14 @@ var Sequelize = require('sequelize');
  * createTable "Surveys", deps: [Users, Categories]
  * createTable "Questions", deps: [Surveys, Types]
  * createTable "Answers", deps: [Questions]
- * createTable "SubmittedAnswers", deps: [Surveys, Questions, Answers]
+ * createTable "SubmittedAnswers", deps: [Users, Surveys, Questions, Answers]
  *
  **/
 
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2018-03-26T12:54:27.293Z",
+    "created": "2018-03-27T11:54:36.927Z",
     "comment": ""
 };
 
@@ -273,6 +273,16 @@ var migrationCommands = [{
                 },
                 "submit_identifier": {
                     "type": Sequelize.STRING,
+                    "allowNull": false
+                },
+                "user_id": {
+                    "type": Sequelize.INTEGER,
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
                     "allowNull": false
                 },
                 "survey_id": {

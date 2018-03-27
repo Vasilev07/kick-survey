@@ -1,4 +1,7 @@
-include ../shared-views/nav 
+include ../shared-views/nav
+include ./form
+include ./initial
+
 <!DOCTYPE html>
 html(lang="en")
     head
@@ -14,30 +17,8 @@ html(lang="en")
     body
         +nav()
         h1.display-4.m-b-2 Create Survey
-        
-        div#initial-create
-          div.form-group
-            label(for='survey-name') Survey name:
-            input#survey-name.form-control(type='text', name='survey-name')
-          div.form-group
-            label(for='categories') Category:
-            select#categories.form-control
-              each category in categories
-                option(value=category.name)
-                  | #{category.name}
-          button#continue-btn.btn.btn-primary(type='button') Continue
+        +initial()
+        +questionAdd()
 
-        div#create-
-          p.survey-name
-          p.category
-          form#create-survey-form.create-survey-form(method='POST' action='/create')
-            div.form-group
-              label(for="question") Question:
-              input.question.form-control(type="text" name="question")
-            div.form-group
-              label(for="question-type") Question:
-              select.question-types.form-control
-                each questionType in questionTypes
-                  option(value=questionType.q_type)
-                    | #{questionType.q_type}
+        
 

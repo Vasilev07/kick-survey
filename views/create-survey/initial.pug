@@ -1,0 +1,12 @@
+mixin initial()
+    div#initial-create
+          div.form-group
+            label(for='survey-name') Survey name:
+            input#survey-name.form-control(type='text', name='survey-name')
+          div.form-group
+            label(for='categories') Category:
+            select#categories.form-control
+              each category in categories
+                option(value=category.name)
+                  | #{category.name}
+            button#continue-btn.btn.btn-primary(type='button') Continue
