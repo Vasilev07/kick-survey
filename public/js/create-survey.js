@@ -2,6 +2,7 @@
 
 $(function () {
     $('#add-question-btn').hide();
+    $('#done-btn').hide();
     $('#continue-btn').click(function (e) {
         e.preventDefault();
         var surveyData = {
@@ -22,6 +23,8 @@ $(function () {
 
         $('#create-survey-form').show();
         $('#add-question-btn').show();
+        $('#done-btn').show();
+
         // AJAX request here
     });
     $('#add-question-btn').click(function (e) {
