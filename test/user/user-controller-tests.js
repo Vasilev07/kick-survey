@@ -66,7 +66,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.be.rejectedWith(UserError.ExistingEmail);
+                        .to.eventually
+                        .be.rejectedWith('This email already exists')
+                        .and.be.an.instanceOf(UserError.ExistingEmail);
             });
             it('expect to throw InvalidEmail exception', async () => {
                 const existingEmail = 'userdomain.com';
@@ -78,7 +80,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.be.rejectedWith(UserError.InvalidEmail);
+                        .to.eventually
+                        .be.rejectedWith('This is not valid email')
+                        .and.be.an.instanceOf(UserError.InvalidEmail);
             });
             it('expect to throw EmptyEmail exception', async () => {
                 const existingEmail = '';
@@ -90,7 +94,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.be.rejectedWith(UserError.EmptyEmail);
+                        .to.eventually
+                        .be.rejectedWith('Email cannot be empty')
+                        .and.be.an.instanceOf(UserError.EmptyEmail);
             });
             it('expect to throw NullEmail exception', async () => {
                 userArray = null;
@@ -103,7 +109,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.be.rejectedWith(UserError.NullEmail);
+                        .to.eventually
+                        .be.rejectedWith('getAllEmails returns null')
+                        .and.be.an.instanceOf(UserError.NullEmail);
             });
         });
     });
@@ -134,7 +142,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.be.rejectedWith(UserError.NotMatchingPasswords);
+                        .to.eventually
+                        .be.rejectedWith('Passwords do not match')
+                        .and.be.an.instanceOf(UserError.NotMatchingPasswords);
             });
             it('expect to throw ShortPassword exception', () => {
                 const pass = '123';
@@ -148,7 +158,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.be.rejectedWith(UserError.ShortPassword);
+                        .to.eventually
+                        .be.rejectedWith('Password must be at least 5 symbols')
+                        .and.be.an.instanceOf(UserError.ShortPassword);
             });
         });
     });
@@ -210,7 +222,9 @@ describe('UserController', () => {
                     };
 
                     expect(func())
-                        .to.be.rejectedWith(UserError.EmptyUsername);
+                        .to.eventually
+                        .be.rejectedWith('Username cannot be empty')
+                        .and.be.an.instanceOf(UserError.EmptyUsername);
                 });
             });
             describe('when validatePassword() throws exception', () => {
@@ -231,7 +245,9 @@ describe('UserController', () => {
                     };
 
                     expect(func())
-                        .to.be.rejectedWith(UserError.NotMatchingPasswords);
+                        .to.eventually
+                        .be.rejectedWith('Passwords do not match')
+                        .and.be.an.instanceOf(UserError.NotMatchingPasswords);
                 });
             });
             describe('when validateUserEmail() throws exception', () => {
@@ -245,12 +261,14 @@ describe('UserController', () => {
 
                     const controller = new UserController(fakeData);
 
-                    const func = async () => {
-                        return await controller.createUser(object);
+                    const func = () => {
+                        return controller.createUser(object);
                     };
 
                     expect(func())
-                        .to.be.rejectedWith(UserError.InvalidEmail);
+                        .to.eventually
+                        .be.rejectedWith('This is not valid email')
+                        .and.be.an.instanceOf(UserError.InvalidEmail);
                 });
             });
         });
