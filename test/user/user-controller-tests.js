@@ -5,7 +5,7 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 const UserController = require('../../app/controllers/user-controller');
-const UserError = require('../../app/controllers/exceptions');
+const UserError = require('../../app/controllers/exceptions/data-exceptions');
 let userArray = [];
 
 const fakeData = {

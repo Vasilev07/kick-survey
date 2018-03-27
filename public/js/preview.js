@@ -6,12 +6,53 @@ $(function () {
         method: "GET",
         async: true,
         url: "/api/" + url,
+        beforeSend: function () {
+
+            // something to confuse the user here
+        },
         error: function (error) {
-            console.log(error);
+            const body = $("body");
+            const errorElement = document.createElement("h1");
+            body.append(errorElement);
+            $(errorElement).html(error.responseJSON.message)
+                .css("text-align", "center");
         },
         success: function (survey) {
             surveyData = survey;
-            console.log(survey);
+            const surveyNameWrapper = document.createElement("div");
+            const surveyCatWrapper = document.createElement("div");
+            const surveyDateWrapper = document.createElement("div");
+
+            const surveyNameParagraph = document.createElement("p");
+            const surveyCatParagraph = document.createElement("p");
+            const surveyDateParagraph = document.createElement("p");
+
+            const surveyNameSpan = document.createElement("span");
+            const surveyCatSpan = document.createElement("span");
+            const surveyDateSpan = document.createElement("span");
+
+            $(surveyNameParagraph).html("Survey: ");
+            $(surveyCatParagraph).html("Category: ");
+            $(surveyDateParagraph).html("Created at: ");
+
+            $(surveyNameWrapper).addClass("col-md-4", "survey-name");
+            $(surveyCatWrapper).addClass("col-md-4", "survey-category");
+            $(surveyDateWrapper).addClass("col-md-4", "survey-date");
+
+            $(surveyNameWrapper)
+                .append(surveyNameParagraph)
+                .append(surveyNameSpan);
+            $(surveyCatWrapper)
+                .append(surveyCatParagraph)
+                .append(surveyCatSpan);
+            $(surveyDateWrapper)
+                .append(surveyDateParagraph)
+                .append(surveyDateSpan);
+
+            $("#initial").append(surveyNameWrapper)
+                .append(surveyCatWrapper)
+                .append(surveyDateWrapper);
+
             $(".survey-name p span").text(survey.name);
             $(".survey-category p span").text(survey.Category.name);
             $(".created-date p span").text(survey.createdAt);

@@ -1,4 +1,4 @@
-const UserError = require('./exceptions');
+const UserError = require('./exceptions/data-exceptions');
 const Crypto = require('./cryptography-controller');
 
 class UserController {

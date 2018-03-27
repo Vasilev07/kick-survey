@@ -61,13 +61,16 @@ const init = (app, data) => {
         })
         .get('/api/:url', async (req, res) => {
             const param = req.params.url;
-            const surveyData = await dataController.getUserSurveyData(param);
-            res.send(surveyData);
+
+            try {
+                const surveyData =
+                    await dataController.getUserSurveyData(param);
+                res.send(surveyData);
+            } catch (err) {
+                res.status(500).json(err);
+            }
         })
         .get('/preview/:url', async (req, res, next) => {
-            const param = req.params.url;
-            console.log(param);
-
             res.render('preview-survey/preview', {});
         })
         .post('/api/statistics', async (req, res) => {
