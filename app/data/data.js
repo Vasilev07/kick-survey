@@ -1,9 +1,6 @@
 const {
-    Question,
     Type,
     Category,
-    Answer,
-    SubmittedAnswer,
 } = require('../db/models');
 
 const Data = require('./data-generic');
@@ -20,6 +17,9 @@ const {
 const {
     AnswerData,
 } = require('./answer-data');
+const {
+    SubmittedAnswerData,
+} = require('./submittedAnswer-data');
 
 module.exports = {
     users: new UsersData(),
@@ -28,5 +28,5 @@ module.exports = {
     types: new Data(Type),
     categories: new Data(Category),
     answers: new AnswerData(),
-    submittedAnswer: new Data(SubmittedAnswer),
+    submittedAnswer: new SubmittedAnswerData(),
 };

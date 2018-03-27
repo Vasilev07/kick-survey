@@ -14,7 +14,12 @@ class DataController {
      * @return {Promise<Object>} The collected data
      */
     async getUserSurveysData(user) {
-        const surveys = await this.data.surveys.getUserSurveys(user.id);
+        let surveys;
+        try {
+            surveys = await this.data.surveys.getUserSurveys(user.id);
+        } catch (err) {
+            surveys = [];
+        }
 
         const surveysResults = surveys.map(async (survey) => {
             const surveyData = {
@@ -27,9 +32,20 @@ class DataController {
                 surveyContentData: [],
             };
 
-            const questions =
-                await this.data.questions.getSurveyQuestions(survey.id);
-            const questionResult = await this._extractQuestions(questions);
+            let questions;
+            try {
+                questions =
+                    await this.data.questions.getSurveyQuestions(survey.id);
+            } catch (err) {
+                questions = [];
+            }
+
+            let questionResult;
+            try {
+                questionResult = await this._extractQuestions(questions);
+            } catch (err) {
+                questionResult = [];
+            }
 
             surveyData.surveyContentData.push(...questionResult);
 
@@ -125,11 +141,13 @@ class DataController {
                 const allSurveyCatId = [];
                 allSurveyCatId.push(survey.cat_id);
                 allSurveyCatId.sort();
-                const allSurveyIdResult = allSurveyCatId.map(async (survCat) => {
-                    const categoryObj = await this.data.categories.getById(survCat);
-                    const categoryName = categoryObj.name;
-                    return categoryName;
-                });
+                const allSurveyIdResult =
+                    allSurveyCatId.map(async (survCat) => {
+                        const categoryObj =
+                            await this.data.categories.getById(survCat);
+                        const categoryName = categoryObj.name;
+                        return categoryName;
+                    });
                 const allSurveyIdData = await Promise.all(allSurveyIdResult);
                 return allSurveyIdData;
             });

@@ -86,7 +86,7 @@ const init = (app, data) => {
             const body = req.body;
 
             const submitController = new SubmitController(data);
-            submitController.createSubmit(body);
+            console.log(submitController.createSubmit(body));
 
             res.send(body);
         });
