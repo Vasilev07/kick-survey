@@ -12,11 +12,7 @@ $(function () {
         }
     });
 
-<<<<<<< HEAD
-    var pie = new Chart(document.getElementById("pie-chart"), {
-=======
     const a = new Chart(document.getElementById("pie-chart"), {
->>>>>>> 0f7ec4ef2dda0ebe0bc67f29dc0da8f4db5819f9
         type: "pie",
         data: {
             labels: responseResult.labelPie,
@@ -33,11 +29,7 @@ $(function () {
             }
         }
     });
-<<<<<<< HEAD
-    var donut = new Chart(document.getElementById("chart2"), {
-=======
     const b = new Chart(document.getElementById("chart2"), {
->>>>>>> 0f7ec4ef2dda0ebe0bc67f29dc0da8f4db5819f9
         type: "doughnut",
         data: {
             labels: responseResult.labelDonut,
@@ -54,12 +46,8 @@ $(function () {
             }
         }
     });
-<<<<<<< HEAD
-    var bar = new Chart(document.getElementById("chart3"), {
-=======
 
     const bar = new Chart(document.getElementById("chart3"), {
->>>>>>> 0f7ec4ef2dda0ebe0bc67f29dc0da8f4db5819f9
         type: "bar",
         data: {
             labels: responseResult.labelBar,
