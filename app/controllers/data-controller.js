@@ -218,6 +218,7 @@ class DataController {
             const dayAsWord = days[(sub.DISTINCT.getDay())];
             daysOfSub.push(dayAsWord);
         });
+        
         const mapOfDays = new Map([...new Set(daysOfSub)]
             .map((x) => [x, daysOfSub.filter((y) => y === x).length]));
 
@@ -228,7 +229,7 @@ class DataController {
             label.push(key);
             data.push(value);
         });
-        
+
         return {
             label,
             data,

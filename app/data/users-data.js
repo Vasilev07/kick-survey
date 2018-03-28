@@ -30,3 +30,4 @@ class UsersData extends Data {
 module.exports = {
     UsersData,
 };
+
