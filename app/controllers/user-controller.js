@@ -97,15 +97,12 @@ class UserController {
      * @return {UserError|string}
      */
     async validateUsername(username) {
-        const usernameArray = [];
+        let usernameArray;
         try {
-            await this.data.users.getAllUsernames().map(async (userData) => {
-                usernameArray.push(userData.username);
-            });
+            usernameArray = await this.data.users.getAllUsernames();
         } catch (err) {
             throw new UserError.NullUsername();
         }
-
 
         if (usernameArray.includes(username)) {
             throw new UserError.ExistingUsername();
