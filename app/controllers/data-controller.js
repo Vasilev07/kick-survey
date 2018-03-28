@@ -210,6 +210,31 @@ class DataController {
         };
     }
 
+    async getAllSubmitions() {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
+        const daysOfSub = [];
+        submisions.map((sub) => {
+            const dayAsWord = days[(sub.DISTINCT.getDay())];
+            daysOfSub.push(dayAsWord);
+        });
+        const mapOfDays = new Map([...new Set(daysOfSub)]
+            .map((x) => [x, daysOfSub.filter((y) => y === x).length]));
+
+        const label = [];
+        const data = [];
+
+        mapOfDays.forEach((value, key, map) => {
+            label.push(key);
+            data.push(value);
+        });
+        
+        return {
+            label,
+            data,
+        };
+    }
+
     getAllCategories() {
         return this.data.categories.getAll();
     }

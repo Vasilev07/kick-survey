@@ -75,15 +75,19 @@ const init = (app, data) => {
         })
         .post('/api/statistics', async (req, res) => {
             try {
-                const statisticsData =
+                const statisticsPie =
                     await dataController.getAllUsersCategories();
-                const statisticDataSecond =
+                const statisticsDataDonut =
                     await dataController.getAllUsersTypes();
+                const statisticsDataBar =
+                    await dataController.getAllSubmitions();
                 const context = {
-                    labelPie: statisticsData.label,
-                    dataPie: statisticsData.data,
-                    labelDonut: statisticDataSecond.label,
-                    dataDonut: statisticDataSecond.data,
+                    labelPie: statisticsPie.label,
+                    dataPie: statisticsPie.data,
+                    labelDonut: statisticsDataDonut.label,
+                    dataDonut: statisticsDataDonut.data,
+                    labelBar: statisticsDataBar.label,
+                    dataBar: statisticsDataBar.data,
                 };
                 res.status(200).send(context);
             } catch (error) {

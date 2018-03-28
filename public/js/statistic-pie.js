@@ -49,12 +49,12 @@ $(function () {
     var c = new Chart(document.getElementById("chart3"), {
         type: 'bar',
         data: {
-          labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+          labels: responseResult.labelBar,
           datasets: [
             {
-              label: "Population (millions)",
+              label: "Submitted surveys",
               backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-              data: [2478,5267,734,784,433]
+              data: responseResult.dataBar
             }
           ]
         },
@@ -62,7 +62,7 @@ $(function () {
           legend: { display: false },
           title: {
             display: true,
-            text: 'Predicted world population (millions) in 2050'
+            text: 'Submitted surveys in day of week'
           }
         }
     });
