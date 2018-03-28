@@ -76,6 +76,12 @@ const populateData = async () => {
         is_required: 0,
         type_id: 6,
     };
+    const question6 = {
+        order: 6,
+        name: 'Koga si svoboden be?',
+        is_required: 1,
+        type_id: 6,
+    };
 
     const answer11 = {
         answer_name: 'Da, shte vali dnes',
@@ -95,7 +101,10 @@ const populateData = async () => {
     const answer41 = {
         answer_name: '',
     };
-    const  answer51 = {
+    const answer51 = {
+        answer_name: '',
+    };
+    const answer61 = {
         answer_name: '',
     };
 
@@ -118,14 +127,14 @@ const populateData = async () => {
     const surveyQ3Model = await Question.create(question3);
     const surveyQ4Model = await Question.create(question4);
     const surveyQ5Model = await Question.create(question5);
-
-
+    const surveyQ6Model = await Question.create(question6);
 
     surveyQ1Model.setSurvey(userSurvey1Model);
     surveyQ2Model.setSurvey(userSurvey1Model);
     surveyQ3Model.setSurvey(userSurvey1Model);
     surveyQ4Model.setSurvey(userSurvey1Model);
     surveyQ5Model.setSurvey(userSurvey1Model);
+    surveyQ6Model.setSurvey(userSurvey1Model);
 
     const surveyA11Model = await Answer.create(answer11);
     const surveyA12Model = await Answer.create(answer12);
@@ -134,7 +143,7 @@ const populateData = async () => {
     const surveyA31Model = await Answer.create(answer31);
     const surveyA41Model = await Answer.create(answer41);
     const surveyA51Model = await Answer.create(answer51);
-
+    const surveyA61Model = await Answer.create(answer61);
 
     surveyA11Model.setQuestion(surveyQ1Model);
     surveyA12Model.setQuestion(surveyQ1Model);
@@ -142,6 +151,8 @@ const populateData = async () => {
     surveyA22Model.setQuestion(surveyQ2Model);
     surveyA31Model.setQuestion(surveyQ3Model);
     surveyA41Model.setQuestion(surveyQ4Model);
+    surveyA51Model.setQuestion(surveyQ5Model);
+    surveyA61Model.setQuestion(surveyQ6Model);
 };
 
 populateData().then(() => {

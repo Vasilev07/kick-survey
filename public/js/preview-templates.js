@@ -1,6 +1,8 @@
 (function () {
     const previews = (function () {
         const _slidersIds = [];
+        const _dateTimeIds = [];
+
         const sliderPreview = function (data, index) {
             const questionWrapper = document.createElement("div");
             const order = document.createElement("span");
@@ -131,6 +133,60 @@
             return questionWrapper;
         };
 
+        const datePreview = function (data, index) {
+            const questionWrapper = document.createElement("div");
+            const dateWrapper = document.createElement("div");
+            const timeWrapper = document.createElement("div");
+            const order = document.createElement("span");
+            const questionLabel = document.createElement("label");
+            const date = document.createElement("input");
+            const time = document.createElement("input");
+            const dateLabel = document.createElement("label");
+            const timeLabel = document.createElement("label");
+
+            date.setAttribute("type", "text");
+            date.setAttribute("name", "question-" +
+                data.questionData.questionId + "-" + data.questionData.type);
+            time.setAttribute("type", "text");
+            date.setAttribute("name", "question-" +
+                data.questionData.questionId + "-" + data.questionData.type);
+            dateLabel.setAttribute("for", "datepicker-" + index);
+            timeLabel.setAttribute("for", "timepicker-" + index);
+
+            date.id = "datepicker-" + index;
+            time.id = "timepicker-" + index;
+            data.className += " datepicker";
+            time.className += " timepicker";
+            dateWrapper.className = "date-wrapper";
+            timeWrapper.className = "time-wrapper";
+            questionWrapper.className = "question-wrapper";
+
+            order.innerHTML = index + ". ";
+            questionLabel.innerHTML = data.questionData.question;
+            dateLabel.innerHTML = "Date: ";
+            timeLabel.innerHTML = "Time: ";
+
+            if (data.questionData.isRequired) {
+                date.setAttribute("required", "required");
+            }
+
+            dateWrapper.appendChild(dateLabel);
+            dateWrapper.appendChild(date);
+            timeWrapper.appendChild(timeLabel);
+            timeWrapper.appendChild(time);
+            questionWrapper.appendChild(order);
+            questionWrapper.appendChild(questionLabel);
+            questionWrapper.appendChild(dateWrapper);
+            questionWrapper.appendChild(timeWrapper);
+
+            _dateTimeIds.push({
+                dateId: "#datepicker-" + index,
+                timeId: "#timepicker-" + index
+            });
+
+            return questionWrapper;
+        };
+
         const injectSliders = function (sliders) {
             sliders.forEach((slider) => {
                 $(slider.slide).slider({
@@ -149,6 +205,19 @@
             });
         };
 
+        const injectDates = function (dateTime) {
+            console.log(dateTime);
+            dateTime.forEach(function (date) {
+                $(date.dateId).datepicker({
+                    minDate: new Date()
+                });
+                $(date.timeId).timepicker({
+                    "timeFormat": "H:i:s",
+                    "step": 15,
+                    "forceRoundTime": true
+                });
+            });
+        };
 
         const emojisChoicePreview = function (data, index) {
             const questionWrapper = document.createElement("div");
@@ -216,8 +285,11 @@
         };
 
         return {
+            injectDates,
             injectSliders,
+            _dateTimeIds,
             _slidersIds,
+            datePreview,
             singleTextboxPreview,
             singleChoicePreview,
             multipleChoicePreview,

@@ -23,9 +23,9 @@ $(function () {
             const surveyCatWrapper = document.createElement("div");
             const surveyDateWrapper = document.createElement("div");
 
-            const surveyNameParagraph = document.createElement("p");
-            const surveyCatParagraph = document.createElement("p");
-            const surveyDateParagraph = document.createElement("p");
+            const surveyNameParagraph = document.createElement("span");
+            const surveyCatParagraph = document.createElement("span");
+            const surveyDateParagraph = document.createElement("span");
 
             const surveyNameSpan = document.createElement("span");
             const surveyCatSpan = document.createElement("span");
@@ -34,6 +34,10 @@ $(function () {
             $(surveyNameParagraph).html("Survey: ");
             $(surveyCatParagraph).html("Category: ");
             $(surveyDateParagraph).html("Created at: ");
+
+            $(surveyNameSpan).html(survey.name);
+            $(surveyCatSpan).html(survey.Category.name);
+            $(surveyDateSpan).html(new Date(survey.createdAt));
 
             $(surveyNameWrapper).addClass("col-md-4", "survey-name");
             $(surveyCatWrapper).addClass("col-md-4", "survey-category");
@@ -83,11 +87,15 @@ $(function () {
                 } else if (element.questionData.type === "emojis") {
                     newElement = window.previews.emojisChoicePreview(element, index + 1);
                     formGroup.appendChild(newElement);
+                } else if (element.questionData.type === "date") {
+                    newElement = window.previews.datePreview(element, index + 1);
+                    formGroup.appendChild(newElement);
                 }
                 form.appendChild(row);
             });
 
             window.previews.injectSliders(window.previews._slidersIds);
+            window.previews.injectDates(window.previews._dateTimeIds);
 
             const submitBtn = document.createElement("button");
             submitBtn.id = "submit-survey-btn";
