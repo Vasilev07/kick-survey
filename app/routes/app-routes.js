@@ -29,6 +29,9 @@ const init = (app, data) => {
 
             res.render('shared-views/master', context);
         })
+        .get('/test', (req, res) => {
+            res.render('test-form', {});
+        })
         .get('/index', async (req, res) => {
             if (!req.isAuthenticated()) {
                 return res.redirect('/');
@@ -48,15 +51,12 @@ const init = (app, data) => {
             if (!req.isAuthenticated()) {
                 return res.redirect('/');
             }
-
             const categories = await dataController.getAllCategories();
             const questionTypes = await dataController.getAllQuestionTypes();
-
             const model = {
                 categories,
                 questionTypes,
             };
-
             return res.render('create-survey/page', model);
         })
         .get('/api/:url', async (req, res) => {
@@ -89,7 +89,7 @@ const init = (app, data) => {
         })
         .post('/submit', async (req, res) => {
             const body = req.body;
-
+            console.log(body);
             const submitController = new SubmitController(data);
             console.log(submitController.createSubmit(body));
 
