@@ -45,6 +45,7 @@ $(function () {
                 surveyQuestionsAnswers.push({
                     question: $(el).find('input[name="question"]').val(),
                     answerType: $(el).find('select[name="question-type"]').val(),
+                    // todo array of answers
                 }, );
             });
         var submitObj = {
@@ -55,13 +56,13 @@ $(function () {
         $.ajax({
             method: "POST",
             async: true,
-            url: "/submit",
+            url: "/create",
             data: submitObj,
             error: function (error) {
-                console.log(error);                
+                alert('Error saving order');
             }, 
             success: function (resolve) {
-                window.location.href = '/submit';
+                console.log(resolve);
             }
         });
     });
