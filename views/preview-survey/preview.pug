@@ -8,10 +8,12 @@ html(lang="en")
         link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
         link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
         link(rel="stylesheet", href="../static/styles/main.css")
+        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/timepicker@1.11.12/jquery.timepicker.min.css")
         link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous")
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
-        script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")        
+        script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")     
+        script(src="https://cdn.jsdelivr.net/npm/timepicker@1.11.12/jquery.timepicker.min.js")   
         script(src="../static/js/preview-templates.js")
         script(src="../static/js/preview.js")
         
@@ -21,14 +23,5 @@ html(lang="en")
 
         .container
             .row#initial
-                .col-md-4.survey-name
-                    p Survey: 
-                        span
-                .col-md-4.survey-category
-                    p Category: 
-                        span
-                .col-md-4.created-date
-                    p Created at: 
-                        span
             .row
                 form#submit-survey()

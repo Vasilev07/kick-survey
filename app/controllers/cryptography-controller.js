@@ -24,10 +24,14 @@ class Cryptography {
     }
 
     decrypt(text) {
-        const decipher = crypto.createDecipheriv(algorithm, key, iv);
-        let dec = decipher.update(text, 'hex', 'utf8');
-        dec += decipher.final('utf8');
-        return dec;
+        try {
+            const decipher = crypto.createDecipheriv(algorithm, key, iv);
+            let dec = decipher.update(text, 'hex', 'utf8');
+            dec += decipher.final('utf8');
+            return dec;
+        } catch (err) {
+            throw err;
+        }
     }
 
     /**

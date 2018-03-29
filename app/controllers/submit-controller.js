@@ -92,7 +92,7 @@ class SubmitController {
     }
 
     _currentDate(today) {
-        const dd = (today.getDay() < 10 ? '0' : '') + today.getMonth();
+        const dd = (today.getDate() < 10 ? '0' : '') + today.getDate();
         const mm = (today.getMonth() + 1 < 10 ? '0' : '') +
             (today.getMonth() + 1);
         const yyyy = today.getFullYear();

@@ -15,6 +15,11 @@ class SubmittedAnswerData extends Data {
             },
         });
     }
+    getUniqueSubmitions() {
+        return this.Model.aggregate('createdAt', 'DISTINCT', {
+            plain: false,
+        });
+    }
 }
 
 module.exports = {

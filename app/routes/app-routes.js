@@ -61,26 +61,33 @@ const init = (app, data) => {
         })
         .get('/api/:url', async (req, res) => {
             const param = req.params.url;
-            const surveyData = await dataController.getUserSurveyData(param);
-            res.send(surveyData);
+
+            try {
+                const surveyData =
+                    await dataController.getUserSurveyData(param);
+                res.send(surveyData);
+            } catch (err) {
+                res.status(500).json(err);
+            }
         })
         .get('/preview/:url', async (req, res, next) => {
-            const param = req.params.url;
-            console.log(param);
-
             res.render('preview-survey/preview', {});
         })
         .post('/api/statistics', async (req, res) => {
             try {
-                const statisticsData =
+                const statisticsPie =
                     await dataController.getAllUsersCategories();
-                const statisticDataSecond =
+                const statisticsDataDonut =
                     await dataController.getAllUsersTypes();
+                const statisticsDataBar =
+                    await dataController.getAllSubmitions();
                 const context = {
-                    labelPie: statisticsData.label,
-                    dataPie: statisticsData.data,
-                    labelDonut: statisticDataSecond.label,
-                    dataDonut: statisticDataSecond.data,
+                    labelPie: statisticsPie.label,
+                    dataPie: statisticsPie.data,
+                    labelDonut: statisticsDataDonut.label,
+                    dataDonut: statisticsDataDonut.data,
+                    labelBar: statisticsDataBar.label,
+                    dataBar: statisticsDataBar.data,
                 };
                 res.status(200).send(context);
             } catch (error) {

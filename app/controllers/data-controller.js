@@ -1,5 +1,5 @@
 /* globals Map, Set */
-
+const SurveyError = require('./exceptions/survey-exceptions');
 const Crypto = require('./cryptography-controller');
 const lodash = require('lodash');
 class DataController {
@@ -60,12 +60,22 @@ class DataController {
      */
     async getUserSurveyData(url) {
         const cryptography = new Crypto();
-        const decrypt = cryptography.decrypt(url);
+        let decrypt;
+
+        try {
+            decrypt = cryptography.decrypt(url);
+        } catch (err) {
+            throw new SurveyError.SurveyNotFound();
+        }
 
         const userId = decrypt.match(/^(\d+)/)[0];
         const name = decrypt.slice(userId.length + 2);
 
         const survey = await this.data.surveys.getSurvey(userId, name);
+
+        if (!survey) {
+            throw new SurveyError.SurveyNotFound();
+        }
 
         const questions =
             await this.data.questions.getSurveyQuestions(survey.id);
@@ -194,6 +204,32 @@ class DataController {
             label.push(key);
             data.push(value);
         });
+        return {
+            label,
+            data,
+        };
+    }
+
+    async getAllSubmitions() {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
+        const daysOfSub = [];
+        submisions.map((sub) => {
+            const dayAsWord = days[(sub.DISTINCT.getDay())];
+            daysOfSub.push(dayAsWord);
+        });
+        
+        const mapOfDays = new Map([...new Set(daysOfSub)]
+            .map((x) => [x, daysOfSub.filter((y) => y === x).length]));
+
+        const label = [];
+        const data = [];
+
+        mapOfDays.forEach((value, key, map) => {
+            label.push(key);
+            data.push(value);
+        });
+
         return {
             label,
             data,

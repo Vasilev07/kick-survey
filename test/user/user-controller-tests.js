@@ -5,7 +5,7 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 const UserController = require('../../app/controllers/user-controller');
-const UserError = require('../../app/controllers/exceptions');
+const UserError = require('../../app/controllers/exceptions/data-exceptions');
 let userArray = [];
 
 const fakeData = {
@@ -32,6 +32,68 @@ const fakeData = {
 };
 
 describe('UserController', () => {
+    describe('validateUsername', () => {
+        describe('when data is valid', () => {
+            it('expect to return the passed username', async () => {
+                const username = 'Goshko';
+
+                const controller = new UserController(fakeData);
+
+                const validatedUsername =
+                    await controller.validateUsername(username);
+
+                expect(validatedUsername).to.eq(username);
+            });
+        });
+        describe('when data is invalid', () => {
+            it('expect to throw ExistingUsername', async () => {
+                const existingUsername = 'Gosho';
+
+                const controller = new UserController(fakeData);
+
+                userArray = [{
+                    username: 'Gosho',
+                }];
+
+                const func = async () => {
+                    return await controller.validateUsername(existingUsername);
+                };
+
+                expect(func())
+                    .to.eventually
+                    .be.rejectedWith('This username already exists')
+                    .and.be.an.instanceOf(UserError.ExistingUsername);
+            });
+            it('expect to throw EmptyUsername', async () => {
+                const emptyUsername = '';
+
+                const controller = new UserController(fakeData);
+
+                const func = async () => {
+                    return await controller.validateUsername(emptyUsername);
+                };
+                expect(func())
+                    .to.eventually
+                    .be.rejectedWith('Username cannot be empty')
+                    .and.be.an.instanceOf(UserError.EmptyUsername);
+            });
+            // it('expect to throw NullUsername', async () => {
+            //     userArray = null;
+            //     const username = null;
+
+            //     const controller = new UserController(fakeData);
+
+            //     const func = async () => {
+            //         return await controller.validateUsername(username);
+            //     };
+
+            //     expect(func())
+            //     .to.eventually
+            //     .be.rejectedWith('getAllUsernames returns null')
+            //     .and.be.instanceOf(UserError.NullUsername);
+            // });
+        });
+    });
     describe('validateUserEmail', () => {
         describe('when data is valid', () => {
             it('expect to return the passed email', async () => {
@@ -60,9 +122,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.eventually
-                        .be.rejectedWith('This email already exists')
-                        .and.be.an.instanceOf(UserError.ExistingEmail);
+                    .to.eventually
+                    .be.rejectedWith('This email already exists')
+                    .and.be.an.instanceOf(UserError.ExistingEmail);
             });
             it('expect to throw InvalidEmail exception', async () => {
                 const existingEmail = 'userdomain.com';
@@ -74,9 +136,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.eventually
-                        .be.rejectedWith('This is not valid email')
-                        .and.be.an.instanceOf(UserError.InvalidEmail);
+                    .to.eventually
+                    .be.rejectedWith('This is not valid email')
+                    .and.be.an.instanceOf(UserError.InvalidEmail);
             });
             it('expect to throw EmptyEmail exception', async () => {
                 const existingEmail = '';
@@ -88,9 +150,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.eventually
-                        .be.rejectedWith('Email cannot be empty')
-                        .and.be.an.instanceOf(UserError.EmptyEmail);
+                    .to.eventually
+                    .be.rejectedWith('Email cannot be empty')
+                    .and.be.an.instanceOf(UserError.EmptyEmail);
             });
             it('expect to throw NullEmail exception', async () => {
                 userArray = null;
@@ -103,9 +165,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.eventually
-                        .be.rejectedWith('getAllEmails returns null')
-                        .and.be.an.instanceOf(UserError.NullEmail);
+                    .to.eventually
+                    .be.rejectedWith('getAllEmails returns null')
+                    .and.be.an.instanceOf(UserError.NullEmail);
             });
         });
     });
@@ -136,9 +198,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.eventually
-                        .be.rejectedWith('Passwords do not match')
-                        .and.be.an.instanceOf(UserError.NotMatchingPasswords);
+                    .to.eventually
+                    .be.rejectedWith('Passwords do not match')
+                    .and.be.an.instanceOf(UserError.NotMatchingPasswords);
             });
             it('expect to throw ShortPassword exception', () => {
                 const pass = '123';
@@ -152,9 +214,9 @@ describe('UserController', () => {
                 };
 
                 expect(func())
-                        .to.eventually
-                        .be.rejectedWith('Password must be at least 5 symbols')
-                        .and.be.an.instanceOf(UserError.ShortPassword);
+                    .to.eventually
+                    .be.rejectedWith('Password must be at least 5 symbols')
+                    .and.be.an.instanceOf(UserError.ShortPassword);
             });
         });
     });
