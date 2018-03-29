@@ -79,15 +79,19 @@ const init = (app, data) => {
                     await dataController.getAllUsersCategories();
                 const statisticsDataDonut =
                     await dataController.getAllUsersTypes();
-                const statisticsDataBar =
-                    await dataController.getAllSubmitions();
+                const statisticsDataBarByDate =
+                    await dataController.getAllSubmitionsByDate();
+                const statistiDataBarByDay =
+                    await dataController.getAllSubmitionsByDayOfWeek();
                 const context = {
                     labelPie: statisticsPie.label,
                     dataPie: statisticsPie.data,
                     labelDonut: statisticsDataDonut.label,
                     dataDonut: statisticsDataDonut.data,
-                    labelBar: statisticsDataBar.label,
-                    dataBar: statisticsDataBar.data,
+                    labelBar: statisticsDataBarByDate.label,
+                    dataBar: statisticsDataBarByDate.data,
+                    dataBarDay: statistiDataBarByDay.label,
+                    labelBarDay: statistiDataBarByDay.data,
                 };
                 res.status(200).send(context);
             } catch (error) {

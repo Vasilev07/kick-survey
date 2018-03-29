@@ -210,21 +210,62 @@ class DataController {
         };
     }
 
-    async getAllSubmitions() {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    async getAllSubmitionsByDate() {
+        const formatDates = (submitionDate) => {
+            let day = submitionDate.getDate();
+            let month = submitionDate.getMonth() + 1;
+            const year = submitionDate.getFullYear();
+            if (day < 10) {
+                day = '0' + day;
+            }
+            if (month < 10) {
+                month = '0' + month;
+            }
+            submitionDate = day + '/' + month + '/' + year;
+
+            return submitionDate;
+        };
+
         const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
         const daysOfSub = [];
         submisions.map((sub) => {
-            const dayAsWord = days[(sub.DISTINCT.getDay())];
-            daysOfSub.push(dayAsWord);
+            const uniqueDates = sub.DISTINCT;
+            daysOfSub.push(formatDates(uniqueDates));
         });
-        
         const mapOfDays = new Map([...new Set(daysOfSub)]
             .map((x) => [x, daysOfSub.filter((y) => y === x).length]));
+        let label = [];
+        const data = [];
+
+        mapOfDays.forEach((value, key, map) => {
+            label.push(key);
+            data.push(value);
+        });
+        label = label.slice(label.length - 7, 7);
+        return {
+            label,
+            data,
+        };
+    }
+
+    async getAllSubmitionsByDayOfWeek() {
+        const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
+        const daysOfSub = [];
+        const daysOfSubWithWord = [];
+        submisions.map((sub) => {
+            const dayAsDigit = (sub.DISTINCT.getDay());
+            daysOfSub.push(dayAsDigit + 1);
+        });
+        daysOfSub.sort();
+        daysOfSub.map((el) => {
+            daysOfSubWithWord.push(days[el]);
+        });
+        const mapOfDays = new Map([...new Set(daysOfSubWithWord)]
+            .map((x) => [x, daysOfSubWithWord.filter((y) => y === x).length]));
 
         const label = [];
         const data = [];
-
         mapOfDays.forEach((value, key, map) => {
             label.push(key);
             data.push(value);
