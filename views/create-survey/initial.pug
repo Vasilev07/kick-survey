@@ -5,7 +5,7 @@ mixin initial()
             input#survey-name.form-control(type='text', name='survey-name')
           div.form-group
             label(for='categories') Category:
-            select#categories.form-control
+            select#categories.form-control(name='survey-type')
               each category in categories
                 option(value=category.name)
                   | #{category.name}

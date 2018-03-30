@@ -29,6 +29,9 @@ const init = (app, data) => {
 
             res.render('shared-views/master', context);
         })
+        .get('/test', (req, res) => {
+            res.render('test-form', {});
+        })
         .get('/index', async (req, res) => {
             if (!req.isAuthenticated()) {
                 return res.redirect('/');
@@ -42,15 +45,12 @@ const init = (app, data) => {
             if (!req.isAuthenticated()) {
                 return res.redirect('/');
             }
-
             const categories = await dataController.getAllCategories();
             const questionTypes = await dataController.getAllQuestionTypes();
-
             const model = {
                 categories,
                 questionTypes,
             };
-
             return res.render('create-survey/page', model);
         })
         .get('/api/:url', async (req, res) => {
@@ -80,15 +80,19 @@ const init = (app, data) => {
                     await dataController.getAllUsersCategories();
                 const statisticsDataDonut =
                     await dataController.getAllUsersTypes();
-                const statisticsDataBar =
-                    await dataController.getAllSubmitions();
+                const statisticsDataBarByDate =
+                    await dataController.getAllSubmitionsByDate();
+                const statistiDataBarByDay =
+                    await dataController.getAllSubmitionsByDayOfWeek();
                 const context = {
                     labelPie: statisticsPie.label,
                     dataPie: statisticsPie.data,
                     labelDonut: statisticsDataDonut.label,
                     dataDonut: statisticsDataDonut.data,
-                    labelBar: statisticsDataBar.label,
-                    dataBar: statisticsDataBar.data,
+                    labelBar: statisticsDataBarByDate.label,
+                    dataBar: statisticsDataBarByDate.data,
+                    dataBarDay: statistiDataBarByDay.label,
+                    labelBarDay: statistiDataBarByDay.data,
                 };
                 res.status(200).send(context);
             } catch (error) {
@@ -108,7 +112,7 @@ const init = (app, data) => {
         })
         .post('/submit', async (req, res) => {
             const body = req.body;
-
+            console.log(body);
             const submitController = new SubmitController(data);
             console.log(submitController.createSubmit(body));
 
