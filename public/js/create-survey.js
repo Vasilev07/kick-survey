@@ -1,4 +1,17 @@
 $(function () {
+    let user;
+    $.ajax({
+        method: "POST",
+        async: true,
+        url: "/get-user",
+        error: function (error) {
+            console.log(error);
+        },
+        success: function (resolve) {
+            user = resolve;
+            console.log(user);
+        }
+    });
     $("#add-question-btn").hide();
     $("#continue-btn").click(function (e) {
         e.preventDefault();
@@ -21,9 +34,9 @@ $(function () {
         $("#create-survey-form").show();
         $("#add-question-btn").show();
 
-        $('#create-survey-form').show();
-        $('#add-question-btn').show();
-        $('#done-btn').show();
+        $("#create-survey-form").show();
+        $("#add-question-btn").show();
+        $("#done-btn").show();
 
         // AJAX request here
     });
