@@ -32,3 +32,10 @@ class SurveyData extends Data {
 module.exports = {
     SurveyData,
 };
+
+// const cont = new SurveyData();
+// const run = async () => {
+//     const res = await cont.getSurvey(1, 'Obshtestvenik');
+//     console.log(res.Category);
+// };
+// run();

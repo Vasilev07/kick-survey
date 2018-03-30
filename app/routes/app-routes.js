@@ -73,6 +73,23 @@ const init = (app, data) => {
         .get('/preview/:url', async (req, res, next) => {
             res.render('preview-survey/preview', {});
         })
+        .get('/statistics/:url', async (req, res) => {
+            res.render('preview-survey/statistics', {});
+        })
+        .get('/api/statistics/:url', async (req, res) => {
+            const url = req.params.url;
+            const decript = new CryptographyController();
+            const decriptUrl = decript.decrypt(url);
+            const decriptUrlArray = decriptUrl.split('&&');
+            const userId = decriptUrlArray[0];
+            const surveyName = decriptUrlArray[1];
+            const survey = await dataController.getSurveyData(userId);
+            console.log(survey);
+            const context = {
+                surveyName,
+            };
+            res.status(200).send(survey);
+        })
         .post('/api/statistics', async (req, res) => {
             try {
                 const statisticsPie =
