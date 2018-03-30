@@ -37,14 +37,8 @@ const init = (app, data) => {
                 return res.redirect('/');
             }
 
-            const model = await dataController.getUserSurveysData(req.user);
-            // return res.send(model);
             return res.render('index', {
                 isAuthenticated: req.isAuthenticated(),
-                username: req.user.username,
-                email: req.user.email,
-                name: req.user.first_name + ' ' + req.user.last_name,
-                model,
             });
         })
         .get('/create', async (req, res) => {
@@ -90,6 +84,13 @@ const init = (app, data) => {
             };
             res.status(200).send(survey);
         })
+        .post('/api/user-surveys', async (req, res) => {
+            const user = req.user;
+
+            const model = await dataController.getUserSurveysData(req.user);
+            console.log(model);
+            res.status(200).send(model);
+        })
         .post('/api/statistics', async (req, res) => {
             try {
                 const statisticsPie =
@@ -114,6 +115,17 @@ const init = (app, data) => {
             } catch (error) {
                 res.status(500).end();
             }
+        })
+        .post('/get-user', (req, res) => {
+            if (!req.isAuthenticated()) {
+                return res.status(500).send('Could not get user');
+            }
+            const user = {
+                username: req.user.username,
+                id: req.user.id,
+            };
+
+            return res.status(200).send(user);
         })
         .post('/submit', async (req, res) => {
             const body = req.body;
