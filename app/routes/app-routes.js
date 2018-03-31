@@ -67,6 +67,14 @@ const init = (app, data) => {
         .get('/preview/:url', async (req, res, next) => {
             res.render('preview-survey/preview', {});
         })
+        .get('/statistics/:url', async (req, res) => {
+            res.render('preview-survey/statistics', {});
+        })
+        .get('/api/statistics/:url', async (req, res) => {
+            const url = req.params.url;
+            const surveyData = await dataController.getUserSurveyData(url);
+            res.status(200).send(surveyData);
+        })
         .post('/api/user-surveys', async (req, res) => {
             const user = req.user;
             let surveys;

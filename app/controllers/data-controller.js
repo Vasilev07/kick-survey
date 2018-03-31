@@ -254,6 +254,8 @@ class DataController {
             data.push(value);
         });
         label = label.slice(label.length - 7, 7);
+        // bug with days on chart
+        // visualized 1 day less
         return {
             label,
             data,
@@ -269,6 +271,7 @@ class DataController {
         submisions.map((sub) => {
             const dayAsDigit = (sub.DISTINCT.getDay());
             daysOfSub.push(dayAsDigit + 1);
+            // bug with days on chart
         });
         daysOfSub.sort();
         daysOfSub.map((el) => {
@@ -299,3 +302,4 @@ class DataController {
 }
 
 module.exports = DataController;
+
