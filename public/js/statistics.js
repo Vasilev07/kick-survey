@@ -1,5 +1,6 @@
 $(function () {
     const url = window.location.href.match(/[0-9a-zA-Z]+$/);
+
     const surveyInfo = function (survey) {
         const infoWrapper = $("<div></div>");
         const thumbnailWrapper = $("<div></div>");
@@ -7,7 +8,7 @@ $(function () {
         const caption = $("<div></div>");
         const questionNameDiv = $("<div></div>");
         const typeOfAnswer = $("<div></div>");
-        
+
         const responsesDiv = $("<div></div>");
         const dateDiv = $("<div></div>");
         const totalDiv = $("<div></div>");
@@ -38,6 +39,8 @@ $(function () {
                 .addClass("info")
                 .append(survey.questionData.type));
 
+
+
         caption
             .append(questionNameDiv)
             .append("<hr>")
@@ -47,7 +50,7 @@ $(function () {
 
         survey.answersData.forEach((asnwer) => {
             const answerChoices = $("<div></div>");
-            answerChoices.addClass("survey-question row")
+            answerChoices.addClass("survey-question row answer")
                 .append($("<i></i>")
                     .addClass("fa fa-arrow-circle-right")
                     .tooltip({
@@ -56,9 +59,25 @@ $(function () {
                 .append($("<span></span>")
                     .addClass("info")
                     .append(asnwer.answer));
-                    caption.append(answerChoices).append("<hr>");
+            caption.append(answerChoices).append("<hr>");
         });
 
+        dateDiv.addClass("survey-date row")
+            .append($("<i></i>")
+                .addClass("fas fa-calendar-alt")
+                .tooltip({
+                    title: "Creation date"
+                }))
+            .append($("<span></span>")
+                .addClass("info")
+                .html((window.my_own_attr)
+                    .replace("T", " ")
+                    .replace("Z", " ")
+                    .slice(0, -5)));
+                    
+        caption
+            .append(dateDiv)
+            .append("<hr>");
         infoWrapper.append(thumbnailWrapper.append(caption));
 
         return infoWrapper;
@@ -78,6 +97,7 @@ $(function () {
             console.log(survey);
             // console.log(survey.surveyContentData);
             const surveysHeader = $("#main");
+            window.my_own_attr = survey.Category.createdAt;
             survey.surveyContentData.forEach((survey) => {
                 const newRow = surveyInfo(survey);
                 $("#main").append($(newRow));

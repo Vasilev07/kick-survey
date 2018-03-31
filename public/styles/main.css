@@ -119,3 +119,6 @@ hr {
 .bolded { 
     font-weight: bold;
 }
+.answer {
+    margin-left: 10px; 
+}
