@@ -72,17 +72,8 @@ const init = (app, data) => {
         })
         .get('/api/statistics/:url', async (req, res) => {
             const url = req.params.url;
-            const decript = new CryptographyController();
-            const decriptUrl = decript.decrypt(url);
-            const decriptUrlArray = decriptUrl.split('&&');
-            const userId = decriptUrlArray[0];
-            const surveyName = decriptUrlArray[1];
-            const survey = await dataController.getSurveyData(userId);
-            console.log(survey);
-            const context = {
-                surveyName,
-            };
-            res.status(200).send(survey);
+            const surveyData = await dataController.getUserSurveyData(url);
+            res.status(200).send(surveyData);
         })
         .post('/api/user-surveys', async (req, res) => {
             const user = req.user;

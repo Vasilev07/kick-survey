@@ -279,37 +279,7 @@ class DataController {
             data,
         };
     }
-    async getSurveyData(userId) {
-        const surveyData = await this.data.submittedAnswer.getUserSurveys(userId);
-        const questionIds = surveyData.map(async (question) => {
-            const questionId = question.question_id;
-            return questionId;
-        });
 
-        const allQuestionsIds = await Promise.all(questionIds);
-        const getQuestionsById = allQuestionsIds.map(async (qId) => {
-            const questionData = await this.data.questions.getQuestionById(qId);
-            const questionDataArray = questionData.map(async (question) => {
-                const questionAndAnswers = {
-                    questionAnsw: {
-                        name: question.name,
-                    },
-                    questionContentData: [],
-                };
-                let data = await this.data.answers.getQuestionAnswers(qId);
-                data = data.map((answerData)=>{
-                    answerData = answerData.answer_name;
-                    return answerData;
-                });
-                questionAndAnswers.questionContentData.push(data);
-                console.log(questionAndAnswers);
-                return await questionAndAnswers;
-            });
-            return await questionDataArray;
-        });
-        // console.log(getQuestionsById);
-        return await getQuestionsById;
-    }
     getAllCategories() {
         return this.data.categories.getAll();
     }
@@ -320,9 +290,3 @@ class DataController {
 
 module.exports = DataController;
 
-// const controller = new DataController();
-
-// const run = async () => {
-//     const res = await controller.getSurveyData(1);
-// };
-// run();
