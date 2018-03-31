@@ -27,7 +27,7 @@ class DataController {
 
             try {
                 count = await this.data
-                        .submittedAnswer.countUniqueSubmits(user.id, survey.id);
+                    .submittedAnswer.countUniqueSubmits(user.id, survey.id);
             } catch (err) {
                 console.log(err);
             }
@@ -264,14 +264,19 @@ class DataController {
 
     async getAllSubmitionsByDayOfWeek() {
         const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-            'Friday', 'Saturday', 'Sunday'];
+            'Friday', 'Saturday', 'Sunday',
+        ];
         const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
         const daysOfSub = [];
         const daysOfSubWithWord = [];
         submisions.map((sub) => {
-            const dayAsDigit = (sub.DISTINCT.getDay());
-            daysOfSub.push(dayAsDigit + 1);
-            // bug with days on chart
+            let dayAsDigit;
+            if (sub.DISTINCT.getDay() === 0) {
+                dayAsDigit = 7;
+            } else {
+                dayAsDigit = (sub.DISTINCT.getDay());
+            }
+            daysOfSub.push(dayAsDigit);
         });
         daysOfSub.sort();
         daysOfSub.map((el) => {
@@ -302,4 +307,3 @@ class DataController {
 }
 
 module.exports = DataController;
-
