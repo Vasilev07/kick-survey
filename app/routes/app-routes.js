@@ -69,10 +69,14 @@ const init = (app, data) => {
         })
         .post('/api/user-surveys', async (req, res) => {
             const user = req.user;
-
-            const model = await dataController.getUserSurveysData(req.user);
-            console.log(model);
-            res.status(200).send(model);
+            let surveys;
+            try {
+                surveys = await dataController.getUserSurveysData(req.user);
+                res.status(200).send(surveys);
+            } catch (err) {
+                res.status(500).send(surveys);
+            }
+            console.log(surveys);
         })
         .post('/api/statistics', async (req, res) => {
             try {

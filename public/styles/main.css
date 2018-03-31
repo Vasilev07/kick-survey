@@ -33,19 +33,84 @@
     border-color: #90D481 !important;
 }
 
-/* Emojies */
-.far{
+/* Emojis */
+
+.emoji {
     font-size: 4rem;
     padding: 30px;
 }
-.form-check-input{
+
+.form-check-input {
     visibility: hidden;
     position: absolute;
 }
-.form-check-input + i{
+
+.form-check-input+i {
     cursor: pointer;
     color: green;
 }
-.form-check-input:checked + i{
+
+.form-check-input:checked+i {
     color: rgb(132, 173, 132);
+}
+
+/* User's surveys visualizations */
+
+.survey-title,
+.survey-cat,
+.survey-date,
+.survey-responses,
+.survey-footer {
+    padding: 0 20px;
+}
+
+.survey span {
+    margin-left: 10px;
+}
+
+.survey-analyse,
+.survey-share,
+.survey-delete {
+    display: inline;
+    text-align: center
+}
+
+.delete-anchor,
+.share-button,
+.analyze-anchor {
+    text-decoration: none;
+    color: #000;
+    padding: 0 10px;
+}
+
+.analyze-anchor:hover {
+    color: #90D481;
+    cursor: pointer;
+}
+
+.delete-anchor:hover {
+    color: #ce0101;
+    cursor: pointer;
+}
+
+.share-button:hover {
+    color: #337ab7;
+    cursor: pointer;
+}
+
+.share-button {
+    border: none;
+    background: none;
+}
+
+.center {
+    text-align: center
+}
+
+.info-header {
+    background-color: lightslategray;
+}
+
+hr {
+    margin: 5px 0px;
 }

@@ -20,6 +20,17 @@ class SubmittedAnswerData extends Data {
             plain: false,
         });
     }
+
+    countUniqueSubmits(userId, surveyId) {
+        return this.Model.count({
+            col: 'submit_identifier',
+            distinct: true,
+            where: {
+                user_id: userId,
+                survey_id: surveyId,
+            },
+        });
+    }
 }
 
 module.exports = {

@@ -15,6 +15,7 @@ class DataController {
      */
     async getUserSurveysData(user) {
         let surveys;
+        const cryptography = new Crypto();
         try {
             surveys = await this.data.surveys.getUserSurveys(user.id);
         } catch (err) {
@@ -22,12 +23,23 @@ class DataController {
         }
 
         const surveysResults = surveys.map(async (survey) => {
+            let count = 0;
+
+            try {
+                count = await this.data
+                        .submittedAnswer.countUniqueSubmits(user.id, survey.id);
+            } catch (err) {
+                console.log(err);
+            }
+
             const surveyData = {
                 surveyData: {
                     id: survey.id,
                     name: survey.name,
+                    encryptedUrl: cryptography.encrypt(user.id, survey.name),
                     category: survey.Category.name,
                     createdAt: survey.createdAt,
+                    uniqueSubmits: count,
                 },
                 surveyContentData: [],
             };
@@ -249,7 +261,8 @@ class DataController {
     }
 
     async getAllSubmitionsByDayOfWeek() {
-        const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+            'Friday', 'Saturday', 'Sunday'];
         const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
         const daysOfSub = [];
         const daysOfSubWithWord = [];
