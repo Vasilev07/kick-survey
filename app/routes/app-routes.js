@@ -61,6 +61,12 @@ const init = (app, data) => {
             };
             return res.render('create-survey/create-survey-master', model);
         })
+        .post('/create', async (req, res) => {
+            if (!req.isAuthenticated()) {
+                return res.redirect('/');
+            }
+            console.log(req.body)
+        })
         .delete('/delete-survey', async (req, res) => {
             try {
                 await dataController.deleteSurvey(req.body.survey);

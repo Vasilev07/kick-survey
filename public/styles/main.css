@@ -69,6 +69,7 @@
 }
 .question-title {
     font-size: 2rem;
+}
 /* User's surveys visualizations */
 
 .survey-question,
@@ -174,3 +175,14 @@ hr {
 .answer {
     margin-left: 10px; 
 }
+
+/* .add-answer-btn,
+.delete-answer-btn {
+    padding: 3px 8px;
+    margin-top: 5px
+}
+*/
+.add-answer-btn {
+    margin-right: 5px
+}
+
