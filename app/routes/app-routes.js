@@ -99,7 +99,7 @@ const init = (app, data) => {
         })
         .get('/api/analyze/:url', async (req, res) => {
             const url = req.params.url;
-            const surveyData = await dataController.getUserSurveyData(url);
+            const surveyData = await dataController.getSubmittedData(url);
             res.status(200).send(surveyData);
         })
         .post('/api/user-surveys', async (req, res) => {

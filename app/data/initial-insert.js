@@ -1,4 +1,4 @@
-чconst {
+const {
     Category,
     Type,
     User,

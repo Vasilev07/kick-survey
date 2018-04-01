@@ -70,6 +70,60 @@ class DataController {
 
         return surveysData;
     }
+
+    counterArray(array) {
+        const mapCOunter = new Map([...new Set(array)]
+            .map((x) => [x, array.filter((y) => y === x).length]));
+
+        return mapCOunter;
+    }
+
+    async getSubmittedData(url) {
+        const surveyData = await this.getUserSurveyData(url);
+        const userId = surveyData.user_id;
+        const surveyName = surveyData.name;
+        const surveyId = await this.data.surveys.getSurvey(userId, surveyName);
+        const res = surveyData.dataValues.surveyContentData.map(async (content) => {
+            const questionId = content.questionData.questionId;
+            const answerData = await this.data.submittedAnswer.getAnswersAndAnswerId(userId, surveyId.id, questionId);
+            const result = answerData.map(async (data) => {
+                let obj = {};
+                if (data.dataValues.answer !== null) {
+                    obj = {
+                        answer: data.dataValues.answer,
+                    };
+                } else {
+                    obj = {
+                        answerId: data.dataValues.answer_id,
+                    };
+                }
+                return obj;
+            });
+            const promiseIt = await Promise.all(result);
+
+            let answerCount;
+
+            if (promiseIt[0].answer) {
+                answerCount = promiseIt.reduce((sums, entry) => {
+                    sums[entry.answer] = (sums[entry.answer] || 0) + 1;
+                    return sums;
+                }, {});
+            }
+            if (promiseIt[0].answerId) {
+                answerCount = promiseIt.reduce((sums, entry) => {
+                    sums[entry.answerId] = (sums[entry.answerId] || 0) + 1;
+                    return sums;
+                }, {});
+            }
+            content.answers = promiseIt;
+            content.answerCount = answerCount;
+            // console.log(promiseIt);
+            return promiseIt;
+        });
+        await Promise.all(res);
+        return surveyData;
+    }
+
     /**
      * @description Gets only one survey based on a url. Extracts userId and
      * survey name from the encrypted url.
@@ -182,9 +236,9 @@ class DataController {
         let finalData = await Promise.all(allUsersRes);
 
         finalData = lodash.flattenDeep(finalData);
-
-        const mapOfCategories = new Map([...new Set(finalData)]
-            .map((x) => [x, finalData.filter((y) => y === x).length]));
+        const mapOfCategories = this.counterArray(finalData);
+        // const mapOfCategories = new Map([...new Set(finalData)]
+        //     .map((x) => [x, finalData.filter((y) => y === x).length]));
 
         const label = [];
         const data = [];
@@ -214,8 +268,9 @@ class DataController {
         });
         let result = await Promise.all(res);
         result = lodash.flattenDeep(result);
-        const mapOfCategories = new Map([...new Set(result)]
-            .map((x) => [x, result.filter((y) => y === x).length]));
+        const mapOfCategories = this.counterArray(result);
+        // const mapOfCategories = new Map([...new Set(result)]
+        //     .map((x) => [x, result.filter((y) => y === x).length]));
 
         const label = [];
         const data = [];
@@ -252,8 +307,9 @@ class DataController {
             const uniqueDates = sub.DISTINCT;
             daysOfSub.push(formatDates(uniqueDates));
         });
-        const mapOfDays = new Map([...new Set(daysOfSub)]
-            .map((x) => [x, daysOfSub.filter((y) => y === x).length]));
+        const mapOfDays = this.counterArray(daysOfSub);
+        // const mapOfDays = new Map([...new Set(daysOfSub)]
+        //     .map((x) => [x, daysOfSub.filter((y) => y === x).length]));
         let label = [];
         const data = [];
 
@@ -291,10 +347,10 @@ class DataController {
         daysOfSub.map((el) => {
             daysOfSubWithWord.push(days[el]);
         });
-
-        const mapOfDays = new Map([...new Set(daysOfSubWithWord)]
-            .map((x) => [x, daysOfSubWithWord.filter((y) => y === x).length]));
-
+        const mapOfDays = this.counterArray(daysOfSub);
+        // const mapOfDays = new Map([...new Set(daysOfSubWithWord)]
+        //     .map((x) => [x, daysOfSubWithWord.filter((y) => y === x).length]));
+        // console.log(mapOfDays);
         const label = [];
         const data = [];
         mapOfDays.forEach((value, key, map) => {

@@ -48,7 +48,7 @@ $(function () {
             .append("<hr>")
 
 
-        survey.answersData.forEach((asnwer) => {
+        Object.keys(survey.answerCount).forEach((answer) => {
             const answerChoices = $("<div></div>");
             answerChoices.addClass("survey-question row answer")
                 .append($("<i></i>")
@@ -58,7 +58,11 @@ $(function () {
                     }))
                 .append($("<span></span>")
                     .addClass("info")
-                    .append(asnwer.answer));
+                    .append(answer))
+                .append($("<span></span>")
+                    .addClass("info")
+                    .addClass("badge")
+                    .append(survey.answerCount[answer]));
             caption.append(answerChoices).append("<hr>");
         });
 
@@ -74,7 +78,7 @@ $(function () {
                     .replace("T", " ")
                     .replace("Z", " ")
                     .slice(0, -5)));
-                    
+
         caption
             .append(dateDiv)
             .append("<hr>");
