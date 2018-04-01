@@ -23,6 +23,7 @@ const init = (app, data) => {
             const statisticsData = await dataController.getAllUsersCategories();
             const context = {
                 isAuthenticated: req.isAuthenticated(),
+                user: req.user,
                 label: statisticsData.label,
                 data: statisticsData.data,
             };
@@ -46,6 +47,7 @@ const init = (app, data) => {
 
             return res.render('index', {
                 isAuthenticated: req.isAuthenticated(),
+                user: req.user,
                 categories,
             });
         })
@@ -58,6 +60,8 @@ const init = (app, data) => {
             const model = {
                 categories,
                 questionTypes,
+                isAuthenticated: req.isAuthenticated(),
+                user: req.user,
             };
             return res.render('create-survey/create-survey-master', model);
         })
@@ -88,14 +92,20 @@ const init = (app, data) => {
             }
         })
         .get('/preview/:url', async (req, res, next) => {
-            res.render('preview-survey/preview', {});
+            res.render('preview-survey/preview', {
+                isAuthenticated: req.isAuthenticated(),
+                user: req.user,
+            });
         })
         .get('/analyze/:url', async (req, res) => {
-            res.render('preview-survey/statistics', {});
+            res.render('preview-survey/statistics', {
+                isAuthenticated: req.isAuthenticated(),
+                user: req.user,
+            });
         })
         .get('/api/analyze/:url', async (req, res) => {
             const url = req.params.url;
-            const surveyData = await dataController.getUserSurveyData(url);
+            const surveyData = await dataController.getSubmittedData(url);
             res.status(200).send(surveyData);
         })
         .post('/api/user-surveys', async (req, res) => {

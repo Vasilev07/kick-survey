@@ -33,6 +33,10 @@
     border-color: #90D481 !important;
 }
 
+.nav-icon {
+    padding-right: 5px;
+}
+
 /* Emojis */
 
 .emoji {
@@ -186,3 +190,7 @@ hr {
     margin-right: 5px
 }
 
+img{
+    width: 90px;
+    height: 50px;
+}

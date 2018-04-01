@@ -5,7 +5,8 @@ mixin nav()
     nav.navbar
         .container-fluid
             .navbar-header
-                a.navbar-brand(href="Kick Survey")
+                img(src="/static/img/logo.png", alt="HAHAH")
+                //- a.navbar-brand(href="Kick Survey")
             //- ul.nav.navbar-nav
             //-     li.active
             //-         a(href="#")
@@ -26,22 +27,22 @@ mixin nav()
                 
                     li
                         a(href="#", data-toggle="modal", data-target="#myModal")
-                            span
+                            i.fas.fa-user-plus.nav-icon
                             | Sign up
                     +register()
                     li
                         a(href="#", data-toggle="modal", data-target="#myModal2")
-                            span.glyphicon.glyphicon-log-in
+                            i.fas.fa-sign-in-alt.nav-icon
                             | Login
                     +login()
                 else
                     li
                         a(href="/index")
-                            span.glyphicon.glyphicon-user
-                            | Hello, #{username}
+                            i.fas.fa-user.nav-icon
+                            | Hello, #{user.username}
                     li
                         a(href="/logout")
-                            span.glyphicon.glyphicon-log-out
+                            i.fas.fa-sign-out-alt.nav-icon
                             | Logout
 
                 
