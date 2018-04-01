@@ -15,9 +15,21 @@ class SubmittedAnswerData extends Data {
             },
         });
     }
-    getUniqueSubmitions() {
+
+    getUniqueSubmissions() {
         return this.Model.aggregate('createdAt', 'DISTINCT', {
             plain: false,
+        });
+    }
+
+    countUniqueSubmits(userId, surveyId) {
+        return this.Model.count({
+            col: 'submit_identifier',
+            distinct: true,
+            where: {
+                user_id: userId,
+                survey_id: surveyId,
+            },
         });
     }
 }

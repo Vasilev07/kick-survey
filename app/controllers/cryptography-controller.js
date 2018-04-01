@@ -7,9 +7,14 @@ const key = new Buffer('9vApxLk5G3PAsJrM', 'utf8');
 const iv = new Buffer('FnJL7EDzjqWjcaY9', 'utf8');
 
 class Cryptography {
-    constructor() {
-    }
-
+    constructor() {}
+    /**
+     * @description Compares the plain text password with a hashed one
+     * @param {Number|string} user Usually a user_id should be passed
+     * @param {string} survey The survey name
+     * @param {Number} date
+     * @return {string} The encrypted combination of the arguments
+     */
     encrypt(user, survey, date = null) {
         let text;
         if (date) {

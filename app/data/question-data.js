@@ -17,8 +17,21 @@ class QuestionData extends Data {
             include: [Type],
         });
     }
+    async getQuestionById(questionId) {
+        return this.Model.findAll({
+            where: {
+                id: questionId,
+            },
+        });
+    }
 }
 
 module.exports = {
     QuestionData,
 };
+// const constrol = new QuestionData();
+// const run = async () => {
+//     const res = await constrol.getQuestionById(1);
+//     console.log(res);
+// }
+// run()

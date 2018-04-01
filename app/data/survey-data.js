@@ -9,7 +9,21 @@ class SurveyData extends Data {
         super(Survey);
     }
 
-    async getUserSurveys(userId) {
+    async getUserSurveys(userId, cat = null) {
+        if (cat) {
+            return this.Model.findAll({
+                where: {
+                    user_id: userId,
+                },
+                include: [{
+                    model: Category,
+                    where: {
+                        name: cat,
+                    },
+                }],
+            });
+        }
+
         return this.Model.findAll({
             where: {
                 user_id: userId,
@@ -25,6 +39,15 @@ class SurveyData extends Data {
                 name: surveyName,
             },
             include: [Category],
+        });
+    }
+
+    deleteSurvey(userId, surveyName) {
+        return this.Model.destroy({
+            where: {
+                user_id: userId,
+                name: surveyName,
+            },
         });
     }
 }

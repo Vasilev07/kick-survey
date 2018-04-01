@@ -33,20 +33,24 @@
     border-color: #90D481 !important;
 }
 
-/* Emojies */
-.far{
+/* Emojis */
+
+.emoji {
     font-size: 4rem;
     padding: 30px;
 }
-.form-check-input{
+
+.form-check-input {
     visibility: hidden;
     position: absolute;
 }
-.form-check-input + i{
+
+.form-check-input+i {
     cursor: pointer;
     color: green;
 }
-.form-check-input:checked + i{
+
+.form-check-input:checked+i {
     color: rgb(132, 173, 132);
 }
 
@@ -65,4 +69,108 @@
 }
 .question-title {
     font-size: 2rem;
+/* User's surveys visualizations */
+
+.survey-question,
+.survey-title,
+.survey-cat,
+.survey-date,
+.survey-responses,
+.survey-footer {
+    padding: 0 20px;
+}
+
+.info,
+.survey span {
+    margin-left: 10px;
+}
+
+.survey-analyse,
+.survey-share,
+.survey-delete {
+    display: inline;
+    text-align: center
+}
+
+.delete-anchor,
+.share-button,
+.analyze-anchor {
+    text-decoration: none;
+    color: #000;
+    padding: 0 10px;
+}
+
+.analyze-anchor:hover {
+    color: #90D481;
+    cursor: pointer;
+}
+
+.delete-anchor:hover {
+    color: #ce0101;
+    cursor: pointer;
+}
+
+.share-button:hover {
+    color: #337ab7;
+    cursor: pointer;
+}
+
+.share-button {
+    border: none;
+    background: none;
+}
+
+.center {
+    text-align: center
+}
+
+.info-header {
+    background-color: lightslategray;
+}
+
+hr {
+    margin: 5px 0px;
+}
+
+.delete-survey-icon {
+    color: #ce0101;
+    margin-right: 10px;
+}
+
+.filter-category li.cat {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.filter-category li.cat:hover {
+    background-color: #90D481;
+}
+
+.spinner {
+	width: 100px;
+	height: 100px;
+    font-size: 100px;
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+    margin: auto;
+    display: none;
+    z-index: 99999;
+    
+}
+
+.over {
+    background-color: #fff;
+    opacity: 1;
+    display: none;
+    z-index: 9999;
+}
+
+.bolded { 
+    font-weight: bold;
+}
+.answer {
+    margin-left: 10px; 
 }

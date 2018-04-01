@@ -33,12 +33,20 @@ const init = (app, data) => {
             res.render('test-form', {});
         })
         .get('/index', async (req, res) => {
+            let categories = [];
             if (!req.isAuthenticated()) {
                 return res.redirect('/');
             }
 
+            try {
+                categories = await dataController.getAllCategories();
+            } catch (err) {
+                categories = [];
+            }
+
             return res.render('index', {
                 isAuthenticated: req.isAuthenticated(),
+                categories,
             });
         })
         .get('/create', async (req, res) => {
@@ -52,6 +60,15 @@ const init = (app, data) => {
                 questionTypes,
             };
             return res.render('create-survey/create-survey-master', model);
+        })
+        .delete('/delete-survey', async (req, res) => {
+            try {
+                await dataController.deleteSurvey(req.body.survey);
+                res.sendStatus(200);
+            } catch (err) {
+                console.log(err);
+                res.status(500).json(err);
+            }
         })
         .get('/api/:url', async (req, res) => {
             const param = req.params.url;
@@ -67,12 +84,29 @@ const init = (app, data) => {
         .get('/preview/:url', async (req, res, next) => {
             res.render('preview-survey/preview', {});
         })
+        .get('/analyze/:url', async (req, res) => {
+            res.render('preview-survey/statistics', {});
+        })
+        .get('/api/analyze/:url', async (req, res) => {
+            const url = req.params.url;
+            const surveyData = await dataController.getUserSurveyData(url);
+            res.status(200).send(surveyData);
+        })
         .post('/api/user-surveys', async (req, res) => {
             const user = req.user;
+            let cat = null;
+            let surveys;
 
-            const model = await dataController.getUserSurveysData(req.user);
-            console.log(model);
-            res.status(200).send(model);
+            if (req.body.category) {
+                cat = req.body.category;
+            }
+
+            try {
+                surveys = await dataController.getUserSurveysData(user, cat);
+                res.status(200).send(surveys);
+            } catch (err) {
+                res.status(500).send(surveys);
+            }
         })
         .post('/api/statistics', async (req, res) => {
             try {
@@ -81,9 +115,9 @@ const init = (app, data) => {
                 const statisticsDataDonut =
                     await dataController.getAllUsersTypes();
                 const statisticsDataBarByDate =
-                    await dataController.getAllSubmitionsByDate();
-                const statistiDataBarByDay =
-                    await dataController.getAllSubmitionsByDayOfWeek();
+                    await dataController.getAllSubmissionsByDate();
+                const statisticsDataBarByDay =
+                    await dataController.getAllSubmissionsByDayOfWeek();
                 const context = {
                     labelPie: statisticsPie.label,
                     dataPie: statisticsPie.data,
@@ -91,8 +125,8 @@ const init = (app, data) => {
                     dataDonut: statisticsDataDonut.data,
                     labelBar: statisticsDataBarByDate.label,
                     dataBar: statisticsDataBarByDate.data,
-                    dataBarDay: statistiDataBarByDay.label,
-                    labelBarDay: statistiDataBarByDay.data,
+                    dataBarDay: statisticsDataBarByDay.label,
+                    labelBarDay: statisticsDataBarByDay.data,
                 };
                 res.status(200).send(context);
             } catch (error) {

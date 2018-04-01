@@ -1,3 +1,5 @@
+/* eslint-disable no-invalid-this */
+
 (function () {
     const previews = (function () {
         const _slidersIds = [];
@@ -239,7 +241,7 @@
             input1.setAttribute("id", "inlineRadio1");
 
             const emojiSmile = document.createElement("i");
-            emojiSmile.setAttribute("class", "far fa-smile");
+            emojiSmile.setAttribute("class", "far fa-smile emoji");
             label1.appendChild(input1);
             label1.appendChild(emojiSmile);
 
@@ -256,7 +258,7 @@
             input2.setAttribute("id", "inlineRadio2");
 
             const emojiMeh = document.createElement("i");
-            emojiMeh.setAttribute("class", "far fa-meh");
+            emojiMeh.setAttribute("class", "far fa-meh emoji");
 
             label2.appendChild(input2);
             label2.appendChild(emojiMeh);
@@ -274,7 +276,7 @@
             input3.setAttribute("id", "inlineRadio3");
 
             const emojiFrown = document.createElement("i");
-            emojiFrown.setAttribute("class", "far fa-frown");
+            emojiFrown.setAttribute("class", "far fa-frown emoji");
 
             label3.appendChild(input3);
             label3.appendChild(emojiFrown);
