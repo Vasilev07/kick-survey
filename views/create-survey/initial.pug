@@ -1,12 +1,17 @@
 mixin initial()
-    div#initial-create
-          div.form-group
-            label(for='survey-name') Survey name:
-            input#survey-name.form-control(type='text', name='survey-name')
-          div.form-group
-            label(for='categories') Category:
-            select#categories.form-control(name='survey-type')
-              each category in categories
-                option(value=category.name)
-                  | #{category.name}
-            button#continue-btn.btn.btn-primary(type='button') Continue
+    div.container.survey-create
+      div#initial-create
+            div.form-group
+              label(for='survey-name')
+              input#survey-name.form-control(type='text', name='survey-name', placeholder="Survey name")
+            form
+              div.form-group
+                label(for='categories') Category:
+                select#categories.form-control(name='survey-type')
+                  optgroup(label="Category type")
+                  each category in categories
+                    option(value=category.name)
+                      | #{category.name}
+            .form-group
+                .col-sm-offset-2.col-sm-10
+                button#continue-btn.btn.btn-primary(type='button') Continue

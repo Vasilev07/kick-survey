@@ -58,6 +58,22 @@
     color: rgb(132, 173, 132);
 }
 
+/* Cretae survey */
+.survey-info {
+    margin: 0 auto;
+    padding: 0.5rem;
+    color:rgba(59, 112, 47, 0.7);
+    
+}
+.survey-create, .content {
+    background-color: #F3F3F3;
+}
+.question-wrapper {
+    margin: 3px;
+}
+.question-title {
+    font-size: 2rem;
+}
 /* User's surveys visualizations */
 
 .survey-question,
@@ -163,6 +179,17 @@ hr {
 .answer {
     margin-left: 10px; 
 }
+
+/* .add-answer-btn,
+.delete-answer-btn {
+    padding: 3px 8px;
+    margin-top: 5px
+}
+*/
+.add-answer-btn {
+    margin-right: 5px
+}
+
 img{
     width: 90px;
     height: 50px;

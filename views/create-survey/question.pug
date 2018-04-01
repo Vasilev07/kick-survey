@@ -1,0 +1,10 @@
+mixin question()
+
+    .row.question-wrapper
+        .col-xs-4.col-sm-4.col-md-4.col-lg-4
+            span.question-title
+                |1.Question
+        .col-xs-8.col-sm-8.col-md-8.col-lg-8
+            .btn-group
+                button.btn.btn-success.active(data-toggle="modal" data-target="#edit-create") CREATE
+                button.btn.btn-success.disabled DELETE
