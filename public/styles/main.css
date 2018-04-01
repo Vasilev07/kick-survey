@@ -33,6 +33,10 @@
     border-color: #90D481 !important;
 }
 
+.nav-icon {
+    padding-right: 5px;
+}
+
 /* Emojis */
 
 .emoji {
