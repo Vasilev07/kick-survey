@@ -10,14 +10,21 @@ class DataController {
      * @description Iterates through the user's object and
      * retrieves his surveys, the surveys' questions and answers
      * @param {Object} user
+     * @param {string} cat Surveys' category
      * @async
      * @return {Promise<Object>} The collected data
      */
-    async getUserSurveysData(user) {
+    async getUserSurveysData(user, cat = null) {
         let surveys;
+
+        // in order to return all the surveys
+        if (cat === 'All') {
+            cat = null;
+        }
+
         const cryptography = new Crypto();
         try {
-            surveys = await this.data.surveys.getUserSurveys(user.id);
+            surveys = await this.data.surveys.getUserSurveys(user.id, cat);
         } catch (err) {
             surveys = [];
         }
@@ -254,8 +261,6 @@ class DataController {
             data.push(value);
         });
         label = label.slice(label.length - 7, 7);
-        // bug with days on chart
-        // visualized 1 day less
         return {
             label,
             data,
@@ -263,15 +268,13 @@ class DataController {
     }
 
     async getAllSubmitionsByDayOfWeek() {
-        const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-            'Friday', 'Saturday', 'Sunday'];
+        const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
         const daysOfSub = [];
         const daysOfSubWithWord = [];
         submisions.map((sub) => {
             const dayAsDigit = (sub.DISTINCT.getDay());
             daysOfSub.push(dayAsDigit + 1);
-            // bug with days on chart
         });
         daysOfSub.sort();
         daysOfSub.map((el) => {
@@ -293,6 +296,27 @@ class DataController {
         };
     }
 
+    async deleteSurvey(url) {
+        const cryptography = new Crypto();
+        let decrypt;
+
+        try {
+            decrypt = cryptography.decrypt(url);
+        } catch (err) {
+            throw new SurveyError.SurveyNotFound();
+        }
+
+        const userId = decrypt.match(/^(\d+)/)[0];
+        const name = decrypt.slice(userId.length + 2);
+
+        try {
+            const res = await this.data.surveys.deleteSurvey(userId, name);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+
     getAllCategories() {
         return this.data.categories.getAll();
     }
@@ -302,4 +326,3 @@ class DataController {
 }
 
 module.exports = DataController;
-

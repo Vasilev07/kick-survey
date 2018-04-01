@@ -33,12 +33,20 @@ const init = (app, data) => {
             res.render('test-form', {});
         })
         .get('/index', async (req, res) => {
+            let categories = [];
             if (!req.isAuthenticated()) {
                 return res.redirect('/');
             }
 
+            try {
+                categories = await dataController.getAllCategories();
+            } catch (err) {
+                categories = [];
+            }
+
             return res.render('index', {
                 isAuthenticated: req.isAuthenticated(),
+                categories,
             });
         })
         .get('/create', async (req, res) => {
@@ -52,6 +60,15 @@ const init = (app, data) => {
                 questionTypes,
             };
             return res.render('create-survey/page', model);
+        })
+        .delete('/delete-survey', async (req, res) => {
+            try {
+                await dataController.deleteSurvey(req.body.survey);
+                res.sendStatus(200);
+            } catch (err) {
+                console.log(err);
+                res.status(500).json(err);
+            }
         })
         .get('/api/:url', async (req, res) => {
             const param = req.params.url;
@@ -77,14 +94,19 @@ const init = (app, data) => {
         })
         .post('/api/user-surveys', async (req, res) => {
             const user = req.user;
+            let cat = null;
             let surveys;
+
+            if (req.body.category) {
+                cat = req.body.category;
+            }
+
             try {
-                surveys = await dataController.getUserSurveysData(req.user);
+                surveys = await dataController.getUserSurveysData(user, cat);
                 res.status(200).send(surveys);
             } catch (err) {
                 res.status(500).send(surveys);
             }
-            console.log(surveys);
         })
         .post('/api/statistics', async (req, res) => {
             try {

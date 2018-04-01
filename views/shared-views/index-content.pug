@@ -1,3 +1,32 @@
 mixin indexContent()
+    .container-fluid
+            .btn-group.filter-category
+                button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                    i.fas.fa-filter
+                    |   Filter by category 
+                    span.caret
+                ul.dropdown-menu
+                    li.cat
+
+                        span All
+                    li.divider(role='separator')
+                    each category in categories
+                        li.cat
+                            span #{category.name}
+
+    #delete-survey-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='delete-survey-modalLabel')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                    h4#delete-survey-modal-label.modal-title
+                        i.fas.fa-exclamation-triangle.delete-survey-icon
+                        | Survey deletion
+                .modal-body
+                    | Do you really wanted to delete that survey?
+                .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal') Close
+                    button.btn.btn-danger.delete(type='button') Permanently delete 
     #surveys-container.container-fluid
         #main.col-sm-12.col-md-12

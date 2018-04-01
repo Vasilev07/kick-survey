@@ -1,4 +1,5 @@
 /* eslint-global previews */
+
 $(function () {
     const url = window.location.href.match(/[0-9a-zA-Z]+$/);
     let surveyData;
@@ -7,10 +8,13 @@ $(function () {
         async: true,
         url: "/api/" + url,
         beforeSend: function () {
-
-            // something to confuse the user here
+            $(".spinner").show();
+            $(".over").show();
         },
         error: function (error) {
+            $(".spinner").hide();
+            $(".over").hide();
+
             const body = $("body");
             const errorElement = document.createElement("h1");
             body.append(errorElement);
@@ -18,6 +22,11 @@ $(function () {
                 .css("text-align", "center");
         },
         success: function (survey) {
+            setTimeout(function () {
+                $(".spinner").hide();
+                $(".over").hide();
+            }, 600);
+
             surveyData = survey;
             const surveyNameWrapper = document.createElement("div");
             const surveyCatWrapper = document.createElement("div");
@@ -119,6 +128,7 @@ $(function () {
     };
 
     $("#submit-survey").submit(function (e) {
+        const submissionModal = $("#submission-survey-modal");
         e.preventDefault();
         const requiredCheckbox = $(".checkbox-group .required");
         const validate = validateCheckbox(requiredCheckbox);
@@ -144,10 +154,30 @@ $(function () {
                 surveyDataObj
             },
             error: function (error) {
-                console.log(error);
+                submissionModal
+                    .find(".modal-body")
+                    .append($("<span></span>")
+                    .html("Unfortunately, we couldn't save your submission."));
+                submissionModal
+                    .find("#submit-survey-modal-label")
+                    .append($("<i></i>")
+                        .addClass("fas fa-times-circle")
+                        .css("color", "#ce0101")
+                    );
+                submissionModal.modal("show");
             },
             success: function (resolve) {
-                console.log("Success");
+                submissionModal
+                    .find(".modal-body")
+                    .append($("<span></span>")
+                    .html("Thank you for your submission."));
+                submissionModal
+                    .find("#submit-survey-modal-label")
+                    .append($("<i></i>")
+                        .addClass("fas fa-check-circle")
+                        .css("color", "#0EB511")
+                    );
+                submissionModal.modal("show");
             }
         });
 

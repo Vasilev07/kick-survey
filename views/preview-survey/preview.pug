@@ -1,4 +1,5 @@
-include ../shared-views/nav 
+include ../shared-views/nav
+include ../shared-views/loader
 <!DOCTYPE html>
 html(lang="en")
     head
@@ -12,15 +13,26 @@ html(lang="en")
         link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous")
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
-        script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")     
-        script(src="https://cdn.jsdelivr.net/npm/timepicker@1.11.12/jquery.timepicker.min.js")   
+        script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+        script(src="https://cdn.jsdelivr.net/npm/timepicker@1.11.12/jquery.timepicker.min.js")
         script(src="../static/js/preview-templates.js")
         script(src="../static/js/preview.js")
         
         title Kick Survey
     body
+        +loader()
         +nav()
-
+        #submission-survey-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='submit-survey-modalLabel')
+            .modal-dialog(role='document')
+                .modal-content
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        h4#submit-survey-modal-label.modal-title
+                            | Submission status: 
+                    .modal-body
+                    .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close
         .container
             .row#initial
             .row

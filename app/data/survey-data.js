@@ -9,7 +9,21 @@ class SurveyData extends Data {
         super(Survey);
     }
 
-    async getUserSurveys(userId) {
+    async getUserSurveys(userId, cat = null) {
+        if (cat) {
+            return this.Model.findAll({
+                where: {
+                    user_id: userId,
+                },
+                include: [{
+                    model: Category,
+                    where: {
+                        name: cat,
+                    },
+                }],
+            });
+        }
+
         return this.Model.findAll({
             where: {
                 user_id: userId,
@@ -27,15 +41,17 @@ class SurveyData extends Data {
             include: [Category],
         });
     }
+
+    deleteSurvey(userId, surveyName) {
+        return this.Model.destroy({
+            where: {
+                user_id: userId,
+                name: surveyName,
+            },
+        });
+    }
 }
 
 module.exports = {
     SurveyData,
 };
-
-// const cont = new SurveyData();
-// const run = async () => {
-//     const res = await cont.getSurvey(1, 'Obshtestvenik');
-//     console.log(res.Category);
-// };
-// run();

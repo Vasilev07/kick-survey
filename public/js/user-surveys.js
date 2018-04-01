@@ -1,7 +1,8 @@
+/* eslint-disable no-invalid-this */
 $(function () {
     const selectText = function (element) {
         const doc = document;
-        const text = $(element)[0];
+        const text = $(element)[ 0 ];
         let range;
         let selection;
 
@@ -25,6 +26,7 @@ $(function () {
         const titleDiv = $("<div></div>");
         const catDiv = $("<div></div>");
         const dateDiv = $("<div></div>");
+        const hiddenInput = $("<input />");
 
         // const lastResponseDiv = $("<div></div>");
         const footer = $("<div></div>");
@@ -76,7 +78,7 @@ $(function () {
             .append($("<span></span>")
                 .html(survey.surveyData.uniqueSubmits));
 
-        analyzeDiv.addClass("survey-analyse col-md-4")
+        analyzeDiv.addClass("survey-analyse col-sm-4 col-md-4 col-lg-4")
             .append($("<a href=/analyze/" + survey.surveyData.encryptedUrl + "></a>")
                 .addClass("analyze-anchor")
                 .tooltip({
@@ -85,7 +87,7 @@ $(function () {
                 .append($("<i></i>")
                     .addClass("far fa-chart-bar")));
 
-        shareDiv.addClass("survey-share col-md-4")
+        shareDiv.addClass("survey-share col-sm-4 col-md-4 col-lg-4")
             .append($("<button></button>")
                 .addClass("share-button")
                 .popover({
@@ -101,7 +103,9 @@ $(function () {
                 .append($("<i></i>")
                     .addClass("fas fa-share-alt")));
 
-        deleteDiv.addClass("survey-delete col-md-4")
+        deleteDiv.addClass("survey-delete col-sm-4 col-md-4 col-lg-4")
+            .attr("data-toggle", "modal")
+            .attr("data-target", "#delete-survey-modal")
             .append($("<a></a>")
                 .addClass("delete-anchor")
                 .tooltip({
@@ -110,11 +114,19 @@ $(function () {
                 .append($("<i></i>")
                     .addClass("fas fa-trash")));
 
+        hiddenInput.attr({
+            type: "hidden",
+            id: "survey-" + survey.surveyData.encryptedUrl,
+            name: "survey",
+            value: survey.surveyData.encryptedUrl
+        });
+
         footer
             .addClass("survey-footer row")
             .append(analyzeDiv)
             .append(shareDiv)
-            .append(deleteDiv);
+            .append(deleteDiv)
+            .append(hiddenInput);
 
         captionWrapper
             .append(titleDiv)
@@ -131,25 +143,70 @@ $(function () {
         return surveyWrapper;
     };
 
-    $.ajax({
-        method: "POST",
-        async: true,
-        url: "api/user-surveys",
-        beforeSend: function () {
+    const deleteSurveyCallback = function (self, e) {
+        const hiddenInput = $(self)
+            .parent(".survey-delete")
+            .siblings("input:hidden");
 
-            // something to confuse the user here
-        },
-        error: function (error) {
+        const surveyData = {
+            survey: $(hiddenInput).val()
+        };
 
-        },
-        success: function (surveys) {
-            console.log(surveys);
-            const surveysHeader = $("#main");
-            surveys.forEach((survey) => {
-                const newRow = surveyDataPreview(survey);
-                surveysHeader.append($(newRow));
-            });
+        $.ajax({
+            method: "DELETE",
+            async: "true",
+            url: "/delete-survey",
+            data: surveyData,
+            error: function (error) {
+                console.log(error);
+                $("#delete-survey-modal").modal("hide");
+            },
+            success: function (response) {
+                console.log(response);
+                $(self).parents(".survey").remove();
+                $("#delete-survey-modal").modal("hide");
+            }
+        });
+    };
 
+    const serverRequest = function (reqData = null) {
+        $.ajax({
+            method: "POST",
+            async: true,
+            url: "api/user-surveys",
+            data: reqData,
+            beforeSend: function () {
+                $(".spinner").show();
+                $(".over").show();
+            },
+            error: function (error) {
+                $(".spinner").hide();
+                $(".over").hide();
+                console.log(error);
+            },
+            success: function (surveys) {
+                setTimeout(function () {
+                    $(".spinner").hide();
+                    $(".over").hide();
+                }, 300);
+                const surveysHeader = $("#main");
+                if (reqData) {
+                    $(".survey").remove();
+                }
+
+                if (surveys.length === 0) {
+                    const msg = $("<p></p>")
+                        .addClass("survey")
+                        .html("No surveys found!");
+                    surveysHeader.append(msg);
+                }
+
+                surveys.forEach((survey) => {
+                    const newRow = surveyDataPreview(survey);
+                    surveysHeader.append($(newRow));
+                });
+            }
+        }).then(function (data, status, xhr) {
             $(".survey").on("click", ".share-button", function () {
                 $(this).popover("toggle");
                 selectText(".popover-content");
@@ -163,6 +220,24 @@ $(function () {
                     }
                 });
             });
-        }
+
+            $(".survey").on("click", ".delete-anchor", function (e) {
+                const self = this;
+                $("#delete-survey-modal .delete").click(function () {
+                    deleteSurveyCallback(self, e);
+                });
+            });
+        });
+    };
+
+
+    serverRequest();
+
+    $(".filter-category li.cat").on("click", function (e) {
+        const cat = $(this).find("span").html();
+        const dataObj = {
+            category: cat
+        };
+        serverRequest(dataObj);
     });
 });

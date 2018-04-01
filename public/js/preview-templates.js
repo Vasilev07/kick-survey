@@ -1,3 +1,5 @@
+/* eslint-disable no-invalid-this */
+
 (function () {
     const previews = (function () {
         const _slidersIds = [];

@@ -114,3 +114,39 @@
 hr {
     margin: 5px 0px;
 }
+
+.delete-survey-icon {
+    color: #ce0101;
+    margin-right: 10px;
+}
+
+.filter-category li.cat {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.filter-category li.cat:hover {
+    background-color: #90D481;
+}
+
+.spinner {
+	width: 100px;
+	height: 100px;
+    font-size: 100px;
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+    margin: auto;
+    display: none;
+    z-index: 99999;
+    
+}
+
+.over {
+    background-color: #fff;
+    opacity: 1;
+    display: none;
+    z-index: 9999;
+}
