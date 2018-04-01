@@ -84,10 +84,10 @@ const init = (app, data) => {
         .get('/preview/:url', async (req, res, next) => {
             res.render('preview-survey/preview', {});
         })
-        .get('/statistics/:url', async (req, res) => {
+        .get('/analyze/:url', async (req, res) => {
             res.render('preview-survey/statistics', {});
         })
-        .get('/api/statistics/:url', async (req, res) => {
+        .get('/api/analyze/:url', async (req, res) => {
             const url = req.params.url;
             const surveyData = await dataController.getUserSurveyData(url);
             res.status(200).send(surveyData);
@@ -115,9 +115,9 @@ const init = (app, data) => {
                 const statisticsDataDonut =
                     await dataController.getAllUsersTypes();
                 const statisticsDataBarByDate =
-                    await dataController.getAllSubmitionsByDate();
-                const statistiDataBarByDay =
-                    await dataController.getAllSubmitionsByDayOfWeek();
+                    await dataController.getAllSubmissionsByDate();
+                const statisticsDataBarByDay =
+                    await dataController.getAllSubmissionsByDayOfWeek();
                 const context = {
                     labelPie: statisticsPie.label,
                     dataPie: statisticsPie.data,
@@ -125,8 +125,8 @@ const init = (app, data) => {
                     dataDonut: statisticsDataDonut.data,
                     labelBar: statisticsDataBarByDate.label,
                     dataBar: statisticsDataBarByDate.data,
-                    dataBarDay: statistiDataBarByDay.label,
-                    labelBarDay: statistiDataBarByDay.data,
+                    dataBarDay: statisticsDataBarByDay.label,
+                    labelBarDay: statisticsDataBarByDay.data,
                 };
                 res.status(200).send(context);
             } catch (error) {

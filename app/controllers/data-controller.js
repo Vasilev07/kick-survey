@@ -34,7 +34,7 @@ class DataController {
 
             try {
                 count = await this.data
-                        .submittedAnswer.countUniqueSubmits(user.id, survey.id);
+                    .submittedAnswer.countUniqueSubmits(user.id, survey.id);
             } catch (err) {
                 console.log(err);
             }
@@ -229,25 +229,26 @@ class DataController {
         };
     }
 
-    async getAllSubmitionsByDate() {
-        const formatDates = (submitionDate) => {
-            let day = submitionDate.getDate();
-            let month = submitionDate.getMonth() + 1;
-            const year = submitionDate.getFullYear();
+    async getAllSubmissionsByDate() {
+        const formatDates = (submissionDate) => {
+            let day = submissionDate.getDate();
+            let month = submissionDate.getMonth() + 1;
+            const year = submissionDate.getFullYear();
             if (day < 10) {
                 day = '0' + day;
             }
             if (month < 10) {
                 month = '0' + month;
             }
-            submitionDate = day + '/' + month + '/' + year;
+            submissionDate = day + '/' + month + '/' + year;
 
-            return submitionDate;
+            return submissionDate;
         };
 
-        const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
+        const submissions =
+            await this.data.submittedAnswer.getUniqueSubmissions();
         const daysOfSub = [];
-        submisions.map((sub) => {
+        submissions.map((sub) => {
             const uniqueDates = sub.DISTINCT;
             daysOfSub.push(formatDates(uniqueDates));
         });
@@ -267,19 +268,30 @@ class DataController {
         };
     }
 
-    async getAllSubmitionsByDayOfWeek() {
-        const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        const submisions = await this.data.submittedAnswer.getUniqueSubmitions();
+    async getAllSubmissionsByDayOfWeek() {
+        const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+            'Friday', 'Saturday', 'Sunday',
+        ];
+        const submissions =
+            await this.data.submittedAnswer.getUniqueSubmissions();
         const daysOfSub = [];
         const daysOfSubWithWord = [];
-        submisions.map((sub) => {
-            const dayAsDigit = (sub.DISTINCT.getDay());
-            daysOfSub.push(dayAsDigit + 1);
+
+        submissions.map((sub) => {
+            let dayAsDigit;
+            if (sub.DISTINCT.getDay() === 0) {
+                dayAsDigit = 7;
+            } else {
+                dayAsDigit = (sub.DISTINCT.getDay());
+            }
+            daysOfSub.push(dayAsDigit);
         });
+
         daysOfSub.sort();
         daysOfSub.map((el) => {
             daysOfSubWithWord.push(days[el]);
         });
+
         const mapOfDays = new Map([...new Set(daysOfSubWithWord)]
             .map((x) => [x, daysOfSubWithWord.filter((y) => y === x).length]));
 
