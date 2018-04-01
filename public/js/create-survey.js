@@ -1,5 +1,12 @@
 $(function () {
-    let user;
+    var user;
+    var questionId = {
+        id: 0
+    };
+    var surveyData;
+    var questionData;
+    var questionTypesHolder;
+
     $.ajax({
         method: "POST",
         async: true,
@@ -9,43 +16,45 @@ $(function () {
         },
         success: function (resolve) {
             user = resolve;
-            console.log(user);
         }
     });
-    $("#done-btn").hide();
-    $("#add-question-btn").hide();
+
+    $("#generate-share").hide();
+    $("#edit-create-btn").hide();
+    $("button.center-block").hide();
+    $("#question").hide();
+
+
     $("#continue-btn").click(function (e) {
         e.preventDefault();
-        const surveyData = {
+        $("button.center-block").show();
+
+        surveyData = {
             surveyName: $("#survey-name").val(),
             category: $("#categories").val()
         };
-        const questionData = {
+        questionData = {
             questionTypes: $(".question-types").children()
         };
-        const questionTypesHolder = [];
+        questionTypesHolder = [];
         $.each(questionData.questionTypes, function (key, value) {
             questionTypesHolder.push($(value).attr("value"));
         });
         $("#initial-create").hide();
 
-        $("h3.survey-name").text(surveyData.surveyName);
-        $("h3.category").text(surveyData.category);
-
-        $("#create-survey-form").show();
-        $("#add-question-btn").show();
-
-        $("#create-survey-form").show();
-        $("#add-question-btn").show();
-        $("#done-btn").show();
-
-        // AJAX request here
+        var info = $("<div class=\"survey-info\"></div>")
+            .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.surveyName))
+            .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.category));
+        $("#info")
+            .append(info);
+        $("#question").show();
     });
+
     $("#add-question-btn").click(function (e) {
         e.preventDefault();
         var create = $('.full-question-info').html();
         var fullInfo = $('<div></div>')
-            .addClass('full-question-info')
+            .addClass('container full-question-info')
             .append(create);
         $('#wrapper').append(fullInfo);
     });
@@ -53,6 +62,7 @@ $(function () {
     $("#create-survey-form").submit(function (e) {
         e.preventDefault();
         var surveyQuestionsAnswers = [];
+        const userId = {};
         $('.full-question-info')
             .each(function (_, el) {
                 surveyQuestionsAnswers.push({
@@ -62,22 +72,25 @@ $(function () {
                 }, );
             });
         var submitObj = {
-            surveyName:  $("#survey-name").val(),
+            userId: user.id,
+            username: user.username,
+            surveyName: $("#survey-name").val(),
             surveyCategory: $("select[name='survey-type']").val(),
             surveyData: surveyQuestionsAnswers,
         }
-        $.ajax({
-            method: "POST",
-            async: true,
-            url: "/create",
-            data: submitObj,
-            error: function (error) {
-                alert('Error saving order');
-            }, 
-            success: function (resolve) {
-                console.log(resolve);
-            }
-        });
+        console.log(submitObj);
+        // $.ajax({
+        //     method: "POST",
+        //     async: true,
+        //     url: "/create",
+        //     data: submitObj,
+        //     error: function (error) {
+        //         alert('Error saving order');
+        //     }, 
+        //     success: function (resolve) {
+        //         console.log(resolve);
+        //     }
+        // });
     });
 
     $("#generate-share").click(function (e) {

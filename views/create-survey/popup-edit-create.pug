@@ -1,0 +1,36 @@
+mixin edit-create()
+
+    div#edit-create.modal.fade(role="dialog")
+        div.modal-dialog
+            .modal-content
+                .modal-body
+                    .container
+                        h2.register-header Question info
+                        form#registerForm.form-horizontal(method='POST', action='/create')
+                            .form-group
+                                label.control-label.col-sm-3(for='question') Question name:
+                                .col-sm-6
+                                    input#username.form-control(type='text', placeholder='Enter question name', name='question') 
+                            .form-group
+                                label.control-label.col-sm-3(for="question-type") Answer Type:
+                                .col-sm-6
+                                    select.question-types.form-control(name="question-type")
+                                        each questionType in questionTypes
+                                            option(value=questionType.q_type)
+                                                | #{questionType.q_type}
+                            .form-group
+                                label.control-label.col-sm-3(for='question') Answer:
+                                .col-sm-6
+                                    input.answer.form-control(type='text', placeholder='Enter answer', name='answer')
+                                .col-sm-3
+                                    button.btn.btn-success-lg(type="submit" value="add")
+                                        i.fas.fa-plus
+                                        span.caret                                        
+                                    button.btn.btn-success-lg(type="submit" value="rem")
+                            .form-group
+                                .col-sm-offset-2.col-sm-10
+                                    button#register-submit.btn.btn-success(type='submit', value='Register') Done
+                                    p#registerErrorMsg
+                .modal-footer
+                    button.btn.btn-default(type="button", data-dismiss="modal")
+                        | Close

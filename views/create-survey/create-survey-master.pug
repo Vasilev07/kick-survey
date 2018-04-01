@@ -1,6 +1,8 @@
 include ../shared-views/nav
 include ./form
 include ./initial
+include ./popup-edit-create
+include ./question
 
 <!DOCTYPE html>
 html(lang="en")
@@ -16,8 +18,21 @@ html(lang="en")
         title Kick Survey
     body
         +nav()
-        h1.display-4.m-b-2 Create Survey
-        +initial()
-        +questionAdd()
+        div.container
+            h1.display-4.m-b-2 Create Survey
+            hr
+        div#content.container
+            div#info.content
+            +initial()
+            hr
+            
+        div#question.container
+            //- +question()
+            +edit-create()
+        .row
+            div.col-xs-12.col-sm-12.col-md-12.col-lg-12.center-block
+                button.btn.btn-success.center-block.active(data-toggle="modal" data-target="#edit-create") ADD QUESTION
+        
 
-        input#generate-share.btn.btn-primary(type="button", value="Share")
+
+            //- input#generate-share.btn.btn-primary(type="button", value="Share") 

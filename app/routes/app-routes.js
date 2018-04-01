@@ -51,7 +51,7 @@ const init = (app, data) => {
                 categories,
                 questionTypes,
             };
-            return res.render('create-survey/page', model);
+            return res.render('create-survey/create-survey-master', model);
         })
         .get('/api/:url', async (req, res) => {
             const param = req.params.url;

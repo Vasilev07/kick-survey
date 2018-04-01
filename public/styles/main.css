@@ -49,3 +49,20 @@
 .form-check-input:checked + i{
     color: rgb(132, 173, 132);
 }
+
+/* Cretae survey */
+.survey-info {
+    margin: 0 auto;
+    padding: 0.5rem;
+    color:rgba(59, 112, 47, 0.7);
+    
+}
+.survey-create, .content {
+    background-color: #F3F3F3;
+}
+.question-wrapper {
+    margin: 3px;
+}
+.question-title {
+    font-size: 2rem;
+}
