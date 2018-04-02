@@ -37,11 +37,11 @@ $(function () {
             const dateDiv = $("<div></div>");
             const titleWrapper = $("<div></div>");
 
-            surveyWrapper.addClass("col-xs-9 col-sm-9 col-md-12 col-lg-9 col-xl-9 survey");
+            surveyWrapper.addClass("col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9 survey");
             thumbnailWrapper.addClass("thumbnail");
             captionWrapper.addClass("caption");
 
-            titleDiv.addClass("survey-title col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3")
+            titleDiv.addClass("survey-title col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4")
                 .append($("<i></i>")
                     .addClass("fas fa-heading")
                     .tooltip({
@@ -50,7 +50,7 @@ $(function () {
                 .append($("<span></span>")
                     .html(survey.name));
 
-            catDiv.addClass("survey-cat col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3")
+            catDiv.addClass("survey-cat col-xs-4 col-sm-4 col-md-4 col-lg-3 col-xl-4")
                 .append($("<i></i>")
                     .addClass("fas fa-folder")
                     .tooltip({
@@ -59,7 +59,7 @@ $(function () {
                 .append($("<span></span>")
                     .html(survey.Category.name));
 
-            dateDiv.addClass("survey-date col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3")
+            dateDiv.addClass("survey-date col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4")
                 .append($("<i></i>")
                     .addClass("fas fa-calendar-alt")
                     .tooltip({
