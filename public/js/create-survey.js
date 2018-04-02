@@ -55,7 +55,7 @@ $(function () {
     };
 
     $("#continue-btn").click(function (e) {
-
+        e.preventDefault();
         if ($("#survey-name").val()) {
             surveyData = {
                 surveyName: $("#survey-name").val(),
@@ -70,9 +70,12 @@ $(function () {
             });
             $("#initial-create").hide();
 
-            var info = $("<div class=\"survey-info\"></div>")
-                .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.surveyName))
-                .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.category));
+            var info = $("<div></div>")
+                .addClass("survey-info")
+                .append($("<h4></h4>")
+                    .addClass("survey-info").text(surveyData.surveyName))
+                .append($("<h4></h4>")
+                    .addClass("survey-info").text(surveyData.category));
             $("#info")
                 .append(info);
             $("#question").show();
@@ -146,11 +149,27 @@ $(function () {
         });
     });
 
-    $(".done").on("click", function () {
-        var qName = $("#create-form .form-control").val();
-        var qType = $("#create-form .question-types").val();
-        var answers = $("#create-form [name='answer']");
+    $(".done").on("click", function (e) {
+        e.preventDefault();
+        $("#edit-create").modal("hide");
 
+        var obj = {
+            question: null,
+            questionType: null,
+            isRequired: 0,
+            answers: []
+        };
+        obj.question = $("input[name='question']").val();
+        obj.questionType = $("select[name='question-type']").val();
+        obj.isRequired = $("input[name='is-required']").is(":checked") ? 1 : 0;
+        $("input[name='answer']").each(function (index, element) {
+            obj.answers.push($(element).val());
+        });
+        obj.answers = obj.answers.length ? obj.answers : "";
+        questionAnswers.push(obj);
+
+        var qName = $("#create-form .form-control").val();
+        var answers = $("#create-form [name='answer']");
         var question = $("#question-list");
 
         var questionListWrapper = $("<div></div>").addClass("question-wrapper");
@@ -177,28 +196,7 @@ $(function () {
                 );
             });
         }
-
         qCounter.id++;
-    });
-    $(".done").on("click", function (e) {
-        e.preventDefault();
-        $("#edit-create").modal("hide");
-
-        var obj = {
-            question: null,
-            questionType: null,
-            isRequired: 0,
-            answers: []
-        };
-
-        obj.question = $("input[name='question']").val();
-        obj.questionType = $("select[name='question-type']").val();
-        obj.isRequired = $("input[name='is-required']").is(":checked") ? 1 : 0;
-        $("input[name='answer']").each(function (index, element) {
-            obj.answers.push($(element).val());
-        });
-        obj.answers = obj.answers.length ? obj.answers : "";
-        questionAnswers.push(obj);
     });
 
     $("#create-survey").on("click", function (e) {
@@ -217,5 +215,10 @@ $(function () {
                 console.log(resolve);
             }
         });
+    });
+
+    $(".modal").on("hidden.bs.modal", function () {
+        $(".form-control").val("");
+        $(".question-types").val("slider");
     });
 });
