@@ -1,8 +1,9 @@
 $(function () {
-    var user;
-    var surveyData;
-    var questionData;
-    var questionTypesHolder;
+    let user;
+    let surveyData;
+    let questionData;
+    let questionTypesHolder;
+    const questionAnswers = [];
 
     $.ajax({
         method: "POST",
@@ -22,14 +23,14 @@ $(function () {
     $("#question").hide();
 
     // function that adds answer to modal btn
-    var addAnswer = function () {
-        var answerWrapper = $("<div></div>").addClass("form-group answer");
-        var label = $("<label></label>")
+    const addAnswer = function () {
+        const answerWrapper = $("<div></div>").addClass("form-group answer");
+        const label = $("<label></label>")
             .addClass("control-label col-sm-3 col-xs-3 col-md-3 col-lg-3")
             .attr("for", "question")
             .html("Answer");
 
-        var inputWrapper = $("<div></div>")
+        const inputWrapper = $("<div></div>")
             .addClass("control-label col-sm-6 col-xs-6 col-md-6 col-lg-6")
             .append($("<input>")
                 .addClass("form-control")
@@ -37,7 +38,7 @@ $(function () {
                 .attr("placeholder", "Enter answer")
                 .attr("name", "answer")
             );
-        var buttonWrapper = $("<div></div>")
+        const buttonWrapper = $("<div></div>")
             .addClass("control-label col-sm-3 col-xs-3 col-md-3 col-lg-3")
             .append($("<a></a>")
                 .addClass("btn btn-success add-answer-btn prev")
@@ -52,7 +53,6 @@ $(function () {
 
 
     $("#continue-btn").click(function (e) {
-        e.preventDefault();
         $("button.center-block").show();
 
         surveyData = {
@@ -68,7 +68,7 @@ $(function () {
         });
         $("#initial-create").hide();
 
-        var info = $("<div class=\"survey-info\"></div>")
+        const info = $("<div class=\"survey-info\"></div>")
             .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.surveyName))
             .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.category));
         $("#info")
@@ -79,23 +79,22 @@ $(function () {
     // if selected multiple-choice or single choice calls addAnswer()
     $("select.question-types").on("change", function () {
         $(".answer").remove();
-        var answerType = $("select.question-types option:selected").attr("value");
-        var answersWrapper = $("#answers");
+        const answerType = $("select.question-types option:selected").attr("value");
+        const answersWrapper = $("#answers");
 
         if (answerType === "single-choice" || answerType === "multiple-choice") {
-            var newElement = addAnswer();
+            const newElement = addAnswer();
             answersWrapper.append(newElement);
         }
     });
 
     // when add new answer gives class delete-last to last delete button
     $(document).on("click", ".add-answer-btn", function (e) {
-
         e.preventDefault();
         $(".delete-last").removeClass("delete-last");
-        var answersWrapper = $("#answers");
+        const answersWrapper = $("#answers");
         $(".prev").remove();
-        var newElement = addAnswer();
+        const newElement = addAnswer();
         answersWrapper.append(newElement);
     });
 
@@ -114,44 +113,9 @@ $(function () {
         }
     });
 
-    $("#create-survey-form").submit(function (e) {
-        e.preventDefault();
-        var surveyQuestionsAnswers = [];
-        var userId = {};
-        $(".full-question-info")
-            .each(function (_, el) {
-                surveyQuestionsAnswers.push({
-                    question: $(el).find("input[name=\"question\"]").val(),
-                    answerType: $(el).find("select[name=\"question-type\"]").val()
-
-                    // todo array of answers
-                });
-            });
-        var submitObj = {
-            userId: user.id,
-            username: user.username,
-            surveyName: $("#survey-name").val(),
-            surveyCategory: $("select[name='survey-type']").val(),
-            surveyData: surveyQuestionsAnswers
-        };
-
-        // $.ajax({
-        //     method: "POST",
-        //     async: true,
-        //     url: "/create",
-        //     data: submitObj,
-        //     error: function (error) {
-        //         alert('Error saving order');
-        //     },
-        //     success: function (resolve) {
-        //         console.log(resolve);
-        //     }
-        // });
-    });
-
     $("#generate-share").click(function (e) {
         e.preventDefault();
-        var surveyData = {
+        const surveyData = {
             surveyName: $("#survey-name").val()
         };
         console.log(surveyData);
@@ -173,18 +137,35 @@ $(function () {
         });
     });
 
-    $(".done").on("click", function() {
+    $(".done").on("click", function (e) {
+        e.preventDefault();
         $("#edit-create").modal("hide");
-        return false;
-    });
 
-    $("#create-form").submit(function() {
-        var a = $("#create-form").serializeArray();
+        const obj = {
+            question: null,
+            questionType: null,
+            isRequired: 0,
+            answers: []
+        };
+
+        obj.question = $("input[name='question']").val();
+        obj.questionType = $("select[name='question-type']").val();
+        obj.isRequired = $("input[name='is-required']").is(":checked") ? 1 : 0;
+        $("input[name='answer']").each(function(index, element) {
+            obj.answers.push($(element).val());
+        });
+        obj.answers = obj.answers.length ? obj.answers : "";
+        questionAnswers.push(obj);
+    });
+    $("#create-survey").on("click", function(e) {
+        e.preventDefault();
+
+        surveyData.questionData = questionAnswers;
         $.ajax({
             method: "POST",
             async: true,
             url: "/create",
-            data: a,
+            data: surveyData,
             error: function (error) {
                 console.log(error);
             },

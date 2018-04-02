@@ -20,13 +20,19 @@ const {
 const {
     SubmittedAnswerData,
 } = require('./submittedAnswer-data');
+const {
+    CategoryData,
+} = require('./category-data');
+const {
+    TypeData,
+} = require('./type-data');
 
 module.exports = {
     users: new UsersData(),
     questions: new QuestionData(),
     surveys: new SurveyData(),
-    types: new Data(Type),
-    categories: new Data(Category),
+    types: new TypeData(),
+    categories: new CategoryData(),
     answers: new AnswerData(),
     submittedAnswer: new SubmittedAnswerData(),
 };

@@ -6,7 +6,7 @@ mixin edit-create()
                 .modal-body
                     .container
                         h2.register-header Question info
-                        form#create-form.form-horizontal(action='')
+                        form#create-form.form-horizontal(method="post" action='/create')
                             .form-group
                                 label.control-label.col-sm-3.col-xs-3.col-md-3.col-lg-3(for='question') Question name:
                                 .col-sm-9.col-xs-9.col-md-9.col-lg-9
@@ -17,7 +17,11 @@ mixin edit-create()
                                     select.question-types.form-control(name="question-type")
                                         each questionType in questionTypes
                                             option(value=questionType.q_type)
-                                                | #{questionType.q_type}  
+                                                | #{questionType.q_type}
+                            .form-group
+                                label.control-label.col-sm-3.col-xs-3.col-md-3.col-lg-3(for='required') Is required?:
+                                .col-sm-9.col-xs-9.col-md-9.col-lg-9
+                                    input(type='checkbox', name='is-required') 
                             div#answers
                             .form-group
                                 .col-sm-offset-2.col-sm-10
