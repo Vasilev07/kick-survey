@@ -28,6 +28,11 @@ class Cryptography {
         return crypted;
     }
 
+    /**
+     * @description Decrypts a given string
+     * @param {string} text
+     * @return {string} Decrypted string
+     */
     decrypt(text) {
         try {
             const decipher = crypto.createDecipheriv(algorithm, key, iv);
