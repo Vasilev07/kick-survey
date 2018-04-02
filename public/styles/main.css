@@ -1,5 +1,6 @@
 .navbar {
     background-color: #90D481;
+    border-radius: 0px;
 }
 
 .navbar a {
@@ -58,7 +59,7 @@
     color: rgb(132, 173, 132);
 }
 
-/* Cretae survey */
+/* Create survey */
 
 .survey-info {
     font-size: 2rem;
@@ -67,8 +68,7 @@
     color: rgba(59, 112, 47, 0.7);
 }
 
-.survey-create,
-.content {
+.survey-create {
     background-color: #F3F3F3;
 }
 
@@ -78,6 +78,18 @@
 
 .question-title {
     font-size: 2rem;
+}
+
+
+#question-list li {
+    font-size: 2rem;
+}
+.delete-question {
+    float: right;
+}
+
+.delete-question:hover {
+    color: #ce0101
 }
 
 /* User's surveys visualizations */
@@ -210,12 +222,11 @@ hr {
     margin-bottom: 10px;
 }
 
-<<<<<<< HEAD */=======>>>>>>>a9d92ef9a02af571e473142d14c256ac65724e51 .add-answer-btn {
+.add-answer-btn {
     margin-right: 5px
 }
 
 img {
-    width: 90px;
     height: 50px;
 }
 

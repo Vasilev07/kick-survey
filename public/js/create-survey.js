@@ -1,12 +1,12 @@
 $(function () {
-    var user;
-    var surveyData;
-    var questionData;
-    var questionTypesHolder;
-    var qCounter = {
+    let user;
+    let surveyData;
+    let questionData;
+    let questionTypesHolder;
+    let qCounter = {
         id: 1
     };
-    var questionAnswers = [];
+    let questionAnswers = [];
 
     $.ajax({
         method: "POST",
@@ -26,14 +26,14 @@ $(function () {
     $("#question").hide();
 
     // function that adds answer to modal btn
-    var addAnswer = function () {
-        var answerWrapper = $("<div></div>").addClass("form-group answer");
-        var label = $("<label></label>")
+    let addAnswer = function () {
+        let answerWrapper = $("<div></div>").addClass("form-group answer");
+        let label = $("<label></label>")
             .addClass("control-label col-sm-3 col-xs-3 col-md-3 col-lg-3")
             .attr("for", "question")
             .html("Answer");
 
-        var inputWrapper = $("<div></div>")
+        let inputWrapper = $("<div></div>")
             .addClass("control-label col-sm-6 col-xs-6 col-md-6 col-lg-6")
             .append($("<input>")
                 .addClass("form-control")
@@ -41,7 +41,7 @@ $(function () {
                 .attr("placeholder", "Enter answer")
                 .attr("name", "answer")
             );
-        var buttonWrapper = $("<div></div>")
+        let buttonWrapper = $("<div></div>")
             .addClass("control-label col-sm-3 col-xs-3 col-md-3 col-lg-3")
             .append($("<a></a>")
                 .addClass("btn btn-success add-answer-btn prev")
@@ -55,7 +55,6 @@ $(function () {
     };
 
     $("#continue-btn").click(function (e) {
-       
         if ($("#survey-name").val()) {
             surveyData = {
                 surveyName: $("#survey-name").val(),
@@ -70,7 +69,7 @@ $(function () {
             });
             $("#initial-create").hide();
 
-            var info = $("<div class=\"survey-info\"></div>")
+            let info = $("<div class=\"survey-info\"></div>")
                 .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.surveyName))
                 .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.category));
             $("#info")
@@ -88,11 +87,11 @@ $(function () {
     // if selected multiple-choice or single choice calls addAnswer()
     $("select.question-types").on("change", function () {
         $(".answer").remove();
-        var answerType = $("select.question-types option:selected").attr("value");
-        var answersWrapper = $("#answers");
+        let answerType = $("select.question-types option:selected").attr("value");
+        let answersWrapper = $("#answers");
 
         if (answerType === "single-choice" || answerType === "multiple-choice") {
-            var newElement = addAnswer();
+            let newElement = addAnswer();
             answersWrapper.append(newElement);
         }
     });
@@ -101,9 +100,9 @@ $(function () {
     $(document).on("click", ".add-answer-btn", function (e) {
         e.preventDefault();
         $(".delete-last").removeClass("delete-last");
-        var answersWrapper = $("#answers");
+        let answersWrapper = $("#answers");
         $(".prev").remove();
-        var newElement = addAnswer();
+        let newElement = addAnswer();
         answersWrapper.append(newElement);
     });
 
@@ -124,7 +123,7 @@ $(function () {
 
     $("#generate-share").click(function (e) {
         e.preventDefault();
-        var surveyData = {
+        let surveyData = {
             surveyName: $("#survey-name").val()
         };
         console.log(surveyData);
@@ -147,24 +146,31 @@ $(function () {
     });
 
     $(".done").on("click", function () {
-        var qName = $("#create-form .form-control").val();
-        var qType = $("#create-form .question-types").val();
-        var answers = $("#create-form [name='answer']");
+        let qName = $("#create-form .form-control").val();
+        let qType = $("#create-form .question-types").val();
+        let answers = $("#create-form [name='answer']");
+        let inputHidden = $("<input>");
+        let deleteBtn = $("<i></i>");
 
-        var question = $("#question-list");
+        deleteBtn.addClass("fas fa-trash delete-question");
+        inputHidden.attr("type", "hidden");
+        inputHidden.attr("value", "qName");
 
-        var questionListWrapper = $("<div></div>").addClass("question-wrapper");
+        let question = $("#question-list");
+
+        let questionListWrapper = $("<li></li>").addClass("question-wrapper");
 
         question.append(
             questionListWrapper
             .append($("<span></span>")
                 .addClass("survey-info")
-                .html((qCounter.id) + ". " + qName))
+                .html(qName))
+            .append(deleteBtn)
+            .append(inputHidden)
         );
         if (answers.length > 0) {
             $.each(answers, function (key, val) {
-                var answers =
-                    $("<label></label>")
+                let answers = $("<label></label>")
                     .append($("<input>")
                         .attr("type", "checkbox")
                         .attr("value", "3")
@@ -184,7 +190,7 @@ $(function () {
         e.preventDefault();
         $("#edit-create").modal("hide");
 
-        var obj = {
+        let obj = {
             question: null,
             questionType: null,
             isRequired: 0,
@@ -199,6 +205,21 @@ $(function () {
         });
         obj.answers = obj.answers.length ? obj.answers : "";
         questionAnswers.push(obj);
+    });
+
+    $(document).on("click", ".delete-question", function() {
+        var input = $(this).siblings("input[type='hidden']");
+        var questionName = input.val();
+        var questionIndex;
+
+        var foundQuestion = questionAnswers.find((question, index) => {
+            questionIndex = index;
+            return question.question === questionName;
+        });
+
+        questionAnswers.splice(questionIndex, 1);
+        var questionWrapper = $(this).parents('.question-wrapper');
+        questionWrapper.remove();
     });
 
     $("#create-survey").on("click", function (e) {
