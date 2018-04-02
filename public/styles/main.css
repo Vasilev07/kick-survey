@@ -97,6 +97,10 @@
     text-align: center
 }
 
+.tooltip{
+    min-width: 100px;
+}
+
 .delete-anchor,
 .share-button,
 .analyze-anchor {
@@ -140,6 +144,11 @@ hr {
 .delete-survey-icon {
     color: #ce0101;
     margin-right: 10px;
+}
+
+
+.filter-category-container {
+    margin-bottom: 10px;
 }
 
 .filter-category li.cat {
@@ -193,4 +202,10 @@ hr {
 img{
     width: 90px;
     height: 50px;
+}
+
+@media (max-width: 767px) {
+    .navbar-header {
+        display: none;
+    }
 }
