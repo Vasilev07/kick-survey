@@ -195,10 +195,7 @@ $(function () {
                 }
 
                 if (surveys.length === 0) {
-                    const msg = $("<p></p>")
-                        .addClass("survey")
-                        .html("No surveys found!");
-                    surveysHeader.append(msg);
+                    $("#surveys-found-status").modal("show");
                 }
 
                 surveys.forEach((survey, index) => {

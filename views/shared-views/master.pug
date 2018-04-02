@@ -20,24 +20,15 @@ html(lang="en")
         +nav()
         block content
             .content
-                .container.col-sm-1
-                .container.col-sm-5
-                    .chart-container
-                        canvas#pie-chart
-                .container.col-sm-1
-                .container.col-sm-1
-                .container.col-sm-5
-                    .chart-container2
-                        canvas#chart2
-                .container.col-sm-1
-                .container.col-sm-1
-                .container.col-sm-5
-                    .chart-container2
-                        canvas#chart3
-                .container.col-sm-1
-                .container.col-sm-1
-                .container.col-sm-5
-                    .chart-container2
-                        canvas#chart4
-                .container.col-sm-1
-                
+                .container
+                    .row
+                        .chart-container.col-xs-12.col-sm-12.col-md-6
+                            canvas#pie-chart
+                        .chart-container.col-xs-12.col-sm-12.col-md-6
+                            canvas#chart2
+                .container
+                    .row
+                        .chart-container.col-xs-12.col-sm-12.col-md-6
+                            canvas#chart3
+                        .chart-container.col-xs-12.col-sm-12.col-md-6
+                            canvas#chart4

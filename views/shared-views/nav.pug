@@ -5,23 +5,8 @@ mixin nav()
     nav.navbar
         .container-fluid
             .navbar-header
-                img(src="/static/img/logo.png", alt="HAHAH")
-                //- a.navbar-brand(href="Kick Survey")
-            //- ul.nav.navbar-nav
-            //-     li.active
-            //-         a(href="#")
-            //-     li.dropdown
-            //-         a.dropdown-toggle(data-toggle="dropdown", href="#")
-            //-             span.caret
-            //-         ul.dropdown-menu
-            //-             li
-            //-                 a(href="#")
-            //-             li
-            //-                 a(href="#")
-            //-             li
-            //-                 a(href="#")
-                li
-                    a(href="#")
+                a(href="/")
+                    img(src="/static/img/logo.png", alt="logo" )
             ul.nav.navbar-nav.navbar-right
                 if !isAuthenticated
                 
@@ -48,5 +33,3 @@ mixin nav()
                         a(href="/logout")
                             i.fas.fa-sign-out-alt.nav-icon
                             | Logout
-
-                
