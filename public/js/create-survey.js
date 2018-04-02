@@ -55,7 +55,7 @@ $(function () {
     };
 
     $("#continue-btn").click(function (e) {
-        $(".add-submit").show();
+       
         if ($("#survey-name").val()) {
             surveyData = {
                 surveyName: $("#survey-name").val(),
@@ -76,6 +76,7 @@ $(function () {
             $("#info")
                 .append(info);
             $("#question").show();
+            $(".add-submit").show();
         } else {
             $("#survey-name")
                 .siblings("label")
@@ -199,6 +200,7 @@ $(function () {
         obj.answers = obj.answers.length ? obj.answers : "";
         questionAnswers.push(obj);
     });
+
     $("#create-survey").on("click", function (e) {
         e.preventDefault();
 
