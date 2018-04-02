@@ -7,7 +7,7 @@ const data = {
             'q_type': 'single-textbox',
         },
         {
-            'q_type': 'matrix',
+            'q_type': 'date',
         },
         {
             'q_type': 'multiple-choice',
