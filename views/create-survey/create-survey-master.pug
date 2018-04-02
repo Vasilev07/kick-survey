@@ -2,6 +2,7 @@ include ../shared-views/nav
 include ./initial
 include ./popup-edit-create
 include ./question
+include ../preview-survey/modal-message
 
 <!DOCTYPE html>
 html(lang="en")
@@ -35,5 +36,5 @@ html(lang="en")
             .btn-group.done-submit
                 button.btn.btn-success.add-submit.active(data-toggle="modal" data-target="#edit-create") ADD QUESTION
                 button#create-survey.btn.btn-success.add-submit(type="submit" form="create-form") SUBMIT
-
+        +modalMessage()
             //- input#generate-share.btn.btn-primary(type="button", value="Share") 

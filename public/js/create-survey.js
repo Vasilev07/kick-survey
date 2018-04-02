@@ -201,18 +201,22 @@ $(function () {
 
     $("#create-survey").on("click", function (e) {
         e.preventDefault();
-
+        var submissionModal = $("#submission-survey-modal");
         surveyData.questionData = questionAnswers;
         $.ajax({
             method: "POST",
             async: true,
             url: "/create",
             data: surveyData,
-            error: function (error) {
-                console.log(error);
+            error: function () {
+                submissionModal.modal("show");
+                $("i.reject").show();
+                $("span.reject").show();
             },
-            success: function (resolve) {
-                console.log(resolve);
+            success: function () {
+                submissionModal.modal("show");
+                $("i.success").show();
+                $("span.success").show();
             }
         });
     });
