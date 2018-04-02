@@ -17,10 +17,11 @@ Kick Survey is a web application for creating and managing surveys. A user can *
   * Sliders
   * Date and time pickers
   * Radio buttons
-  * Chechboxes
+  * Checkboxes
   * Emojis
 
 The UI includes a nice analyze page where the user is able to see how many times an answer is selected. Providing such functionality, conclusions could be made based on the analyzed data. What is more, the user may see how many unique responses he has gathered for each of his surveys.
+
 The future of the project is bright as there are many ideas that still have not been implemented. 
 
 ## Dependancies
