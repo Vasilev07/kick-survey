@@ -59,21 +59,27 @@
 }
 
 /* Cretae survey */
+
 .survey-info {
+    font-size: 2rem;
     margin: 0 auto;
     padding: 0.5rem;
-    color:rgba(59, 112, 47, 0.7);
-    
+    color: rgba(59, 112, 47, 0.7);
 }
-.survey-create, .content {
+
+.survey-create,
+.content {
     background-color: #F3F3F3;
 }
+
 .question-wrapper {
     margin: 3px;
 }
+
 .question-title {
     font-size: 2rem;
 }
+
 /* User's surveys visualizations */
 
 .survey-question,
@@ -90,18 +96,22 @@
     margin-left: 10px;
 }
 
+.survey-preview,
 .survey-analyse,
 .survey-share,
 .survey-delete {
     display: inline;
-    text-align: center
+    text-align: center;
 }
-
+.survey-preview i {
+    text-decoration: none;
+    color: #000;
+}
 .survey-share .popover-content {
     word-wrap: break-word;
 }
 
-.tooltip{
+.tooltip {
     min-width: 100px;
 }
 
@@ -150,7 +160,6 @@ hr {
     margin-right: 10px;
 }
 
-
 .filter-category-container {
     margin-bottom: 10px;
 }
@@ -165,18 +174,17 @@ hr {
 }
 
 .spinner {
-	width: 100px;
-	height: 100px;
+    width: 100px;
+    height: 100px;
     font-size: 100px;
-	position: absolute;
-	top:0;
-	bottom: 0;
-	left: 0;
-	right: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     margin: auto;
     display: none;
     z-index: 99999;
-    
 }
 
 .over {
@@ -186,32 +194,32 @@ hr {
     z-index: 9999;
 }
 
-.bolded { 
+.bolded {
     font-weight: bold;
 }
+
 .answer {
-    margin-left: 10px; 
+    margin-left: 10px;
 }
 
 .survey-create .initial-field {
     padding: 0 15px;
 }
 
-/* .add-answer-btn,
-.delete-answer-btn {
-    padding: 3px 8px;
-    margin-top: 5px
+.btn {
+    margin-bottom: 10px;
 }
-*/
-.add-answer-btn {
+
+<<<<<<< HEAD */=======>>>>>>>a9d92ef9a02af571e473142d14c256ac65724e51 .add-answer-btn {
     margin-right: 5px
 }
 
-img{
+img {
     width: 90px;
     height: 50px;
 }
-.add-submit{
+
+.add-submit {
     display: none;
 }
 
@@ -223,4 +231,20 @@ img{
     .navbar-header {
         display: none;
     }
+}
+
+.inline-row {
+    display: inline-block;
+}
+
+.ui-slider {
+    margin-bottom: 10px;
+}
+
+.hr {
+    border-bottom: 1px solid #ededee;
+}
+
+.done-submit {
+    margin-top: 3rem;
 }

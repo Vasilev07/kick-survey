@@ -2,7 +2,7 @@
 $(function () {
     const selectText = function (element) {
         const doc = document;
-        const text = $(element)[ 0 ];
+        const text = $(element)[0];
         let range;
         let selection;
 
@@ -33,6 +33,7 @@ $(function () {
         const responsesDiv = $("<div></div>");
         const analyzeDiv = $("<div></div>");
         const shareDiv = $("<div></div>");
+        const previewDiv = $("<div></div>");
         const deleteDiv = $("<div></div>");
 
         surveyWrapper.addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 survey");
@@ -78,7 +79,7 @@ $(function () {
             .append($("<span></span>")
                 .html(survey.surveyData.uniqueSubmits));
 
-        analyzeDiv.addClass("survey-analyse col-xs-4 col-sm-4 col-md-4 col-lg-4")
+        analyzeDiv.addClass("survey-analyse col-xs-3 col-sm-3 col-md-3 col-lg-3")
             .append($("<a href=/analyze/" + survey.surveyData.encryptedUrl + "></a>")
                 .addClass("analyze-anchor")
                 .tooltip({
@@ -87,7 +88,7 @@ $(function () {
                 .append($("<i></i>")
                     .addClass("far fa-chart-bar")));
 
-        shareDiv.addClass("survey-share col-xs-4 col-sm-4 col-md-4 col-lg-4")
+        shareDiv.addClass("survey-share col-xs-3 col-sm-3 col-md-3 col-lg-3")
             .append($("<button></button>")
                 .addClass("share-button")
                 .popover({
@@ -103,7 +104,17 @@ $(function () {
                 .append($("<i></i>")
                     .addClass("fas fa-share-alt")));
 
-        deleteDiv.addClass("survey-delete col-xs-4 col-sm-4 col-md-4 col-lg-4")
+        previewDiv.addClass("survey-preview col-xs-3 col-sm-3 col-md-3 col-lg-3")
+            .append($("<a></a>")
+                .addClass("preview-button")
+                .attr("href", window.location.origin + "/preview/" + survey.surveyData.encryptedUrl)
+                .tooltip({
+                    title: "See how your survey looks like"
+                })
+                .append($("<i></i>")
+                    .addClass("fas fa-file-alt")));
+
+        deleteDiv.addClass("survey-delete col-xs-3 col-sm-3 col-md-3 col-lg-3")
             .attr("data-toggle", "modal")
             .attr("data-target", "#delete-survey-modal")
             .append($("<a></a>")
@@ -125,6 +136,7 @@ $(function () {
             .addClass("survey-footer row")
             .append(analyzeDiv)
             .append(shareDiv)
+            .append(previewDiv)
             .append(deleteDiv)
             .append(hiddenInput);
 
