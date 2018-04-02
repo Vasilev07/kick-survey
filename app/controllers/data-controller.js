@@ -237,8 +237,6 @@ class DataController {
 
         finalData = lodash.flattenDeep(finalData);
         const mapOfCategories = this.counterArray(finalData);
-        // const mapOfCategories = new Map([...new Set(finalData)]
-        //     .map((x) => [x, finalData.filter((y) => y === x).length]));
 
         const label = [];
         const data = [];
@@ -269,8 +267,6 @@ class DataController {
         let result = await Promise.all(res);
         result = lodash.flattenDeep(result);
         const mapOfCategories = this.counterArray(result);
-        // const mapOfCategories = new Map([...new Set(result)]
-        //     .map((x) => [x, result.filter((y) => y === x).length]));
 
         const label = [];
         const data = [];
@@ -308,8 +304,7 @@ class DataController {
             daysOfSub.push(formatDates(uniqueDates));
         });
         const mapOfDays = this.counterArray(daysOfSub);
-        // const mapOfDays = new Map([...new Set(daysOfSub)]
-        //     .map((x) => [x, daysOfSub.filter((y) => y === x).length]));
+
         let label = [];
         const data = [];
 
@@ -347,12 +342,11 @@ class DataController {
         daysOfSub.map((el) => {
             daysOfSubWithWord.push(days[el]);
         });
-        const mapOfDays = this.counterArray(daysOfSub);
-        // const mapOfDays = new Map([...new Set(daysOfSubWithWord)]
-        //     .map((x) => [x, daysOfSubWithWord.filter((y) => y === x).length]));
-        // console.log(mapOfDays);
+        const mapOfDays = this.counterArray(daysOfSubWithWord);
+
         const label = [];
         const data = [];
+
         mapOfDays.forEach((value, key, map) => {
             label.push(key);
             data.push(value);
