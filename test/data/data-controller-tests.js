@@ -1,3 +1,4 @@
+/* globals Set */
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 
@@ -7,6 +8,7 @@ const expect = chai.expect;
 const DataController = require('../../app/controllers/data-controller');
 const SurveyError = require('../../app/controllers/exceptions/survey-exceptions');
 
+let userArray = [];
 let surveysArray = [];
 let questionsArray = [];
 let answersArray = [];
@@ -15,6 +17,11 @@ let typesArray = [];
 let submittedAnswersArray = [];
 
 const fakeData = {
+    users: {
+        getAll() {
+            return userArray;
+        },
+    },
     surveys: {
         getSurvey(userId, name) {
             const result = surveysArray.find((survey) => {
@@ -37,7 +44,7 @@ const fakeData = {
         deleteSurvey(userId, name) {
             let indexToDelete = -1;
             name = name.split('&&')[0];
-            surveysArray.map((survey, index) => {           
+            surveysArray.map((survey, index) => {
                 if (survey.name === name &&
                     survey.user_id === +userId) {
                     indexToDelete = index;
@@ -61,6 +68,12 @@ const fakeData = {
             }
             return [found];
         },
+        getAll() {
+            return questionsArray;
+        },
+        // getById(id) {
+        //     return questionsArray.find((question) => +question.id === +id);
+        // },
     },
     answers: {
         getQuestionAnswers(id) {
@@ -84,15 +97,25 @@ const fakeData = {
 
             return counter;
         },
+        getUniqueSubmissions() {
+            const uniqueArray = [...new Set(submittedAnswersArray)];
+            return uniqueArray;
+        },
     },
     categories: {
         getAll() {
             return categoriesArray;
         },
+        getById(id) {
+            return categoriesArray.find((category) => +category.id === +id);
+        },
     },
     types: {
         getAll() {
             return typesArray;
+        },
+        getById(id) {
+            return questionsArray.find((types) => +types.id === +id);
         },
     },
 };
@@ -395,5 +418,196 @@ describe('DataController', () => {
             expect([...result][0]).to.include('answer1')
                 .and.to.include(2);
         });
+    });
+    describe('getAllSubmissionsByDayOfWeek()', () => {
+        it('expect to return an object with two arrays', async () => {
+            submittedAnswersArray = [{
+                DISTINCT: {
+                    getDay() {
+                        return this.date;
+                    },
+                    date: '2018-03-28T17:47:34.000Z',
+                },
+            }, {
+                DISTINCT: {
+                    getDay() {
+                        return this.date;
+                    },
+                    date: '2018-03-28T17:47:34.000Z',
+                },
+            }];
+
+            const controller = new DataController(fakeData);
+
+            const result = await controller.getAllSubmissionsByDayOfWeek();
+
+            expect(result)
+                .to.have.property('label')
+                .and.to.be.instanceof(Array);
+
+            expect(result)
+                .to.have.property('data')
+                .and.to.be.instanceof(Array);
+        });
+    });
+    describe('getAllSubmissionsByDate()', () => {
+        it(`expect to return an object with 
+        two arrays when day and month are greater than 10`, async () => {
+            submittedAnswersArray = [{
+                DISTINCT: {
+                    getDate() {
+                        return this.date;
+                    },
+                    getMonth() {
+                        return this.month;
+                    },
+                    getFullYear() {
+                        return this.year;
+                    },
+                    date: 10,
+                    month: 10,
+                    year: '1999',
+                },
+            }, {
+                DISTINCT: {
+                    getDate() {
+                        return this.date;
+                    },
+                    getMonth() {
+                        return this.month;
+                    },
+                    getFullYear() {
+                        return this.year;
+                    },
+                    date: 11,
+                    month: 11,
+                    year: '1999',
+                },
+            }];
+
+            const controller = new DataController(fakeData);
+
+            const result = await controller.getAllSubmissionsByDate();
+
+            expect(result)
+                .to.have.property('label')
+                .and.to.be.instanceof(Array);
+
+            expect(result)
+                .to.have.property('data')
+                .and.to.be.instanceof(Array);
+        });
+        it(`expect to return an object with 
+        two arrays when day and month are lower than 10`, async () => {
+            submittedAnswersArray = [{
+                DISTINCT: {
+                    getDate() {
+                        return this.date;
+                    },
+                    getMonth() {
+                        return this.month;
+                    },
+                    getFullYear() {
+                        return this.year;
+                    },
+                    date: 5,
+                    month: 5,
+                    year: '1999',
+                },
+            }, {
+                DISTINCT: {
+                    getDate() {
+                        return this.date;
+                    },
+                    getMonth() {
+                        return this.month;
+                    },
+                    getFullYear() {
+                        return this.year;
+                    },
+                    date: 6,
+                    month: 6,
+                    year: '1999',
+                },
+            }];
+
+            const controller = new DataController(fakeData);
+
+            const result = await controller.getAllSubmissionsByDate();
+
+            expect(result)
+                .to.have.property('label')
+                .and.to.be.instanceof(Array);
+
+            expect(result)
+                .to.have.property('data')
+                .and.to.be.instanceof(Array);
+        });
+    });
+    describe('getAllUsersTypes()', () => {
+        it('expect to return an object with two arrays with user types',
+            async () => {
+                questionsArray = [{
+                    id: 1,
+                    survey_id: 1,
+                    order: 1,
+                    name: 'question name',
+                    is_required: 0,
+                    type_id: 1,
+                    Type: {
+                        name: 'some type',
+                    },
+                }];
+                typesArray = [
+                    'type-1',
+                ];
+
+                const controller = new DataController(fakeData);
+
+                const result = await controller.getAllUsersTypes();
+
+                expect(result)
+                    .to.have.property('label')
+                    .and.to.be.instanceof(Array);
+
+                expect(result)
+                    .to.have.property('data')
+                    .and.to.be.instanceof(Array);
+            });
+    });
+    describe('getAllUsersCategories()', () => {
+        it('expect tp return object with two arrays with user categories',
+            async () => {
+                userArray = [{
+                    id: 1,
+                    username: 'koteto99',
+                    password: '$2a$10$NAVe/n5c/drosjvnaIZf4.hhrJoekM.Nwbh8/3cXldvH/cxt4GcMa',
+                    first_name: 'Malkoto',
+                    last_name: 'Kote',
+                    email: 'koteto99@hotmail.com',
+                    createdAt: '2018 - 04 - 01 T13: 47: 22.000 Z',
+                    updatedAt: '2018 - 04 - 01 T13: 47: 22.000 Z',
+                }];
+                surveysArray = [{
+                    user_id: 1,
+                    cat_id: 1,
+                }];
+                categoriesArray = [{
+                    id: 1,
+                    name: 'Obshtestvenik',
+                }];
+
+                const controller = new DataController(fakeData);
+
+                const result = await controller.getAllUsersCategories();
+
+                expect(result)
+                .to.have.property('label')
+                .and.to.be.instanceof(Array);
+                
+                expect(result)
+                .to.have.property('label')
+                .and.to.be.instanceof(Array);
+            });
     });
 });
