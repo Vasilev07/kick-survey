@@ -5,7 +5,7 @@ $(function () {
     var questionTypesHolder;
     var qCounter = {
         id: 1
-    };   
+    };
     var questionAnswers = [];
 
     $.ajax({
@@ -54,29 +54,34 @@ $(function () {
         return answerWrapper;
     };
 
-
     $("#continue-btn").click(function (e) {
-        $("button.center-block").show();
+        $(".add-submit").show();
+        if ($("#survey-name").val()) {
+            surveyData = {
+                surveyName: $("#survey-name").val(),
+                category: $("#categories").val()
+            };
+            questionData = {
+                questionTypes: $(".question-types").children()
+            };
+            questionTypesHolder = [];
+            $.each(questionData.questionTypes, function (key, value) {
+                questionTypesHolder.push($(value).attr("value"));
+            });
+            $("#initial-create").hide();
 
-        surveyData = {
-            surveyName: $("#survey-name").val(),
-            category: $("#categories").val()
-        };
-        questionData = {
-            questionTypes: $(".question-types").children()
-        };
-        questionTypesHolder = [];
-        $.each(questionData.questionTypes, function (key, value) {
-            questionTypesHolder.push($(value).attr("value"));
-        });
-        $("#initial-create").hide();
-
-        const info = $("<div class=\"survey-info\"></div>")
-            .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.surveyName))
-            .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.category));
-        $("#info")
-            .append(info);
-        $("#question").show();
+            const info = $("<div class=\"survey-info\"></div>")
+                .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.surveyName))
+                .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.category));
+            $("#info")
+                .append(info);
+            $("#question").show();
+        } else {
+            $("#survey-name")
+                .siblings("label")
+                .html("Survey name shoud not be blank.")
+                .css("color", "#f00");
+        }
     });
 
     // if selected multiple-choice or single choice calls addAnswer()
@@ -116,45 +121,6 @@ $(function () {
         }
     });
 
-<<<<<<< HEAD
-    $("#create-form").submit(function (e) {
-        e.preventDefault();
-        var surveyQuestionsAnswers = [];
-
-        // $(".full-question-info")
-        //     .each(function (_, el) {
-        //         surveyQuestionsAnswers.push({
-        //             question: $(el).find("input[name=\"question\"]").val(),
-        //             answerType: $(el).find("select[name=\"question-type\"]").val()
-
-        //             // todo array of answers
-        //         });
-        //     });
-        var submitObj = {
-            userId: user.id,
-            username: user.username,
-            surveyName: $("#survey-name").val(),
-            surveyCategory: $("select[name='survey-type']").val(),
-            surveyData: surveyQuestionsAnswers
-        };
-        console.log(submitObj);
-
-        // $.ajax({
-        //     method: "POST",
-        //     async: true,
-        //     url: "/create",
-        //     data: submitObj,
-        //     error: function (error) {
-        //         alert('Error saving order');
-        //     },
-        //     success: function (resolve) {
-        //         console.log(resolve);
-        //     }
-        // });
-    });
-
-=======
->>>>>>> 9bef32399f5ba2aa34dfafcc239c8796dd0d15b5
     $("#generate-share").click(function (e) {
         e.preventDefault();
         const surveyData = {
@@ -186,18 +152,13 @@ $(function () {
 
         var question = $("#question-list");
 
-        var questionListWrapper = $("<div></div>").addClass("row");
+        var questionListWrapper = $("<div></div>").addClass("question-wrapper");
 
         question.append(
             questionListWrapper
-            .append($("<div></div>")
-                .addClass("col-xs-3 col-sm-3 col-md-3 col-lg-3")
-                .append($("<h3></h3>")
-                    .addClass("survey-info")
-                    .html((qCounter.id) + ". " + qName)))
-            .append($("<div></div>")
-                .addClass("col-xs-9 col-sm-9 col-md-9 col-lg-9 survey-info")
-                .append($("<h3></h3>").html(qType)))
+            .append($("<span></span>")
+                .addClass("survey-info")
+                .html((qCounter.id) + ". " + qName))
         );
         if (answers.length > 0) {
             $.each(answers, function (key, val) {
@@ -217,6 +178,7 @@ $(function () {
         }
 
         qCounter.id++;
+    });
     $(".done").on("click", function (e) {
         e.preventDefault();
         $("#edit-create").modal("hide");
@@ -231,13 +193,13 @@ $(function () {
         obj.question = $("input[name='question']").val();
         obj.questionType = $("select[name='question-type']").val();
         obj.isRequired = $("input[name='is-required']").is(":checked") ? 1 : 0;
-        $("input[name='answer']").each(function(index, element) {
+        $("input[name='answer']").each(function (index, element) {
             obj.answers.push($(element).val());
         });
         obj.answers = obj.answers.length ? obj.answers : "";
         questionAnswers.push(obj);
     });
-    $("#create-survey").on("click", function(e) {
+    $("#create-survey").on("click", function (e) {
         e.preventDefault();
 
         surveyData.questionData = questionAnswers;

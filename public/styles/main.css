@@ -97,6 +97,10 @@
     text-align: center
 }
 
+.survey-share .popover-content {
+    word-wrap: break-word;
+}
+
 .delete-anchor,
 .share-button,
 .analyze-anchor {
@@ -180,6 +184,10 @@ hr {
     margin-left: 10px; 
 }
 
+.survey-create .initial-field {
+    padding: 0 15px;
+}
+
 /* .add-answer-btn,
 .delete-answer-btn {
     padding: 3px 8px;
@@ -193,4 +201,7 @@ hr {
 img{
     width: 90px;
     height: 50px;
+}
+.add-submit{
+    display: none;
 }
