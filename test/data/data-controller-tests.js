@@ -5,12 +5,14 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 const DataController = require('../../app/controllers/data-controller');
+const SurveyError = require('../../app/controllers/exceptions/survey-exceptions');
 
 let surveysArray = [];
 let questionsArray = [];
 let answersArray = [];
 let categoriesArray = [];
 let typesArray = [];
+let submittedAnswersArray = [];
 
 const fakeData = {
     surveys: {
@@ -31,6 +33,23 @@ const fakeData = {
                 return [];
             }
             return found;
+        },
+        deleteSurvey(userId, name) {
+            let indexToDelete = -1;
+            name = name.split('&&')[0];
+            surveysArray.map((survey, index) => {           
+                if (survey.name === name &&
+                    survey.user_id === +userId) {
+                    indexToDelete = index;
+                }
+            });
+
+            const deleted = surveysArray.splice(indexToDelete, 1);
+
+            if (indexToDelete === -1) {
+                throw new SurveyError.SurveyNotFound();
+            }
+            return deleted;
         },
     },
     questions: {
@@ -53,6 +72,19 @@ const fakeData = {
             return found;
         },
     },
+    submittedAnswer: {
+        countUniqueSubmits(userId, surveyId) {
+            let counter = 0;
+            submittedAnswersArray.forEach((submit) => {
+                if (submit.user_id === userId &&
+                    submit.survey_id === surveyId) {
+                    counter += 1;
+                }
+            });
+
+            return counter;
+        },
+    },
     categories: {
         getAll() {
             return categoriesArray;
@@ -72,6 +104,10 @@ describe('DataController', () => {
                 const user = {
                     id: 1,
                 };
+                submittedAnswersArray = [{
+                    user_id: 1,
+                    survey_id: 1,
+                }];
                 surveysArray = [{
                     id: 1,
                     user_id: 1,
@@ -303,6 +339,61 @@ describe('DataController', () => {
             const result = controller.getAllQuestionTypes();
 
             expect(result).to.be.deep.equal(typesArray);
+        });
+    });
+
+    describe('deleteSurvey()', () => {
+        describe('when data is valid', () => {
+            it('expect to return the deleted entry', async () => {
+                const url = 'be18d21bc24ea961b7f7f5b837404bf80cea1de361';
+                surveysArray = [{
+                    user_id: 1,
+                    id: 1,
+                    name: 'survey1',
+                }];
+
+                const copyArray = Array.from(surveysArray);
+
+                const controller = new DataController(fakeData);
+
+                const result = await controller.deleteSurvey(url);
+
+                expect(result[0]).to.be.deep.equal(copyArray[0]);
+            });
+        });
+        describe('when data is invalid', () => {
+            it('expect to return throw SurveyNotFound exception', async () => {
+                const url = 'be18d21bc24ea961b7f7f5b837404bf80cea1de361';
+                surveysArray = [{
+                    user_id: 2,
+                    id: 1,
+                    name: 'survey',
+                }];
+
+                const controller = new DataController(fakeData);
+                const func = () => {
+                    return controller.deleteSurvey(url);
+                };
+
+                expect(func())
+                    .to.eventually
+                    .be.rejectedWith('Survey not found')
+                    .and.be.an.instanceOf(SurveyError.SurveyNotFound);
+            });
+        });
+    });
+    describe('counterArray()', () => {
+        it('expect to return a map', () => {
+            const array = [
+                'answer1', 'answer2', 'answer1',
+            ];
+
+            const controller = new DataController(fakeData);
+
+            const result = controller.counterArray(array);
+
+            expect([...result][0]).to.include('answer1')
+                .and.to.include(2);
         });
     });
 });

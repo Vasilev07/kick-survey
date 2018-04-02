@@ -97,13 +97,12 @@
     text-align: center
 }
 
-<<<<<<< HEAD
 .survey-share .popover-content {
     word-wrap: break-word;
-=======
+}
+
 .tooltip{
     min-width: 100px;
->>>>>>> 65223b12ce21e2d7de25a3358c764ed7ff4e7810
 }
 
 .delete-anchor,

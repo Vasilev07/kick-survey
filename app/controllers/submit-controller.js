@@ -42,6 +42,12 @@ class SubmitController {
         return await this.data.submittedAnswer.getUserSurveys(id);
     }
 
+    /**
+     * @description Transforms the given data in a way to be
+     * easily inserted in the database
+     * @param {Object} data Object with the data from a submit form
+     * @return {Object} The transformed data
+     */
     _beautifyData(data) {
         const questions = [];
         data.serialize.forEach((question) => {
@@ -91,6 +97,11 @@ class SubmitController {
         return object;
     }
 
+    /**
+     * @description Transform the given date in a readable form
+     * @param {String} today String with a date
+     * @return {String} The transformed date
+     */
     _currentDate(today) {
         const dd = (today.getDate() < 10 ? '0' : '') + today.getDate();
         const mm = (today.getMonth() + 1 < 10 ? '0' : '') +

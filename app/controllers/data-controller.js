@@ -72,10 +72,10 @@ class DataController {
     }
 
     counterArray(array) {
-        const mapCOunter = new Map([...new Set(array)]
+        const mapCounter = new Map([...new Set(array)]
             .map((x) => [x, array.filter((y) => y === x).length]));
 
-        return mapCOunter;
+        return mapCounter;
     }
 
     async getSubmittedData(url) {
@@ -83,44 +83,45 @@ class DataController {
         const userId = surveyData.user_id;
         const surveyName = surveyData.name;
         const surveyId = await this.data.surveys.getSurvey(userId, surveyName);
-        const res = surveyData.dataValues.surveyContentData.map(async (content) => {
-            const questionId = content.questionData.questionId;
-            const answerData = await this.data.submittedAnswer
-                .getAnswersAndAnswerId(userId, surveyId.id, questionId);
-            const result = answerData.map(async (data) => {
-                let obj = {};
-                if (data.dataValues.answer !== null) {
-                    obj = {
-                        answer: data.dataValues.answer,
-                    };
-                } else {
-                    obj = {
-                        answerId: data.dataValues.answer_id,
-                    };
+        const res = surveyData.dataValues
+            .surveyContentData.map(async (content) => {
+                const questionId = content.questionData.questionId;
+                const answerData = await this.data.submittedAnswer
+                    .getAnswersAndAnswerId(userId, surveyId.id, questionId);
+                const result = answerData.map(async (data) => {
+                    let obj = {};
+                    if (data.dataValues.answer !== null) {
+                        obj = {
+                            answer: data.dataValues.answer,
+                        };
+                    } else {
+                        obj = {
+                            answerId: data.dataValues.answer_id,
+                        };
+                    }
+                    return obj;
+                });
+                const promiseIt = await Promise.all(result);
+
+                let answerCount;
+
+                if (promiseIt[0].answer) {
+                    answerCount = promiseIt.reduce((sums, entry) => {
+                        sums[entry.answer] = (sums[entry.answer] || 0) + 1;
+                        return sums;
+                    }, {});
                 }
-                return obj;
+                if (promiseIt[0].answerId) {
+                    answerCount = promiseIt.reduce((sums, entry) => {
+                        sums[entry.answerId] = (sums[entry.answerId] || 0) + 1;
+                        return sums;
+                    }, {});
+                }
+                content.answers = promiseIt;
+                content.answerCount = answerCount;
+                // console.log(promiseIt);
+                return promiseIt;
             });
-            const promiseIt = await Promise.all(result);
-
-            let answerCount;
-
-            if (promiseIt[0].answer) {
-                answerCount = promiseIt.reduce((sums, entry) => {
-                    sums[entry.answer] = (sums[entry.answer] || 0) + 1;
-                    return sums;
-                }, {});
-            }
-            if (promiseIt[0].answerId) {
-                answerCount = promiseIt.reduce((sums, entry) => {
-                    sums[entry.answerId] = (sums[entry.answerId] || 0) + 1;
-                    return sums;
-                }, {});
-            }
-            content.answers = promiseIt;
-            content.answerCount = answerCount;
-            // console.log(promiseIt);
-            return promiseIt;
-        });
         await Promise.all(res);
         return surveyData;
     }
@@ -146,7 +147,7 @@ class DataController {
         const name = decrypt.slice(userId.length + 2);
 
         const survey = await this.data.surveys.getSurvey(userId, name);
-        console.log(survey);
+
         if (!survey) {
             throw new SurveyError.SurveyNotFound();
         }
@@ -361,13 +362,8 @@ class DataController {
 
     async deleteSurvey(url) {
         const cryptography = new Crypto();
-        let decrypt;
 
-        try {
-            decrypt = cryptography.decrypt(url);
-        } catch (err) {
-            throw new SurveyError.SurveyNotFound();
-        }
+        const decrypt = cryptography.decrypt(url);
 
         const userId = decrypt.match(/^(\d+)/)[0];
         const name = decrypt.slice(userId.length + 2);
@@ -376,7 +372,7 @@ class DataController {
             const res = await this.data.surveys.deleteSurvey(userId, name);
             return res;
         } catch (err) {
-            throw err;
+            throw new SurveyError.SurveyNotFound();
         }
     }
 
