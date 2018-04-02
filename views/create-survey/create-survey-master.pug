@@ -29,9 +29,11 @@ html(lang="en")
         div#question.container
             //- +question()
             +edit-create()
+        div#question-list.container
         .row
-            div.col-xs-12.col-sm-12.col-md-12.col-lg-12.center-block
-                button.btn.btn-success.center-block.active(data-toggle="modal" data-target="#edit-create") ADD QUESTION
+            div.col-xs-12.col-sm-12.col-md-12.col-lg-12
+            .btn-group.text-center
+                button.btn.btn-success.active(data-toggle="modal" data-target="#edit-create") ADD QUESTION
                 button#create-survey.btn.btn-success(type="submit" form="create-form") SUBMIT
 
             //- input#generate-share.btn.btn-primary(type="button", value="Share") 

@@ -3,6 +3,9 @@ $(function () {
     var surveyData;
     var questionData;
     var questionTypesHolder;
+    var qCounter = {
+        id: 1
+    };
 
     $.ajax({
         method: "POST",
@@ -114,19 +117,19 @@ $(function () {
         }
     });
 
-    $("#create-survey-form").submit(function (e) {
+    $("#create-form").submit(function (e) {
         e.preventDefault();
         var surveyQuestionsAnswers = [];
-        var userId = {};
-        $(".full-question-info")
-            .each(function (_, el) {
-                surveyQuestionsAnswers.push({
-                    question: $(el).find("input[name=\"question\"]").val(),
-                    answerType: $(el).find("select[name=\"question-type\"]").val()
 
-                    // todo array of answers
-                });
-            });
+        // $(".full-question-info")
+        //     .each(function (_, el) {
+        //         surveyQuestionsAnswers.push({
+        //             question: $(el).find("input[name=\"question\"]").val(),
+        //             answerType: $(el).find("select[name=\"question-type\"]").val()
+
+        //             // todo array of answers
+        //         });
+        //     });
         var submitObj = {
             userId: user.id,
             username: user.username,
@@ -134,6 +137,7 @@ $(function () {
             surveyCategory: $("select[name='survey-type']").val(),
             surveyData: surveyQuestionsAnswers
         };
+        console.log(submitObj);
 
         // $.ajax({
         //     method: "POST",
@@ -173,12 +177,49 @@ $(function () {
         });
     });
 
-    $(".done").on("click", function() {
+    $(".done").on("click", function () {
+        var qName = $("#create-form .form-control").val();
+        var qType = $("#create-form .question-types").val();
+        var answers = $("#create-form [name='answer']");
+
+        var question = $("#question-list");
+
+        var questionListWrapper = $("<div></div>").addClass("row");
+
+        question.append(
+            questionListWrapper
+            .append($("<div></div>")
+                .addClass("col-xs-3 col-sm-3 col-md-3 col-lg-3")
+                .append($("<h3></h3>")
+                    .addClass("survey-info")
+                    .html((qCounter.id) + ". " + qName)))
+            .append($("<div></div>")
+                .addClass("col-xs-9 col-sm-9 col-md-9 col-lg-9 survey-info")
+                .append($("<h3></h3>").html(qType)))
+        );
+        if (answers.length > 0) {
+            $.each(answers, function (key, val) {
+                var answers =
+                    $("<label></label>")
+                    .append($("<input>")
+                        .attr("type", "checkbox")
+                        .attr("value", "3")
+                        .text($(val).val()));
+
+                question.append(
+                    questionListWrapper
+                    .append($("<div></div>").addClass("checkbox")
+                        .append(answers))
+                );
+            });
+        }
+
+        qCounter.id++;
         $("#edit-create").modal("hide");
         return false;
     });
 
-    $("#create-form").submit(function() {
+    $("#create-form").submit(function () {
         var a = $("#create-form").serializeArray();
         $.ajax({
             method: "POST",
