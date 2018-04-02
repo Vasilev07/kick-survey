@@ -223,6 +223,10 @@ img {
     display: none;
 }
 
+.no-surveys-found {
+    text-align: center;
+}
+
 @media (max-width: 767px) {
     .navbar-header {
         display: none;

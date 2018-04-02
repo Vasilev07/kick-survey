@@ -331,6 +331,7 @@ class DataController {
         const daysOfSubWithWord = [];
 
         submissions.map((sub) => {
+            console.log(sub);
             let dayAsDigit;
             if (sub.DISTINCT.getDay() === 0) {
                 dayAsDigit = 7;
