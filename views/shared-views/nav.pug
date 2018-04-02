@@ -41,6 +41,10 @@ mixin nav()
                             i.fas.fa-user.nav-icon
                             | Hello, #{user.username}
                     li
+                        a(href="/create")
+                            i.fas.fa-plus-square.nav-icon
+                            | Create survey
+                    li
                         a(href="/logout")
                             i.fas.fa-sign-out-alt.nav-icon
                             | Logout

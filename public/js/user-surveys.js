@@ -78,7 +78,7 @@ $(function () {
             .append($("<span></span>")
                 .html(survey.surveyData.uniqueSubmits));
 
-        analyzeDiv.addClass("survey-analyse col-sm-4 col-md-4 col-lg-4")
+        analyzeDiv.addClass("survey-analyse col-xs-4 col-sm-4 col-md-4 col-lg-4")
             .append($("<a href=/analyze/" + survey.surveyData.encryptedUrl + "></a>")
                 .addClass("analyze-anchor")
                 .tooltip({
@@ -87,7 +87,7 @@ $(function () {
                 .append($("<i></i>")
                     .addClass("far fa-chart-bar")));
 
-        shareDiv.addClass("survey-share col-sm-4 col-md-4 col-lg-4")
+        shareDiv.addClass("survey-share col-xs-4 col-sm-4 col-md-4 col-lg-4")
             .append($("<button></button>")
                 .addClass("share-button")
                 .popover({
@@ -103,7 +103,7 @@ $(function () {
                 .append($("<i></i>")
                     .addClass("fas fa-share-alt")));
 
-        deleteDiv.addClass("survey-delete col-sm-4 col-md-4 col-lg-4")
+        deleteDiv.addClass("survey-delete col-xs-4 col-sm-4 col-md-4 col-lg-4")
             .attr("data-toggle", "modal")
             .attr("data-target", "#delete-survey-modal")
             .append($("<a></a>")
@@ -201,9 +201,24 @@ $(function () {
                     surveysHeader.append(msg);
                 }
 
-                surveys.forEach((survey) => {
-                    const newRow = surveyDataPreview(survey);
-                    surveysHeader.append($(newRow));
+                surveys.forEach((survey, index) => {
+                    if (index % 2 === 0) {
+                        const newRow = $("<div></div>");
+                        const offset = $("<div></div>");
+                        newRow.addClass("row survey-row");
+                        offset
+                            .addClass("col-lg-10 col-lg-offset-1 col-md-10")
+                            .addClass("col-md-offset-1 col-sm-10 col-sm-offset-1 offsetted");
+                        surveysHeader.append(newRow);
+                        const newSurvey = surveyDataPreview(survey);
+                        newRow.append(offset);
+                        offset.append(newSurvey);
+                    } else {
+                        const lastRow = $(".survey-row").last();
+                        const offsetted = $(lastRow).find(".offsetted");
+                        const newSurvey = surveyDataPreview(survey);
+                        offsetted.append(newSurvey);
+                    }
                 });
             }
         }).then(function (data, status, xhr) {
