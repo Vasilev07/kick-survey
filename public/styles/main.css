@@ -58,7 +58,7 @@
     color: rgb(132, 173, 132);
 }
 
-/* Cretae survey */
+/* Create survey */
 
 .survey-info {
     font-size: 2rem;
@@ -80,6 +80,7 @@
     font-size: 2rem;
 }
 
+
 /* User's surveys visualizations */
 
 .survey-question,
@@ -96,7 +97,7 @@
     margin-left: 10px;
 }
 
-.survey-preview,
+.survey-previe  ,
 .survey-analyse,
 .survey-share,
 .survey-delete {
@@ -273,4 +274,8 @@ i.reject {
 
 span.reject {
     display: none;
+}
+
+.warning-placeholder {
+    color: #f00;
 }

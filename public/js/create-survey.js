@@ -151,7 +151,6 @@ $(function () {
 
     $(".done").on("click", function (e) {
         e.preventDefault();
-        $("#edit-create").modal("hide");
 
         var obj = {
             question: null,
@@ -174,29 +173,38 @@ $(function () {
 
         var questionListWrapper = $("<div></div>").addClass("question-wrapper");
 
-        question.append(
-            questionListWrapper
-            .append($("<span></span>")
-                .addClass("survey-info")
-                .html((qCounter.id) + ". " + qName))
-        );
-        if (answers.length > 0) {
-            $.each(answers, function (key, val) {
-                var answers =
-                    $("<label></label>")
-                    .append($("<input>")
-                        .attr("type", "checkbox")
-                        .attr("value", "3")
-                        .text($(val).val()));
+        if (qName) {
+            question.append(
+                questionListWrapper
+                .append($("<span></span>")
+                    .addClass("survey-info")
+                    .html((qCounter.id) + ". " + qName))
+            );
+            if (answers.length > 0) {
+                $.each(answers, function (key, val) {
+                    var answers =
+                        $("<label></label>")
+                        .append($("<input>")
+                            .attr("type", "checkbox")
+                            .attr("value", "3")
+                            .text($(val).val()));
 
-                question.append(
-                    questionListWrapper
-                    .append($("<div></div>").addClass("checkbox")
-                        .append(answers))
-                );
-            });
+                    question.append(
+                        questionListWrapper
+                        .append($("<div></div>").addClass("checkbox")
+                            .append(answers))
+                    );
+                });
+            }
+            qCounter.id++;
+
+            $("#edit-create").modal("hide");
+        } else {
+
+            $("#warning-question-label")
+                .html("Survey name shoud not be blank.")
+                .addClass("warning-placeholder");
         }
-        qCounter.id++;
     });
 
     $("#create-survey").on("click", function (e) {
@@ -224,5 +232,6 @@ $(function () {
     $(".modal").on("hidden.bs.modal", function () {
         $(".form-control").val("");
         $(".question-types").val("slider");
+        $("#warning-question-label").html("");
     });
 });
