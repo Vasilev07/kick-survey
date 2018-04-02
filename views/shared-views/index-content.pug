@@ -1,4 +1,18 @@
 mixin indexContent()
+    #surveys-found-status.modal.fade(tabindex='-1', role='dialog', aria-labelledby='surveys-found-statusLabel')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                    h4#surveys-found-status-label.modal-title
+                        i.fas.fa-exclamation-triangle.delete-survey-icon
+                .modal-body
+                    h3.no-surveys-found
+                        | No surveys have been found.
+                .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal') Close
+
     .container-fluid.filter-category-container
         .col-xs-12.col-sm-12.col-md-12.col-lg-12
             .row

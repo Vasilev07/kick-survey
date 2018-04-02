@@ -96,11 +96,17 @@
     margin-left: 10px;
 }
 
+.survey-preview,
 .survey-analyse,
 .survey-share,
 .survey-delete {
     display: inline;
-    text-align: center
+    text-align: center;
+}
+
+.survey-preview i {
+    text-decoration: none;
+    color: #000;
 }
 
 .survey-share .popover-content {
@@ -219,10 +225,26 @@ img {
     display: none;
 }
 
+.no-surveys-found {
+    text-align: center;
+}
+
 @media (max-width: 767px) {
     .navbar-header {
         display: none;
     }
+}
+
+.inline-row {
+    display: inline-block;
+}
+
+.ui-slider {
+    margin-bottom: 10px;
+}
+
+.hr {
+    border-bottom: 1px solid #ededee;
 }
 
 .done-submit {
@@ -231,7 +253,7 @@ img {
 
 /* Modal success */
 
-div.success{
+div.success {
     display: none;
 }
 
@@ -239,6 +261,7 @@ i.success {
     color: rgb(14, 181, 17);
     display: none;
 }
+
 span.success {
     display: none;
 }
@@ -247,6 +270,7 @@ i.reject {
     color: #ce0101;
     display: none;
 }
+
 span.reject {
     display: none;
 }
