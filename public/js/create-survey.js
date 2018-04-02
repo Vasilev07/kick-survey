@@ -55,7 +55,7 @@ $(function () {
     };
 
     $("#continue-btn").click(function (e) {
-       
+
         if ($("#survey-name").val()) {
             surveyData = {
                 surveyName: $("#survey-name").val(),

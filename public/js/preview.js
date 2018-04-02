@@ -153,31 +153,16 @@ $(function () {
                 serialize,
                 surveyDataObj
             },
-            error: function (error) {
-                submissionModal
-                    .find(".modal-body")
-                    .append($("<span></span>")
-                    .html("Unfortunately, we couldn't save your submission."));
-                submissionModal
-                    .find("#submit-survey-modal-label")
-                    .append($("<i></i>")
-                        .addClass("fas fa-times-circle")
-                        .css("color", "#ce0101")
-                    );
+            error: function (error) {              
                 submissionModal.modal("show");
+                $("i.reject").show();
+                $("span.reject").show();
+
             },
             success: function (resolve) {
-                submissionModal
-                    .find(".modal-body")
-                    .append($("<span></span>")
-                    .html("Thank you for your submission."));
-                submissionModal
-                    .find("#submit-survey-modal-label")
-                    .append($("<i></i>")
-                        .addClass("fas fa-check-circle")
-                        .css("color", "#0EB511")
-                    );
                 submissionModal.modal("show");
+                $("i.success").show();
+                $("span.success").show();
             }
         });
 
