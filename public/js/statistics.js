@@ -3,50 +3,33 @@ $(function () {
 
     const surveyInfo = function (survey, index, surveyName) {
         const panel = $("<div></div>");
-        const panelHeading = $("<div></div>");
-        const panelTitle = $("<h4></h4>");
-        const accordionButton = $("<a></a>");
+        const anchorHead = $("<div></div>");
         const collapseDiv = $("<div></div>");
         const panelBody = $("<div></div>");
-
+        const panelHeading = $("<div></div>");
         const infoWrapper = $("<div></div>");
         const thumbnailWrapper = $("<div></div>");
-        const thumbnail = $("<div></div>");
         const caption = $("<div></div>");
-        const questionNameDiv = $("<div></div>");
         const typeOfAnswer = $("<div></div>");
-
-        const responsesDiv = $("<div></div>");
         const dateDiv = $("<div></div>");
-        const totalDiv = $("<div></div>");
 
-        panel.addClass("panel panel-default");
-        panelHeading.addClass("panel-heading").attr({
-            role: "tab",
-            id: surveyName,
-        });
-        panelTitle.addClass("panel-title");
-        accordionButton.attr({
-            role: "button",
-            "data-toggle": "collapse",
-            "data-parent": "#accordion",
-            href: "#collapse" + index,
-            "aria-expanded": "true",
-            "aria-controls": "collapse" + index
-        });
-        collapseDiv.attr({
-            id: "collapse" + index,
-            class: "panel-collapse collapse in",
-            role: "tabpanel",
-            "aria-labelledby": "Heading" + index
-        });
+        panel.addClass("panel panel-success");
+        collapseDiv.addClass("collapse")
+            .attr("id", "collapse-" + index);
+        panelHeading.addClass("panel-heading");
         panelBody.addClass("panel-body");
-
         infoWrapper.addClass("col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12");
         thumbnailWrapper.addClass("thumbnail");
-        caption.addClass("caption");
+        caption.addClass("caption").append(typeOfAnswer);
 
-        questionNameDiv.addClass("survey-question row")
+        anchorHead.addClass("survey-question row")
+            .attr({
+                role: "button",
+                "data-toggle": "collapse",
+                href: "#collapse-" + index,
+                "aria-expanded": "false",
+                "area-controls": "collapse-" + index
+            })
             .append($("<i></i>")
                 .addClass("fas fa-question-circle")
                 .tooltip({
@@ -58,6 +41,8 @@ $(function () {
                 .append(". ")
                 .append(survey.questionData.question));
 
+        panelHeading.append(anchorHead);
+
         typeOfAnswer.addClass("survey-question row")
             .append($("<i></i>")
                 .addClass("fa fa-arrow-circle-down")
@@ -68,31 +53,42 @@ $(function () {
                 .addClass("info")
                 .append(survey.questionData.type));
 
-        panelTitle.append(questionNameDiv);
-
-        caption
-            .append(typeOfAnswer)
-            .append("<hr>")
-
-
         Object.keys(survey.answerCount).forEach((answer) => {
             const answerChoices = $("<div></div>");
+            const res = survey.answersData
+                .find((rightAnswer) => rightAnswer.answerId === +answer);
+
+
             answerChoices.addClass("survey-question row answer")
                 .append($("<i></i>")
                     .addClass("fa fa-arrow-circle-right")
                     .tooltip({
                         title: "Type answers"
-                    }))
-                .append($("<span></span>")
-                    .addClass("info")
-                    .append(answer))
-                .append($("<span></span>")
-                    .addClass("info")
-                    .addClass("badge")
-                    .tooltip({
-                        title: "People answered with this option"
-                    })
-                    .append(survey.answerCount[answer]));
+                    }));
+            if (res) {
+                answerChoices.append($("<span></span>")
+                        .addClass("info")
+                        .append(res.answer))
+                    .append($("<span></span>")
+                        .addClass("info")
+                        .addClass("badge")
+                        .tooltip({
+                            title: "People answered with this option"
+                        })
+                        .append(survey.answerCount[answer]));
+            } else {
+                answerChoices.append($("<span></span>")
+                        .addClass("info")
+                        .append(answer))
+                    .append($("<span></span>")
+                        .addClass("info")
+                        .addClass("badge")
+                        .tooltip({
+                            title: "People answered with this option"
+                        })
+                        .append(survey.answerCount[answer]));
+            }
+
             caption.append(answerChoices).append("<hr>");
         });
 
@@ -104,7 +100,7 @@ $(function () {
                 }))
             .append($("<span></span>")
                 .addClass("info")
-                .html((window.my_own_attr)
+                .html((window.submitDate)
                     .replace("T", " ")
                     .replace("Z", " ")
                     .slice(0, -5)));
@@ -114,17 +110,15 @@ $(function () {
             .append("<hr>");
 
         panel
-            .append(panelHeading
-                .append(panelTitle
-                    .append(accordionButton
-                        .append(collapseDiv
-                            .append(panelBody
-                                .append(infoWrapper
-                                    .append(thumbnailWrapper
-                                        .append(caption))))))));
-
+            .append(panelHeading)
+            .append(collapseDiv
+                .append(panelBody
+                    .append(infoWrapper
+                        .append(thumbnailWrapper
+                            .append(caption)))));
         return panel;
-    }
+    };
+
     $.ajax({
         method: "GET",
         async: true,
@@ -138,14 +132,15 @@ $(function () {
         },
         success: function (survey) {
             console.log(survey);
-            // console.log(survey.surveyContentData);
-            const surveysHeader = $("#main");
-            window.my_own_attr = survey.Category.createdAt;
             const surveyName = survey.name;
-            survey.surveyContentData.forEach((survey, index) => {
-                const newRow = surveyInfo(survey, index, surveyName);
-                $("#main").append($(newRow));
+            const main = $("#main");
+            window.submitDate = survey.createdAt;
+
+            survey.surveyContentData.forEach((surveyData, index) => {
+                const newRow = surveyInfo(surveyData, index, surveyName);
+                main.append($(newRow));
             });
+            $(".collapse").collapse("hide");
         }
     });
 });

@@ -7,6 +7,7 @@ const path = require('path');
 
 const DataController = require('../controllers/data-controller');
 const SubmitController = require('../controllers/submit-controller');
+const SurveyController = require('../controllers/survey-controller');
 const CryptographyController =
     require('../controllers/cryptography-controller');
 
@@ -69,7 +70,17 @@ const init = (app, data) => {
             if (!req.isAuthenticated()) {
                 return res.redirect('/');
             }
-            console.log(req.body)
+            const surveyData = req.body;
+            surveyData.user = req.user;
+
+            const surveyController = new SurveyController(data);
+            try {
+                await surveyController.createSurvey(surveyData);
+            } catch (err) {
+                console.log(err);
+            }
+
+            res.status(200).json(req.body);
         })
         .delete('/delete-survey', async (req, res) => {
             try {

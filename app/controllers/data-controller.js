@@ -85,7 +85,8 @@ class DataController {
         const surveyId = await this.data.surveys.getSurvey(userId, surveyName);
         const res = surveyData.dataValues.surveyContentData.map(async (content) => {
             const questionId = content.questionData.questionId;
-            const answerData = await this.data.submittedAnswer.getAnswersAndAnswerId(userId, surveyId.id, questionId);
+            const answerData = await this.data.submittedAnswer
+                .getAnswersAndAnswerId(userId, surveyId.id, questionId);
             const result = answerData.map(async (data) => {
                 let obj = {};
                 if (data.dataValues.answer !== null) {
@@ -145,7 +146,7 @@ class DataController {
         const name = decrypt.slice(userId.length + 2);
 
         const survey = await this.data.surveys.getSurvey(userId, name);
-
+        console.log(survey);
         if (!survey) {
             throw new SurveyError.SurveyNotFound();
         }
