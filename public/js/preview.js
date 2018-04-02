@@ -41,7 +41,7 @@ $(function () {
             thumbnailWrapper.addClass("thumbnail");
             captionWrapper.addClass("caption");
 
-            titleDiv.addClass("survey-title col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4")
+            titleDiv.addClass("survey-title col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4")
                 .append($("<i></i>")
                     .addClass("fas fa-heading")
                     .tooltip({
@@ -50,7 +50,7 @@ $(function () {
                 .append($("<span></span>")
                     .html(survey.name));
 
-            catDiv.addClass("survey-cat col-xs-4 col-sm-4 col-md-4 col-lg-3 col-xl-4")
+            catDiv.addClass("survey-cat col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4")
                 .append($("<i></i>")
                     .addClass("fas fa-folder")
                     .tooltip({
@@ -59,7 +59,7 @@ $(function () {
                 .append($("<span></span>")
                     .html(survey.Category.name));
 
-            dateDiv.addClass("survey-date col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4")
+            dateDiv.addClass("survey-date col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4")
                 .append($("<i></i>")
                     .addClass("fas fa-calendar-alt")
                     .tooltip({
@@ -169,31 +169,16 @@ $(function () {
                 serialize,
                 surveyDataObj
             },
-            error: function (error) {
-                submissionModal
-                    .find(".modal-body")
-                    .append($("<span></span>")
-                        .html("Unfortunately, we couldn't save your submission."));
-                submissionModal
-                    .find("#submit-survey-modal-label")
-                    .append($("<i></i>")
-                        .addClass("fas fa-times-circle")
-                        .css("color", "#ce0101")
-                    );
+            error: function (error) {              
                 submissionModal.modal("show");
+                $("i.reject").show();
+                $("span.reject").show();
+
             },
             success: function (resolve) {
-                submissionModal
-                    .find(".modal-body")
-                    .append($("<span></span>")
-                        .html("Thank you for your submission."));
-                submissionModal
-                    .find("#submit-survey-modal-label")
-                    .append($("<i></i>")
-                        .addClass("fas fa-check-circle")
-                        .css("color", "#0EB511")
-                    );
                 submissionModal.modal("show");
+                $("i.success").show();
+                $("span.success").show();
             }
         });
 

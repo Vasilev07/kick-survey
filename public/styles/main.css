@@ -115,10 +115,12 @@
     display: inline;
     text-align: center;
 }
+
 .survey-preview i {
     text-decoration: none;
     color: #000;
 }
+
 .survey-share .popover-content {
     word-wrap: break-word;
 }
@@ -218,7 +220,7 @@ hr {
     padding: 0 15px;
 }
 
-.btn {
+#continue-btn {
     margin-bottom: 10px;
 }
 
@@ -258,4 +260,32 @@ img {
 
 .done-submit {
     margin-top: 3rem;
+}
+
+/* Modal success */
+
+div.success {
+    display: none;
+}
+
+i.success {
+    color: rgb(14, 181, 17);
+    display: none;
+}
+
+span.success {
+    display: none;
+}
+
+i.reject {
+    color: #ce0101;
+    display: none;
+}
+
+span.reject {
+    display: none;
+}
+
+.warning-placeholder {
+    color: #f00;
 }

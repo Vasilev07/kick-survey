@@ -1,0 +1,18 @@
+mixin modalMessage()
+    #submission-survey-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='submit-survey-modalLabel')
+            .modal-dialog(role='document')
+                .modal-content
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        h4#submit-survey-modal-label.modal-title
+                            | Submission status: 
+                            i.fas.fa-check-circle.success
+                            i.fas.fa-times-circle.reject
+                    .modal-body
+                        span.success
+                            | Thank you for your submission.
+                        span.reject
+                            | Unfortunately, we couldn't save your submission.
+                    .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close

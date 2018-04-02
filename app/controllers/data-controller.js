@@ -213,7 +213,11 @@ class DataController {
 
         return answersResults;
     }
-
+    /**
+     * @description Get all categories from all surveys
+     * @async
+     * @return {Promise<Object>} all used categories for surveys
+     */
     async getAllUsersCategories() {
         const users = await this.data.users.getAll();
         const allUsersRes = users.map(async (user) => {
@@ -254,21 +258,26 @@ class DataController {
         };
     }
 
+    /**
+     * @description Get all types of questions
+     * @async
+     * @return {Promise<Object>} all used types of questions for surveys
+     */
     async getAllUsersTypes() {
         const questionInfo = await this.data.questions.getAll();
         const questionTypeIdArray = [];
         questionInfo.map((questionTypeId) => {
             questionTypeIdArray.push(questionTypeId.type_id);
         });
-        const res = questionTypeIdArray.map(async (id) => {
+        const questionTypes = questionTypeIdArray.map(async (id) => {
             const questionType = [];
             const typeId = await this.data.types.getById(id);
             await questionType.push(typeId.q_type);
             return questionType;
         });
-        let result = await Promise.all(res);
-        result = lodash.flattenDeep(result);
-        const mapOfCategories = this.counterArray(result);
+        let arrayOfQuestionTypes = await Promise.all(questionTypes);
+        arrayOfQuestionTypes = lodash.flattenDeep(arrayOfQuestionTypes);
+        const mapOfCategories = this.counterArray(arrayOfQuestionTypes);
 
         const label = [];
         const data = [];
@@ -281,7 +290,11 @@ class DataController {
             data,
         };
     }
-
+    /**
+     * @description Get all submissions by date from Submitted answers
+     * @async
+     * @return {Promise<Object>} all submissions getted by date
+     */
     async getAllSubmissionsByDate() {
         const formatDates = (submissionDate) => {
             let day = submissionDate.getDate();
@@ -320,7 +333,11 @@ class DataController {
             data,
         };
     }
-
+    /**
+     * @description Get all submissions by day of week from Submitted answers
+     * @async
+     * @return {Promise<Object>} all used categories for gay of week
+     */
     async getAllSubmissionsByDayOfWeek() {
         const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
             'Friday', 'Saturday', 'Sunday',
@@ -360,6 +377,11 @@ class DataController {
             data,
         };
     }
+    /**
+     * @description delete survey
+     * @async
+     * @return {Promise<Object>} delete survey from database
+     */
 
     async deleteSurvey(url) {
         const cryptography = new Crypto();

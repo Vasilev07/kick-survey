@@ -18,6 +18,8 @@
         "$": true,
         "Promise": true,
         "console": true,
-        "document": true
+        "document": true,
+        "window": true,
+        "setTimeout": true
     }
 }

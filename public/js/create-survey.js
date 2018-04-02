@@ -3,9 +3,6 @@ $(function () {
     let surveyData;
     let questionData;
     let questionTypesHolder;
-    let qCounter = {
-        id: 1
-    };
     let questionAnswers = [];
 
     $.ajax({
@@ -55,6 +52,8 @@ $(function () {
     };
 
     $("#continue-btn").click(function (e) {
+        e.preventDefault();
+
         if ($("#survey-name").val()) {
             surveyData = {
                 surveyName: $("#survey-name").val(),
@@ -69,9 +68,12 @@ $(function () {
             });
             $("#initial-create").hide();
 
-            let info = $("<div class=\"survey-info\"></div>")
-                .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.surveyName))
-                .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.category));
+            var info = $("<div></div>")
+                .addClass("survey-info")
+                .append($("<h4></h4>")
+                    .addClass("survey-info").text(surveyData.surveyName))
+                .append($("<h4></h4>")
+                    .addClass("survey-info").text(surveyData.category));
             $("#info")
                 .append(info);
             $("#question").show();
@@ -145,50 +147,8 @@ $(function () {
         });
     });
 
-    $(".done").on("click", function () {
-        let qName = $("#create-form .form-control").val();
-        let qType = $("#create-form .question-types").val();
-        let answers = $("#create-form [name='answer']");
-        let inputHidden = $("<input>");
-        let deleteBtn = $("<i></i>");
-
-        deleteBtn.addClass("fas fa-trash delete-question");
-        inputHidden.attr("type", "hidden");
-        inputHidden.attr("value", "qName");
-
-        let question = $("#question-list");
-
-        let questionListWrapper = $("<li></li>").addClass("question-wrapper");
-
-        question.append(
-            questionListWrapper
-            .append($("<span></span>")
-                .addClass("survey-info")
-                .html(qName))
-            .append(deleteBtn)
-            .append(inputHidden)
-        );
-        if (answers.length > 0) {
-            $.each(answers, function (key, val) {
-                let answers = $("<label></label>")
-                    .append($("<input>")
-                        .attr("type", "checkbox")
-                        .attr("value", "3")
-                        .text($(val).val()));
-
-                question.append(
-                    questionListWrapper
-                    .append($("<div></div>").addClass("checkbox")
-                        .append(answers))
-                );
-            });
-        }
-
-        qCounter.id++;
-    });
     $(".done").on("click", function (e) {
         e.preventDefault();
-        $("#edit-create").modal("hide");
 
         let obj = {
             question: null,
@@ -204,10 +164,40 @@ $(function () {
             obj.answers.push($(element).val());
         });
         obj.answers = obj.answers.length ? obj.answers : "";
+
         questionAnswers.push(obj);
+
+        var qName = $("#create-form .form-control").val();
+        var answers = $("#create-form [name='answer']");
+        var question = $("#question-list");
+
+        let inputHidden = $("<input>");
+        let deleteBtn = $("<i></i>");
+
+        deleteBtn.addClass("fas fa-trash delete-question");
+        inputHidden.attr("type", "hidden");
+        inputHidden.attr("value", "qName");
+
+        let questionListWrapper = $("<li></li>").addClass("question-wrapper");
+
+        if (qName) {
+            question.append(
+                questionListWrapper
+                .append($("<span></span>")
+                    .addClass("survey-info"))
+                .html(qName)
+                .append(deleteBtn)
+                .append(inputHidden)
+            );
+            $("#edit-create").modal("hide");
+        } else {
+            $("#warning-question-label")
+                .html("Survey name should not be blank.")
+                .addClass("warning-placeholder");
+        }
     });
 
-    $(document).on("click", ".delete-question", function() {
+    $(document).on("click", ".delete-question", function () {
         var input = $(this).siblings("input[type='hidden']");
         var questionName = input.val();
         var questionIndex;
@@ -224,19 +214,29 @@ $(function () {
 
     $("#create-survey").on("click", function (e) {
         e.preventDefault();
-
+        var submissionModal = $("#submission-survey-modal");
         surveyData.questionData = questionAnswers;
         $.ajax({
             method: "POST",
             async: true,
             url: "/create",
             data: surveyData,
-            error: function (error) {
-                console.log(error);
+            error: function () {
+                submissionModal.modal("show");
+                $("i.reject").show();
+                $("span.reject").show();
             },
-            success: function (resolve) {
-                console.log(resolve);
+            success: function () {
+                submissionModal.modal("show");
+                $("i.success").show();
+                $("span.success").show();
             }
         });
+    });
+
+    $(".modal").on("hidden.bs.modal", function () {
+        $(".form-control").val("");
+        $(".question-types").val("slider");
+        $("#warning-question-label").html("");
     });
 });
