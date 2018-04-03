@@ -9,7 +9,7 @@ const init = (app, data) => {
             if (!user) {
                 return res.status(300).json(info);
             }
-            req.login(user, (error) => {
+            return req.login(user, (error) => {
                 if (error) {
                     return res.status(300).json(info);
                 }

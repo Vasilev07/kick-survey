@@ -20,9 +20,6 @@ const init = (app, data) => {
 
     router
         .post('/create', async (req, res) => {
-            if (!req.isAuthenticated()) {
-                return res.redirect('/');
-            }
             const surveyData = req.body;
             surveyData.user = req.user;
 
@@ -102,9 +99,6 @@ const init = (app, data) => {
             }
         })
         .post('/get-user', (req, res) => {
-            if (!req.isAuthenticated()) {
-                return res.status(500).send('Could not get user');
-            }
             const user = {
                 username: req.user.username,
                 id: req.user.id,
