@@ -11,9 +11,9 @@ const init = (app, data) => {
             }
             req.login(user, (error) => {
                 if (error) {
-                    return next(error);
+                    return res.status(300).json(info);
                 }
-                // this redirect is not working
+
                 return res.redirect('/index');
             });
         })(req, res, next);

@@ -1,2 +1,2 @@
 ./app/db/models
-./app/db/migrations
+migrations

@@ -8,7 +8,6 @@ const {
 } = require('./predefined');
 
 const populateData = async () => {
-    console.log(1)
     data.types.map(async (type) => {
         await Type.create(type);
     });
