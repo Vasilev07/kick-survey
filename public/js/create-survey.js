@@ -266,5 +266,6 @@ $(function () {
         $(".form-control").val("");
         $(".question-types").val("slider");
         $("#warning-question-label").html("");
+        $("#answers").remove();
     });
 });

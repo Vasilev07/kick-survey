@@ -1,7 +1,6 @@
 const {
     Category,
     Type,
-
 } = require('../db/models');
 
 const {
