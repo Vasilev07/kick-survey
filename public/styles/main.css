@@ -1,0 +1,291 @@
+.navbar {
+    background-color: #90D481;
+    border-radius: 0px;
+}
+
+.navbar a {
+    color: #1A4C63;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.nav>li>a:focus,
+.nav>li>a:hover {
+    background-color: #c5ff9b;
+}
+
+.modal .container {
+    width: 100%;
+}
+
+.glyphicon {
+    margin-right: 5px;
+}
+
+.create-survey-form {
+    display: none;
+}
+
+.ui-slider-range {
+    background: #90D481 !important;
+}
+
+.ui-slider-handle {
+    border-color: #90D481 !important;
+}
+
+.nav-icon {
+    padding-right: 5px;
+}
+
+/* Emojis */
+
+.emoji {
+    font-size: 4rem;
+    padding: 30px;
+}
+
+.form-check-input {
+    visibility: hidden;
+    position: absolute;
+}
+
+.form-check-input+i {
+    cursor: pointer;
+    color: green;
+}
+
+.form-check-input:checked+i {
+    color: rgb(132, 173, 132);
+}
+
+/* Create survey */
+
+.survey-info {
+    font-size: 2rem;
+    margin: 0 auto;
+    padding: 0.5rem;
+    color: rgba(59, 112, 47, 0.7);
+}
+
+.survey-create {
+    background-color: #F3F3F3;
+}
+
+.question-wrapper {
+    margin: 3px;
+}
+
+.question-title {
+    font-size: 2rem;
+}
+
+
+#question-list li {
+    font-size: 2rem;
+}
+.delete-question {
+    float: right;
+}
+
+.delete-question:hover {
+    color: #ce0101
+}
+
+/* User's surveys visualizations */
+
+.survey-question,
+.survey-title,
+.survey-cat,
+.survey-date,
+.survey-responses,
+.survey-footer {
+    padding: 0 20px;
+}
+
+.info,
+.survey span {
+    margin-left: 10px;
+}
+
+.survey-preview,
+.survey-analyse,
+.survey-share,
+.survey-delete {
+    display: inline;
+    text-align: center;
+}
+
+.survey-preview i {
+    text-decoration: none;
+    color: #000;
+}
+
+.survey-share .popover-content {
+    word-wrap: break-word;
+}
+
+.tooltip {
+    min-width: 100px;
+}
+
+.delete-anchor,
+.share-button,
+.analyze-anchor {
+    text-decoration: none;
+    color: #000;
+    padding: 0 10px;
+}
+
+.analyze-anchor:hover {
+    color: #90D481;
+    cursor: pointer;
+}
+
+.delete-anchor:hover {
+    color: #ce0101;
+    cursor: pointer;
+}
+
+.share-button:hover {
+    color: #337ab7;
+    cursor: pointer;
+}
+
+.share-button {
+    border: none;
+    background: none;
+}
+
+.center {
+    text-align: center
+}
+
+.info-header {
+    background-color: lightslategray;
+}
+
+hr {
+    margin: 5px 0px;
+}
+
+.delete-survey-icon {
+    color: #ce0101;
+    margin-right: 10px;
+}
+
+.filter-category-container {
+    margin-bottom: 10px;
+}
+
+.filter-category li.cat {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.filter-category li.cat:hover {
+    background-color: #90D481;
+}
+
+.spinner {
+    width: 100px;
+    height: 100px;
+    font-size: 100px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: none;
+    z-index: 99999;
+}
+
+.over {
+    background-color: #fff;
+    opacity: 1;
+    display: none;
+    z-index: 9999;
+}
+
+.bolded {
+    font-weight: bold;
+}
+
+.answer {
+    margin-left: 10px;
+}
+
+.survey-create .initial-field {
+    padding: 0 15px;
+}
+
+#continue-btn {
+    margin-bottom: 10px;
+}
+
+.add-answer-btn {
+    margin-right: 5px
+}
+
+img {
+    height: 50px;
+}
+
+.add-submit {
+    display: none;
+}
+
+.no-surveys-found {
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .navbar-header {
+        display: none;
+    }
+}
+
+.inline-row {
+    display: inline-block;
+}
+
+.ui-slider {
+    margin-bottom: 10px;
+}
+
+.hr {
+    border-bottom: 1px solid #ededee;
+}
+
+.done-submit {
+    margin-top: 3rem;
+}
+
+/* Modal success */
+
+div.success {
+    display: none;
+}
+
+i.success {
+    color: rgb(14, 181, 17);
+    display: none;
+}
+
+span.success {
+    display: none;
+}
+
+i.reject {
+    color: #ce0101;
+    display: none;
+}
+
+span.reject {
+    display: none;
+}
+
+.warning-placeholder {
+    color: #f00;
+}

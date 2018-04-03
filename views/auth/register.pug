@@ -1,27 +1,39 @@
-form(action='/register', method='POST')
-        h1 Register
-        label(for='username')
-            b Username
-        input(type='text', placeholder='Enter Username', name='username', required='')
-        
-        label(for='new-pass')
-            b Password
-        input(type='new-password', placeholder='Enter Password', name='new-password', required='')
-
-        label(for='new-pass')
-            b Re-eneter Password
-        input(type='re-password', placeholder='Enter Password', name='re-password', required='')
-
-        label(for='f_name')
-            b First Name
-        input(type='first_name', placeholder='Enter First Name', name='first_name', required='')
-
-        label(for='l_name')
-            b Last Name
-        input(type='last_name', placeholder='Enter Last Name', name='last_name', required='')
-
-        label(for='f_name')
-            b E-mail
-        input(type='e-mail', placeholder='Enter E-mail', name='e-mail', required='')
-        div
-            input(type='submit', value='Register')
+mixin register()
+    #myModal.modal.fade(role="dialog")
+        .modal-dialog.modal-lg
+            .modal-content
+                .modal-body
+                    .container
+                        h2.register-header Registration
+                        form#registerForm.form-horizontal(method='POST', action='/validate')
+                            .form-group
+                                label.control-label.col-sm-3(for='username') Username:
+                                .col-sm-6
+                                    input#username.form-control(type='text', placeholder='Enter username', name='username')
+                            .form-group
+                                label.control-label.col-sm-3(for='new-password') Password:
+                                .col-sm-6
+                                    input#password.form-control(type='new-password', placeholder='Enter Password', name='new-password')
+                            .form-group
+                                label.control-label.col-sm-3(for='re-password') Re-enter Password:
+                                .col-sm-6
+                                    input#re-password.form-control(type='re-password', placeholder='Enter Re-enter Password', name='re-password')
+                            .form-group
+                                label.control-label.col-sm-3(for='f_name') First Name:
+                                .col-sm-6
+                                    input#first_name.form-control(type='first_name', placeholder='Enter First Name', name='first_name')
+                            .form-group
+                                label.control-label.col-sm-3(for='l_name') Last Name:
+                                .col-sm-6
+                                    input#last_name.form-control(type='last_name', placeholder='Enter Last Name', name='last_name')
+                            .form-group
+                                label.control-label.col-sm-3(for='e-mail') Email:
+                                .col-sm-6
+                                    input#email.form-control(type='e-mail', placeholder='Enter Email', name='e-mail')
+                            .form-group
+                                .col-sm-offset-2.col-sm-10
+                                    button#register-submit.btn.btn-success(type='submit', value='Register') Register
+                                    p#registerErrorMsg
+                .modal-footer
+                    button.btn.btn-default(type="button", data-dismiss="modal")
+                        | Close

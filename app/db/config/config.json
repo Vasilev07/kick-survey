@@ -1,10 +1,11 @@
 {
   "development": {
     "username": "root",
-    "password": "securepass",
+    "password": null,
     "database": "kick_survey_db",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   },
   "test": {
     "username": "root",
@@ -14,10 +15,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "maydtketnjufjnss",
+    "password": "54SLaFCwD4SuJCJ5WNN3UicYUuonCjSgCvFAf5B7EJMZNXkcU2xQ2X7V22YMsq3t",
+    "database": "db1e669afd9bc64e82b856a8b60171f207",
+    "host": "1e669afd-9bc6-4e82-b856-a8b60171f207.mysql.sequelizer.com",
     "dialect": "mysql"
   }
 }

@@ -1,0 +1,34 @@
+include ./nav 
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous")        
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+        script(src='https://d3js.org/d3.v4.min.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js')
+        script(src="/static/js/statistic-pie.js")
+        link(rel="stylesheet", href="static/styles/main.css")
+        script(src="/static/js/login-validation.js")
+        script(src="/static/js/register-validation.js")
+        title Kick Survey
+    body
+        +nav()
+        block content
+            .content
+                .container
+                    .row
+                        .chart-container.col-xs-12.col-sm-12.col-md-6
+                            canvas#pie-chart
+                        .chart-container.col-xs-12.col-sm-12.col-md-6
+                            canvas#chart2
+                .container
+                    .row
+                        .chart-container.col-xs-12.col-sm-12.col-md-6
+                            canvas#chart3
+                        .chart-container.col-xs-12.col-sm-12.col-md-6
+                            canvas#chart4

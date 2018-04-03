@@ -1,15 +1,18 @@
 class Data {
-    constructor(Model) {
+    constructor(Model, includes = []) {
         this.Model = Model;
+        this.includes = includes;
     }
     getAll() {
-        this.Model.findAll();
+        return this.Model.findAll();
     }
     getById(id) {
-        this.Model.findById(id);
+        return this.Model.findById(id, {
+            include: this.includes,
+        });
     }
     create(obj) {
-        if (this._isObjectValid && !this._isObjectValid(obj)) {
+        if (obj === null || typeof obj === 'undefined') {
             throw new Error('Invalid object');
         }
         return this.Model.create(obj);

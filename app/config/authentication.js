@@ -5,18 +5,25 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const Strategy = require('passport-local').Strategy;
 
+// const UserController = require('../controllers/user-controller');
+const Crypto = require('../controllers/cryptography-controller');
+
 const init = (app, data) => {
     passport.use(new Strategy(async (username, password, done) => {
         const user = await data.users.findByUsername(username);
 
+        const comparePasswords = new Crypto().comparePasswords;
+
         if (!user) {
-            return done(null, false, {
+            done(null, false, {
                 message: 'Incorrect username',
             });
         }
 
-        if (user.password !== password) {
-            return done(null, false, {
+        const checkPasswords = await comparePasswords(password, user.password);
+
+        if (!checkPasswords) {
+            done(null, false, {
                 message: 'Incorrect password',
             });
         }
