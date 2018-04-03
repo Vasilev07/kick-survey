@@ -96,18 +96,22 @@
     margin-left: 10px;
 }
 
+.survey-preview,
 .survey-analyse,
 .survey-share,
 .survey-delete {
     display: inline;
-    text-align: center
+    text-align: center;
 }
-
+.survey-preview i {
+    text-decoration: none;
+    color: #000;
+}
 .survey-share .popover-content {
     word-wrap: break-word;
 }
 
-.tooltip{
+.tooltip {
     min-width: 100px;
 }
 
@@ -203,14 +207,10 @@ hr {
 }
 
 .btn {
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
-<<<<<<< HEAD
-*/
 
-=======
->>>>>>> a9d92ef9a02af571e473142d14c256ac65724e51
-.add-answer-btn {
+<<<<<<< HEAD */=======>>>>>>>a9d92ef9a02af571e473142d14c256ac65724e51 .add-answer-btn {
     margin-right: 5px
 }
 
@@ -237,10 +237,10 @@ img {
     margin-bottom: 10px;
 }
 
-.hr{
+.hr {
     border-bottom: 1px solid #ededee;
 }
 
-.done-submit{
+.done-submit {
     margin-top: 3rem;
 }
