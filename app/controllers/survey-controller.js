@@ -7,13 +7,14 @@ class SurveyController {
      * about the given survey
      * @param {Object} surveyData
      * @async
+     * @return {Boolean} true
      */
     async createSurvey(surveyData) {
         let category;
         let createdSurvey;
         try {
             category = await this.data.
-            categories.getByCategoryName(surveyData.category);
+                categories.getByCategoryName(surveyData.category);
         } catch (err) {
             throw err;
         }
@@ -35,6 +36,7 @@ class SurveyController {
         } catch (err) {
             throw err;
         }
+        return true;
     }
 
     async _createQuestion(questionData, createdSurvey) {
@@ -70,6 +72,7 @@ class SurveyController {
                 throw err;
             }
         });
+        return true;
     }
 
     async _createAnswer(answerData, createdQuestion) {
@@ -79,6 +82,7 @@ class SurveyController {
                     q_id: createdQuestion.id,
                     answer_name: answer,
                 };
+
                 try {
                     await this.data.answers.create(answerObj);
                 } catch (err) {
@@ -90,12 +94,15 @@ class SurveyController {
                 q_id: createdQuestion.id,
                 answer_name: '',
             };
+
             try {
                 await this.data.answers.create(answerObj);
             } catch (err) {
                 throw err;
             }
         }
+
+        return true;
     }
 }
 

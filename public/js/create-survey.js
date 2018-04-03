@@ -26,14 +26,14 @@ $(function () {
     $("#question").hide();
 
     // function that adds answer to modal btn
-    const addAnswer = function () {
-        const answerWrapper = $("<div></div>").addClass("form-group answer");
-        const label = $("<label></label>")
+    var addAnswer = function () {
+        var answerWrapper = $("<div></div>").addClass("form-group answer");
+        var label = $("<label></label>")
             .addClass("control-label col-sm-3 col-xs-3 col-md-3 col-lg-3")
             .attr("for", "question")
             .html("Answer");
 
-        const inputWrapper = $("<div></div>")
+        var inputWrapper = $("<div></div>")
             .addClass("control-label col-sm-6 col-xs-6 col-md-6 col-lg-6")
             .append($("<input>")
                 .addClass("form-control")
@@ -41,7 +41,7 @@ $(function () {
                 .attr("placeholder", "Enter answer")
                 .attr("name", "answer")
             );
-        const buttonWrapper = $("<div></div>")
+        var buttonWrapper = $("<div></div>")
             .addClass("control-label col-sm-3 col-xs-3 col-md-3 col-lg-3")
             .append($("<a></a>")
                 .addClass("btn btn-success add-answer-btn prev")
@@ -55,7 +55,7 @@ $(function () {
     };
 
     $("#continue-btn").click(function (e) {
-        $(".add-submit").show();
+       
         if ($("#survey-name").val()) {
             surveyData = {
                 surveyName: $("#survey-name").val(),
@@ -70,12 +70,13 @@ $(function () {
             });
             $("#initial-create").hide();
 
-            const info = $("<div class=\"survey-info\"></div>")
+            var info = $("<div class=\"survey-info\"></div>")
                 .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.surveyName))
                 .append($("<h4 class=\"survey-info\"></h4>").text(surveyData.category));
             $("#info")
                 .append(info);
             $("#question").show();
+            $(".add-submit").show();
         } else {
             $("#survey-name")
                 .siblings("label")
@@ -87,11 +88,11 @@ $(function () {
     // if selected multiple-choice or single choice calls addAnswer()
     $("select.question-types").on("change", function () {
         $(".answer").remove();
-        const answerType = $("select.question-types option:selected").attr("value");
-        const answersWrapper = $("#answers");
+        var answerType = $("select.question-types option:selected").attr("value");
+        var answersWrapper = $("#answers");
 
         if (answerType === "single-choice" || answerType === "multiple-choice") {
-            const newElement = addAnswer();
+            var newElement = addAnswer();
             answersWrapper.append(newElement);
         }
     });
@@ -100,9 +101,9 @@ $(function () {
     $(document).on("click", ".add-answer-btn", function (e) {
         e.preventDefault();
         $(".delete-last").removeClass("delete-last");
-        const answersWrapper = $("#answers");
+        var answersWrapper = $("#answers");
         $(".prev").remove();
-        const newElement = addAnswer();
+        var newElement = addAnswer();
         answersWrapper.append(newElement);
     });
 
@@ -123,7 +124,7 @@ $(function () {
 
     $("#generate-share").click(function (e) {
         e.preventDefault();
-        const surveyData = {
+        var surveyData = {
             surveyName: $("#survey-name").val()
         };
         console.log(surveyData);
@@ -183,7 +184,7 @@ $(function () {
         e.preventDefault();
         $("#edit-create").modal("hide");
 
-        const obj = {
+        var obj = {
             question: null,
             questionType: null,
             isRequired: 0,
@@ -199,6 +200,7 @@ $(function () {
         obj.answers = obj.answers.length ? obj.answers : "";
         questionAnswers.push(obj);
     });
+
     $("#create-survey").on("click", function (e) {
         e.preventDefault();
 

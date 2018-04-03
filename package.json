@@ -51,8 +51,7 @@
   },
   "nyc": {
     "include": [
-      "**/*controllers",
-      "**/*data"
+      "**/*controllers"
     ]
   }
 }

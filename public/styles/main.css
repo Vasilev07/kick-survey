@@ -61,6 +61,7 @@
 /* Cretae survey */
 
 .survey-info {
+    font-size: 2rem;
     margin: 0 auto;
     padding: 0.5rem;
     color: rgba(59, 112, 47, 0.7);
@@ -106,7 +107,7 @@
     word-wrap: break-word;
 }
 
-.tooltip {
+.tooltip{
     min-width: 100px;
 }
 
@@ -201,13 +202,14 @@ hr {
     padding: 0 15px;
 }
 
-/* .add-answer-btn,
-.delete-answer-btn {
-    padding: 3px 8px;
-    margin-top: 5px
+.btn {
+    margin-bottom: 10px; 
 }
+<<<<<<< HEAD
 */
 
+=======
+>>>>>>> a9d92ef9a02af571e473142d14c256ac65724e51
 .add-answer-btn {
     margin-right: 5px
 }
@@ -239,3 +241,6 @@ img {
     border-bottom: 1px solid #ededee;
 }
 
+.done-submit{
+    margin-top: 3rem;
+}
