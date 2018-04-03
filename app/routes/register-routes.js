@@ -49,7 +49,7 @@ const init = (app, data) => {
             res.status(400).json(err);
         }
     }, passport.authenticate('local', {
-        successRedirect: '/index', // redirect to the secure profile section
+        successRedirect: '/index',
     }));
 };
 

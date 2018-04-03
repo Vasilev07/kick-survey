@@ -6,7 +6,7 @@ mixin edit-create()
                 .modal-body
                     .container
                         h2.register-header Question info
-                        form#create-form.form-horizontal(method="post" action='/create')
+                        form#create-form.form-horizontal(method="post" action='/api/create')
                             label#warning-question-label
                             .form-group
                                 label.control-label.col-sm-3.col-xs-3.col-md-3.col-lg-3(for='question') Question name:

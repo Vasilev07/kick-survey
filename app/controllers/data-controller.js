@@ -348,7 +348,6 @@ class DataController {
         const daysOfSubWithWord = [];
 
         submissions.map((sub) => {
-            console.log(sub);
             let dayAsDigit;
             if (sub.DISTINCT.getDay() === 0) {
                 dayAsDigit = 7;
@@ -377,12 +376,13 @@ class DataController {
             data,
         };
     }
+
     /**
      * @description delete survey
      * @async
+     * @param {string} url
      * @return {Promise<Object>} delete survey from database
      */
-
     async deleteSurvey(url) {
         const cryptography = new Crypto();
 
@@ -397,6 +397,31 @@ class DataController {
         } catch (err) {
             throw new SurveyError.SurveyNotFound();
         }
+    }
+
+    /**
+     * @description Checks whether a specific user has already
+     * a survey with the given name
+     * @async
+     * @param {string} surveyName
+     * @param {string} userId
+     * @return {Promise<Object>} delete survey from database
+     */
+    async checkIfSurveyNameExist(surveyName, userId) {
+        let surveys;
+        try {
+            surveys = await this.data.surveys.getUserSurveys(userId);
+        } catch (err) {
+            throw err;
+        }
+
+        const found = surveys.find((survey) => survey.name === surveyName);
+
+        if (found) {
+            return true;
+        }
+
+        return false;
     }
 
     getAllCategories() {
