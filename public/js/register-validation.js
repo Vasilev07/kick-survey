@@ -16,7 +16,7 @@ $(function () {
             url: '/validate',
             data: registerData,
             error: function (error) {
-                const errorResponse = error.responseJSON;
+                var errorResponse = error.responseJSON;
                 $('#registerErrorMsg')
                     .text(errorResponse.message)
                     .css('color', '#F00')
