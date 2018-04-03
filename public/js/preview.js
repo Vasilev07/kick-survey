@@ -28,91 +28,107 @@ $(function () {
             }, 600);
 
             surveyData = survey;
-            const surveyNameWrapper = document.createElement("div");
-            const surveyCatWrapper = document.createElement("div");
-            const surveyDateWrapper = document.createElement("div");
+            const surveyWrapper = $("<div></div>");
+            const questionWrapper = $("<div></div>");
+            const thumbnailWrapper = $("<div></div>");
+            const captionWrapper = $("<div></div>");
+            const titleDiv = $("<div></div>");
+            const catDiv = $("<div></div>");
+            const dateDiv = $("<div></div>");
+            const titleWrapper = $("<div></div>");
 
-            const surveyNameParagraph = document.createElement("span");
-            const surveyCatParagraph = document.createElement("span");
-            const surveyDateParagraph = document.createElement("span");
+            surveyWrapper.addClass("col-xs-9 col-sm-9 col-md-12 col-lg-9 col-xl-9 survey");
+            thumbnailWrapper.addClass("thumbnail");
+            captionWrapper.addClass("caption");
 
-            const surveyNameSpan = document.createElement("span");
-            const surveyCatSpan = document.createElement("span");
-            const surveyDateSpan = document.createElement("span");
+            titleDiv.addClass("survey-title col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3")
+                .append($("<i></i>")
+                    .addClass("fas fa-heading")
+                    .tooltip({
+                        title: "Survey title"
+                    }))
+                .append($("<span></span>")
+                    .html(survey.name));
 
-            $(surveyNameParagraph).html("Survey: ");
-            $(surveyCatParagraph).html("Category: ");
-            $(surveyDateParagraph).html("Created at: ");
+            catDiv.addClass("survey-cat col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3")
+                .append($("<i></i>")
+                    .addClass("fas fa-folder")
+                    .tooltip({
+                        title: "Category"
+                    }))
+                .append($("<span></span>")
+                    .html(survey.Category.name));
 
-            $(surveyNameSpan).html(survey.name);
-            $(surveyCatSpan).html(survey.Category.name);
-            $(surveyDateSpan).html(new Date(survey.createdAt));
+            dateDiv.addClass("survey-date col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3")
+                .append($("<i></i>")
+                    .addClass("fas fa-calendar-alt")
+                    .tooltip({
+                        title: "Creation date"
+                    }))
+                .append($("<span></span>")
+                    .html((survey.createdAt)
+                        .replace("T", "")
+                        .replace("Z", "")
+                        .slice(0, 10)));
 
-            $(surveyNameWrapper).addClass("col-md-4", "survey-name");
-            $(surveyCatWrapper).addClass("col-md-4", "survey-category");
-            $(surveyDateWrapper).addClass("col-md-4", "survey-date");
+            titleWrapper.addClass("row")
+                .append(titleDiv)
+                .append(catDiv)
+                .append(dateDiv)
 
-            $(surveyNameWrapper)
-                .append(surveyNameParagraph)
-                .append(surveyNameSpan);
-            $(surveyCatWrapper)
-                .append(surveyCatParagraph)
-                .append(surveyCatSpan);
-            $(surveyDateWrapper)
-                .append(surveyDateParagraph)
-                .append(surveyDateSpan);
+            captionWrapper
+                .append(titleWrapper)
+                .append("<hr>");
 
-            $("#initial").append(surveyNameWrapper)
-                .append(surveyCatWrapper)
-                .append(surveyDateWrapper);
+            const form = $("#submit-survey");
 
-            $(".survey-name p span").text(survey.name);
-            $(".survey-category p span").text(survey.Category.name);
-            $(".created-date p span").text(survey.createdAt);
-            const form = document.getElementById("submit-survey");
-
+            $("#main").append(surveyWrapper);
             survey.surveyContentData.forEach(function (element, index) {
-                const row = document.createElement("div");
-                const formGroup = document.createElement("div");
-
-                row.className = "row";
-                formGroup.className = "form-group";
+                const row = $("<div></div>");
+                const formGroup = $("<div></div>");
+                row.addClass("row");
+                formGroup.addClass("form-group");
 
                 let newElement;
-                row.appendChild(formGroup);
+                row.append(formGroup);
                 if (element.questionData.type === "slider") {
                     newElement = window.previews.sliderPreview(element, index + 1);
-                    formGroup.appendChild(newElement);
+                    formGroup.append(newElement);
                 } else if (element.questionData.type === "multiple-choice") {
                     newElement = window.previews.multipleChoicePreview(element, index + 1);
                     formGroup.className += " checkbox-group";
-                    formGroup.appendChild(newElement);
+                    formGroup.append(newElement);
                 } else if (element.questionData.type === "single-choice") {
                     newElement = window.previews.singleChoicePreview(element, index + 1);
-                    formGroup.appendChild(newElement);
+                    formGroup.append(newElement);
                 } else if (element.questionData.type === "single-textbox") {
                     newElement = window.previews.singleTextboxPreview(element, index + 1);
-                    formGroup.appendChild(newElement);
+                    formGroup.append(newElement);
                 } else if (element.questionData.type === "emojis") {
                     newElement = window.previews.emojisChoicePreview(element, index + 1);
-                    formGroup.appendChild(newElement);
+                    formGroup.append(newElement);
                 } else if (element.questionData.type === "date") {
                     newElement = window.previews.datePreview(element, index + 1);
-                    formGroup.appendChild(newElement);
+                    formGroup.append(newElement);
                 }
-                form.appendChild(row);
+                row.append("<hr>");
+                form.append(row);
             });
 
             window.previews.injectSliders(window.previews._slidersIds);
             window.previews.injectDates(window.previews._dateTimeIds);
 
-            const submitBtn = document.createElement("button");
-            submitBtn.id = "submit-survey-btn";
-            submitBtn.className = "btn btn-success";
-            submitBtn.setAttribute("type", "submit");
-            submitBtn.setAttribute("value", "Submit");
-            submitBtn.innerHTML = "Submit";
-            form.appendChild(submitBtn);
+            captionWrapper.append(form).addClass("info");
+
+            const submitBtn = $("<button></button>");
+
+            submitBtn.attr("id", "submit-survey-btn");
+            submitBtn.addClass("btn btn-success");
+            submitBtn.attr("type", "submit");
+            submitBtn.attr("value", "Submit");
+            submitBtn.html("Submit");
+            form.append(submitBtn);
+            surveyWrapper.append(thumbnailWrapper.append(captionWrapper));
         }
     });
 
@@ -157,7 +173,7 @@ $(function () {
                 submissionModal
                     .find(".modal-body")
                     .append($("<span></span>")
-                    .html("Unfortunately, we couldn't save your submission."));
+                        .html("Unfortunately, we couldn't save your submission."));
                 submissionModal
                     .find("#submit-survey-modal-label")
                     .append($("<i></i>")
@@ -170,7 +186,7 @@ $(function () {
                 submissionModal
                     .find(".modal-body")
                     .append($("<span></span>")
-                    .html("Thank you for your submission."));
+                        .html("Thank you for your submission."));
                 submissionModal
                     .find("#submit-survey-modal-label")
                     .append($("<i></i>")
