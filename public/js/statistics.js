@@ -1,6 +1,6 @@
 $(function () {
     const url = window.location.href.match(/[0-9a-zA-Z]+$/);
-
+    
     const surveyInfo = function (survey, index, surveyName) {
         const panel = $("<div></div>");
         const anchorHead = $("<div></div>");
@@ -37,7 +37,7 @@ $(function () {
                 }))
             .append($("<span></span>")
                 .addClass("info bolded")
-                .append(survey.questionData.questionId)
+                .append(index + 1)
                 .append(". ")
                 .append(survey.questionData.question));
 

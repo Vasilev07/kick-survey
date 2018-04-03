@@ -13,7 +13,7 @@ const init = (app, data) => {
                 if (error) {
                     return res.status(300).json(info);
                 }
-                // this redirect is not working
+
                 return res.redirect('/index');
             });
         })(req, res, next);

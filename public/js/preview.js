@@ -74,7 +74,7 @@ $(function () {
             titleWrapper.addClass("row")
                 .append(titleDiv)
                 .append(catDiv)
-                .append(dateDiv)
+                .append(dateDiv);
 
             captionWrapper
                 .append(titleWrapper)
@@ -164,21 +164,24 @@ $(function () {
         $.ajax({
             method: "POST",
             async: true,
-            url: "/submit",
+            url: "/api/submit",
             data: {
                 serialize,
                 surveyDataObj
             },
-            error: function (error) {              
+            error: function (error) {
                 submissionModal.modal("show");
                 $("i.reject").show();
                 $("span.reject").show();
-
             },
             success: function (resolve) {
                 submissionModal.modal("show");
                 $("i.success").show();
                 $("span.success").show();
+
+                $("#submission-survey-modal").on("hidden.bs.modal", function () {
+                    window.location.href = "/index";
+                });
             }
         });
 

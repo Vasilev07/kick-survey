@@ -167,7 +167,7 @@ $(function () {
         $.ajax({
             method: "DELETE",
             async: "true",
-            url: "/delete-survey",
+            url: "/api/delete-survey",
             data: surveyData,
             error: function (error) {
                 console.log(error);

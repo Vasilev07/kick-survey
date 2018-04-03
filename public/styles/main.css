@@ -68,6 +68,16 @@
     color: rgba(59, 112, 47, 0.7);
 }
 
+.survey-name-exist-msg {
+    margin: 0px;
+}
+
+.survey-name-exist-msg label{
+    color: #ce0101;
+    margin: 0px;
+    font-weight: normal;
+}
+
 .survey-create {
     background-color: #F3F3F3;
 }

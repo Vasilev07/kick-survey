@@ -6,10 +6,6 @@ const {
 const path = require('path');
 
 const DataController = require('../controllers/data-controller');
-const SubmitController = require('../controllers/submit-controller');
-const SurveyController = require('../controllers/survey-controller');
-const CryptographyController =
-    require('../controllers/cryptography-controller');
 
 const init = (app, data) => {
     const router = new Router();
@@ -30,9 +26,6 @@ const init = (app, data) => {
             };
 
             res.render('shared-views/master', context);
-        })
-        .get('/test', (req, res) => {
-            res.render('test-form', {});
         })
         .get('/index', async (req, res) => {
             let categories = [];
@@ -66,42 +59,6 @@ const init = (app, data) => {
             };
             return res.render('create-survey/create-survey-master', model);
         })
-        .post('/create', async (req, res) => {
-            if (!req.isAuthenticated()) {
-                return res.redirect('/');
-            }
-            const surveyData = req.body;
-            surveyData.user = req.user;
-
-            const surveyController = new SurveyController(data);
-            try {
-                await surveyController.createSurvey(surveyData);
-            } catch (err) {
-                console.log(err);
-            }
-
-            res.status(200).json(req.body);
-        })
-        .delete('/delete-survey', async (req, res) => {
-            try {
-                await dataController.deleteSurvey(req.body.survey);
-                res.sendStatus(200);
-            } catch (err) {
-                console.log(err);
-                res.status(500).json(err);
-            }
-        })
-        .get('/api/:url', async (req, res) => {
-            const param = req.params.url;
-
-            try {
-                const surveyData =
-                    await dataController.getUserSurveyData(param);
-                res.send(surveyData);
-            } catch (err) {
-                res.status(500).json(err);
-            }
-        })
         .get('/preview/:url', async (req, res, next) => {
             res.render('preview-survey/preview', {
                 isAuthenticated: req.isAuthenticated(),
@@ -113,84 +70,7 @@ const init = (app, data) => {
                 isAuthenticated: req.isAuthenticated(),
                 user: req.user,
             });
-        })
-        .get('/api/analyze/:url', async (req, res) => {
-            const url = req.params.url;
-            const surveyData = await dataController.getSubmittedData(url);
-            res.status(200).send(surveyData);
-        })
-        .post('/api/user-surveys', async (req, res) => {
-            const user = req.user;
-            let cat = null;
-            let surveys;
-
-            if (req.body.category) {
-                cat = req.body.category;
-            }
-
-            try {
-                surveys = await dataController.getUserSurveysData(user, cat);
-                res.status(200).send(surveys);
-            } catch (err) {
-                res.status(500).send(surveys);
-            }
-        })
-        .post('/api/statistics', async (req, res) => {
-            try {
-                const statisticsPie =
-                    await dataController.getAllUsersCategories();
-                const statisticsDataDonut =
-                    await dataController.getAllUsersTypes();
-                const statisticsDataBarByDate =
-                    await dataController.getAllSubmissionsByDate();
-                const statisticsDataBarByDay =
-                    await dataController.getAllSubmissionsByDayOfWeek();
-                const context = {
-                    labelPie: statisticsPie.label,
-                    dataPie: statisticsPie.data,
-                    labelDonut: statisticsDataDonut.label,
-                    dataDonut: statisticsDataDonut.data,
-                    labelBar: statisticsDataBarByDate.label,
-                    dataBar: statisticsDataBarByDate.data,
-                    dataBarDay: statisticsDataBarByDay.label,
-                    labelBarDay: statisticsDataBarByDay.data,
-                };
-                res.status(200).send(context);
-            } catch (error) {
-                res.status(500).end();
-            }
-        })
-        .post('/get-user', (req, res) => {
-            if (!req.isAuthenticated()) {
-                return res.status(500).send('Could not get user');
-            }
-            const user = {
-                username: req.user.username,
-                id: req.user.id,
-            };
-
-            return res.status(200).send(user);
-        })
-        .post('/submit', async (req, res) => {
-            const body = req.body;
-            console.log(body);
-            const submitController = new SubmitController(data);
-            console.log(submitController.createSubmit(body));
-
-            res.send(body);
-        })
-        .post('/generate-share', async (req, res) => {
-            const body = req.body;
-
-            const controller = new CryptographyController();
-            const encryptedUrl =
-                controller.encrypt(req.user.id, body.surveyName);
-            const finalUrl = req.protocol + '://' +
-                req.get('host') + '/preview/' + encryptedUrl;
-
-            res.status(200).json(finalUrl);
         });
-
     app.use('/', router);
 };
 
