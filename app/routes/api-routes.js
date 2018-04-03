@@ -48,6 +48,7 @@ const init = (app, data) => {
                 const surveyData =
                     await dataController.getUserSurveyData(param);
                 res.send(surveyData);
+                console.log(surveyData);
             } catch (err) {
                 res.status(500).json(err);
             }
